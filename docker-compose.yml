@@ -7,6 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_REPLICATION_USER: root
       MYSQL_REPLICATION_PASSWORD: 123456
+      MYSQL_DATABASE: do_an
       TZ: Asia/Ho_Chi_Minh
     command:
       - --default-authentication-plugin=mysql_native_password

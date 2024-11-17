@@ -21,7 +21,6 @@ public class CategoryController {
     @ResponseBody
     public List<Category> getCategoryChildren(@PathVariable("parentId") long parentId) {
         List<Category> categories = categoryService.getCategoriesByParentId(parentId);
-
         return categories;
     }
 }
