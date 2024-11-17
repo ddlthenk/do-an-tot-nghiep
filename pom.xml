@@ -16,7 +16,7 @@
         <module>CommonBase</module>
     </modules>
 
-    <groupId>com.devtam</groupId>
+    <groupId>com.datn</groupId>
     <artifactId>DoAnTotNghiep</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>

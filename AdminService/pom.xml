@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.devtam</groupId>
+        <groupId>com.datn</groupId>
         <artifactId>DoAnTotNghiep</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -40,7 +40,7 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.devtam</groupId>
+            <groupId>com.datn</groupId>
             <artifactId>CommonBase</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

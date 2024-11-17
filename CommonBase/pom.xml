@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.devtam</groupId>
+    <groupId>com.datn</groupId>
     <artifactId>CommonBase</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>CommonBase</name>
