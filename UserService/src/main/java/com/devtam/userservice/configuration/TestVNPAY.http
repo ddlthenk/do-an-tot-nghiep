@@ -1,0 +1,151 @@
+# curl --location 'https://sandbox.vnpayment.vn/merchant_webapi/api/transaction'
+#--header 'Content-Type: application/json'
+#--header 'Cookie: Path=/'
+#--data '{
+#    "vnp_RequestId": "24008846",
+#    "vnp_Version": "2.1.0",
+#    "vnp_Command": "querydr",
+#    "vnp_TmnCode": "CN2GZX5G",
+#    "vnp_TxnRef": "95609111",
+#    "vnp_OrderInfo": "Thanh toan don hang:95609111",
+#    "vnp_TransactionDate": "20240510165525",
+#    "vnp_CreateDate": "20240510165525",
+#    "vnp_IpAddr": "127.0.0.1",
+#    "vnp_SecureHash": "c23c9370caea7b9ff2f7c0644b68123c0b25fae8a05a1b0a5a119d8990820ff33f34fe8fb6c578f00af71e1573db07444202175d1e52d8dbf703a8a63038757b"
+#}'
+POST https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+Cookie: Path=/
+Content-Type: application/json
+
+{
+  "vnp_RequestId": "56535814",
+  "vnp_Version": "2.1.0",
+  "vnp_Command": "querydr",
+  "vnp_TmnCode": "CN2GZX5G",
+  "vnp_TxnRef": "95609111",
+  "vnp_OrderInfo": "Thanh toan don hang:95609111",
+  "vnp_TransactionDate": "20240510165525",
+  "vnp_CreateDate": "20240510165525",
+  "vnp_IpAddr": "127.0.0.1",
+  "vnp_SecureHash": "25a503d4d3338388813dfea3a5d36a43b872dbf7453cd94d52118a6275c6bf6eab07db47f056944fd3a80364c45045be0d073aac5a22a21c04435d1c44854a94"
+}
+
+###
+POST https://sandbox.vnpayment.vn/merchant_webapi/api/transaction
+Cookie: Path=/
+Content-Type: application/json
+
+{
+  "vnp_RequestId": "1947813123",
+  "vnp_Version": "2.1.0",
+  "vnp_Command": "refund",
+  "vnp_TmnCode": "CN2GZX5G",
+  "vnp_TxnRef": "95609111",
+  "vnp_OrderInfo": "Thanh toan don hang:95609111",
+  "vnp_TransactionDate": "20240510165525",
+  "vnp_CreateDate": "20240510181730",
+  "vnp_IpAddr": "127.0.0.1",
+  "vnp_CreateBy": "112asfasdf",
+  "vnp_TransactionType": "02",
+  "vnp_Amount": "124301",
+  "vnp_SecureHash": "c3df922dc74641d8164b6ef43dcc205f6ed647f2851c280092f6ab6e6ea94c2e294da0305f8c7bef85e5deb08c95f37429493623de1099652ee03ad4c570787e"
+}
+
+
+###
+
+# curl --location --request POST 'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create'
+#                            --header 'Content-Type: application/json'
+#                            --header 'ShopId: 885'
+#                            --header 'Token: 285518-c4bb-11ea-be3a-f636b1deefb9'
+#                            --data-raw '{
+#                                "payment_type_id": 2,
+#                                "note": "Tintest 123",
+#                                "required_note": "KHONGCHOXEMHANG",
+#                                "return_phone": "0332190158",
+#                                "return_address": "39 NTT",
+#                                "return_district_id": null,
+#                                "return_ward_code": "",
+#                                "client_order_code": "",
+#                                "from_name": "TinTest124",
+#                                "from_phone": "0987654321",
+#                                "from_address": "72 Thành Thái, Phường 14, Quận 10, Hồ Chí Minh, Vietnam",
+#                                "from_ward_name": "Phường 14",
+#                                "from_district_name": "Quận 10",
+#                                "from_province_name": "HCM",
+#                                "to_name": "TinTest124",
+#                                "to_phone": "0987654321",
+#                                "to_address": "72 Thành Thái, Phường 14, Quận 10, Hồ Chí Minh, Vietnam",
+#                                "to_ward_name": "Phường 14",
+#                                "to_district_name": "Quận 10",
+#                                "to_province_name": "HCM",
+#                                "cod_amount": 200000,
+#                                "content": "Theo New York Times",
+#                                "weight": 200,
+#                                "length": 1,
+#                                "width": 19,
+#                                "height": 10,
+#                                "cod_failed_amount": 2000,
+#                                "pick_station_id": 1444,
+#                                "deliver_station_id": null,
+#                                "insurance_value": 10000000,
+#                                "service_id": 0,
+#                                "service_type_id":2,
+#                                "coupon":null,
+#                                "pickup_time":1692840132,
+#                                "pick_shift":[2],
+#                                "items": [
+#                                     {
+#                                         "name":"Áo Polo",
+#                                         "code":"Polo123",
+#                                         "quantity": 1,
+#                                         "price": 200000,
+#                                         "length": 12,
+#                                         "width": 12,
+#                                         "weight": 1200,
+#                                         "height": 12,
+#                                         "category":
+#                                         {
+#                                             "level1":"Áo"
+#                                         }
+#                                     }
+#
+#                                 ]
+#                            }'
+POST https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create
+ShopId: 190992
+Token: 5692b5e6-de9c-11ee-8bfa-8a2dda8ec551
+Content-Type: application/json
+
+{
+  "payment_type_id": 2,
+  "required_note": "CHOXEMHANGKHONGTHU",
+  "to_name": "awd as",
+  "to_phone": "0328419491",
+  "to_address": "213ads a",
+  "to_ward_name": "Xã Cốc Đán",
+  "to_ward_code": "110503",
+  "to_district_name": "Huyện Ngân Sơn",
+  "cod_amount": 470901,
+  "weight": 2500,
+  "length": 10,
+  "width": 20,
+  "height": 10,
+  "insurance_value": 470901,
+  "service_id": 0,
+  "service_type_id": 2,
+  "items": [
+    {
+      "name": "Máy Chơi Game Sup 400,Kèm Tay Cầm Dành Cho 2 Người ,Màn hình rộng 3 inch  , kết nối với TV  ,Nạp năng lượng theo chu kỳ",
+      "quantity": 1
+    },
+    {
+      "name": "Túi xách 00212",
+      "quantity": 1
+    }
+  ]
+}
+
+
+
+
