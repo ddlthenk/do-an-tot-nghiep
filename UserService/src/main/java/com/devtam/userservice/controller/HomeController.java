@@ -36,8 +36,6 @@ public class HomeController {
     ImageService imageService;
     @Autowired
     GHNService ghnService;
-    @Autowired
-    MailService mailService;
     private final Logger _log = LogManager.getLogger(HomeController.class);
 
     @GetMapping({"/home", "/", ""})
