@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+	  xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+	  xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- sherah Admin Menu -->
+<div class="sherah-smenu" id="sherah-smenu">
+    <!-- Admin Menu -->
+    <div class="admin-menu">
+
+        <!-- Logo -->
+        <div class="logo sherah-sidebar-padding">
+            <a href='/admin/'>
+                <img class="sherah-logo__main" src="/img/logo.jpg" alt="#">
+            </a>
+            <div class="sherah__sicon close-icon d-xl-none">
+                <svg width="9" height="15" viewBox="0 0 9 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.19855 7.41927C4.22908 5.52503 2.34913 3.72698 0.487273 1.90989C0.274898 1.70227 0.0977597 1.40419 0.026333 1.11848C-0.0746168 0.717537 0.122521 0.36707 0.483464 0.154695C0.856788 -0.0643475 1.24249 -0.0519669 1.60248 0.199455C1.73105 0.289929 1.84438 0.404212 1.95771 0.514685C4.00528 2.48321 6.05189 4.45173 8.09755 6.4212C8.82896 7.12499 8.83372 7.6145 8.11565 8.30687C6.05856 10.2878 4.00052 12.2677 1.94152 14.2467C1.82724 14.3562 1.71391 14.4696 1.58439 14.5591C1.17773 14.841 0.615842 14.781 0.27966 14.4324C-0.056522 14.0829 -0.0946163 13.5191 0.202519 13.1248C0.296802 12.9991 0.415847 12.8915 0.530129 12.781C2.29104 11.0868 4.05194 9.39351 5.81571 7.70212C5.91761 7.60593 6.04332 7.53355 6.19855 7.41927Z"></path>
+                </svg>
+            </div>
+        </div>
+        <!-- Main Menu -->
+        <div class="admin-menu__one sherah-sidebar-padding">
+            <!-- Nav Menu -->
+            <div class="menu-bar">
+                <ul class="menu-bar__one sherah-dashboard-menu" id="sherahMenu">
+                    <li><a id="home-menu" class="collapsed" href="/admin/"><span class="menu-bar__text">
+									<span class="sherah-menu-icon sherah-svg-icon__v1">
+										<svg  class="sherah-svg-icon" xmlns="http://www.w3.org/2000/svg" width="18.075" height="18.075" viewBox="0 0 18.075 18.075">
+											<g id="Icon" transform="translate(0 0)">
+											  <path id="Path_29" data-name="Path 29" d="M6.966,6.025H1.318A1.319,1.319,0,0,1,0,4.707V1.318A1.319,1.319,0,0,1,1.318,0H6.966A1.319,1.319,0,0,1,8.284,1.318V4.707A1.319,1.319,0,0,1,6.966,6.025ZM1.318,1.13a.188.188,0,0,0-.188.188V4.707a.188.188,0,0,0,.188.188H6.966a.188.188,0,0,0,.188-.188V1.318a.188.188,0,0,0-.188-.188Zm0,0"/>
+											  <path id="Path_30" data-name="Path 30" d="M6.966,223.876H1.318A1.319,1.319,0,0,1,0,222.558V214.65a1.319,1.319,0,0,1,1.318-1.318H6.966a1.319,1.319,0,0,1,1.318,1.318v7.908A1.319,1.319,0,0,1,6.966,223.876Zm-5.648-9.414a.188.188,0,0,0-.188.188v7.908a.188.188,0,0,0,.188.188H6.966a.188.188,0,0,0,.188-.188V214.65a.188.188,0,0,0-.188-.188Zm0,0" transform="translate(0 -205.801)"/>
+											  <path id="Path_31" data-name="Path 31" d="M284.3,347.357H278.65a1.319,1.319,0,0,1-1.318-1.318V342.65a1.319,1.319,0,0,1,1.318-1.318H284.3a1.319,1.319,0,0,1,1.318,1.318v3.389A1.319,1.319,0,0,1,284.3,347.357Zm-5.648-4.9a.188.188,0,0,0-.188.188v3.389a.188.188,0,0,0,.188.188H284.3a.188.188,0,0,0,.188-.188V342.65a.188.188,0,0,0-.188-.188Zm0,0" transform="translate(-267.542 -329.282)"/>
+											  <path id="Path_32" data-name="Path 32" d="M284.3,10.544H278.65a1.319,1.319,0,0,1-1.318-1.318V1.318A1.319,1.319,0,0,1,278.65,0H284.3a1.319,1.319,0,0,1,1.318,1.318V9.226A1.319,1.319,0,0,1,284.3,10.544ZM278.65,1.13a.188.188,0,0,0-.188.188V9.226a.188.188,0,0,0,.188.188H284.3a.188.188,0,0,0,.188-.188V1.318a.188.188,0,0,0-.188-.188Zm0,0" transform="translate(-267.542)"/>
+											</g>
+										</svg>
+									</span>
+									<span class="menu-bar__name">Trang chủ</span></span></a></span>
+                    </li>
+                    <li sec:authorize="hasAuthority('ROOT')" ><a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item_vendors"><span class="menu-bar__text">
+									<span class="sherah-menu-icon sherah-svg-icon__v1">
+										<svg  class="sherah-svg-icon" xmlns="http://www.w3.org/2000/svg" width="22.038" height="17.943" viewBox="0 0 22.038 17.943">
+											<g id="Icon" transform="translate(-325.516 -274.72)">
+											  <path id="Path_221" data-name="Path 221" d="M340.751,385.008c.034.446.08.824.088,1.2a.755.755,0,0,1-.86.88q-6.792.005-13.585,0c-.619,0-.88-.279-.878-.907a7.668,7.668,0,0,1,12.323-5.909c.071.054.145.1.241.172a5.8,5.8,0,0,1,2.906-1.574,5.524,5.524,0,0,1,6.566,5.177c.016.69-.23.954-.916.956-1.775,0-3.549,0-5.324,0Zm-1.467.59a6.1,6.1,0,0,0-6.281-5.43c-3.108.1-6.1,2.872-5.9,5.43Zm-.127-4.139c.349.615.686,1.16.97,1.731a.524.524,0,0,0,.55.351c1.649-.013,3.3-.006,4.947-.008.117,0,.234-.019.394-.034a4.053,4.053,0,0,0-6.861-2.042Z" transform="translate(0 -94.43)"/>
+											  <path id="Path_222" data-name="Path 222" d="M363.308,278.9a4.192,4.192,0,1,1,4.144,4.208A4.177,4.177,0,0,1,363.308,278.9Zm1.472-.009a2.721,2.721,0,1,0,2.718-2.7A2.717,2.717,0,0,0,364.779,278.892Z" transform="translate(-34.322)"/>
+											  <path id="Path_223" data-name="Path 223" d="M474.686,302.114a3.121,3.121,0,1,1-3.123,3.119A3.121,3.121,0,0,1,474.686,302.114Zm1.649,3.123a1.651,1.651,0,1,0-1.665,1.648A1.652,1.652,0,0,0,476.335,305.237Z" transform="translate(-132.638 -24.879)"/>
+											</g>
+										</svg>
+									</span>
+									<span class="menu-bar__name">Nhân viên</span></span> <span class="sherah__toggle"></span></a></span>
+									<!-- Dropdown Menu -->
+									<div class="collapse sherah__dropdown" id="menu-item_vendors"  data-bs-parent="#sherahMenu">
+										<ul class="menu-bar__one-dropdown">
+											<li><a href='/admin/employee'><span class="menu-bar__text"><span class="menu-bar__name">Danh sách nhân viên</span></span></a></li>
+											<li active><a href='/admin/employee/add'><span class="menu-bar__text"><span class="menu-bar__name">Thêm mới nhân viên</span></span></a></li>
+										</ul>
+									</div>
+                    </li>
+                    <li><a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item_products"><span class="menu-bar__text">
+									<span class="sherah-menu-icon sherah-svg-icon__v1">
+										<svg class="sherah-svg-icon" xmlns="http://www.w3.org/2000/svg" width="21.136" height="17.873" viewBox="0 0 21.136 17.873">
+											<path id="Path_218" data-name="Path 218" d="M558.766,384.526c.177-.092.32-.164.46-.24l6.468-3.491a1.9,1.9,0,0,1,.368-.179.506.506,0,0,1,.632.248.487.487,0,0,1-.127.656,1.743,1.743,0,0,1-.315.191c-2.517,1.359-5.038,2.712-7.549,4.083a.98.98,0,0,1-1.036.012q-3.781-1.986-7.582-3.934a.811.811,0,0,1-.505-.831c.02-1.3,0-2.6.014-3.9a.486.486,0,0,0-.3-.508c-.45-.232-.889-.486-1.326-.742a.539.539,0,0,1-.221-.877c.62-.926,1.244-1.849,1.883-2.762a1.17,1.17,0,0,1,.442-.344c2.561-1.246,5.127-2.482,7.688-3.728a.879.879,0,0,1,.822-.01c2.568,1.2,5.143,2.387,7.709,3.591a1.24,1.24,0,0,1,.478.42c.61.916,1.2,1.844,1.794,2.771.3.463.23.71-.265.989q-3.631,2.046-7.265,4.086c-.454.255-.643.212-.981-.2-.412-.5-.823-1.011-1.292-1.587Zm-7.409-12.033c.133.076.214.126.3.17,2.065,1.073,4.133,2.141,6.191,3.225a.625.625,0,0,0,.674-.018c2.031-1.106,4.069-2.2,6.1-3.3.118-.064.232-.133.367-.21a1.6,1.6,0,0,0-.164-.106c-2.124-.986-4.246-1.977-6.378-2.945a.814.814,0,0,0-.6.038c-2.04.971-4.071,1.96-6.1,2.945C551.626,372.349,551.511,372.412,551.357,372.492Zm-.688,4.945c0,1.092.01,2.129-.007,3.165a.5.5,0,0,0,.321.528c2.093,1.074,4.179,2.162,6.267,3.245.1.054.216.1.344.152v-6.293l-1.263,1.551c-.386.473-.552.507-1.076.212q-2.074-1.166-4.147-2.334C550.982,377.593,550.85,377.53,550.668,377.438Zm10.08,1.529,6.694-3.769-1.4-2.171-7.033,3.792Zm-3.4-2.142-7.037-3.652-1.38,2.033,6.683,3.76Z" transform="translate(-547.61 -368.076)"/>
+										</svg>
+									</span>
+									<span class="menu-bar__name">Sản phẩm</span></span> <span class="sherah__toggle"></span></a></span>
+                        <!-- Dropdown Menu -->
+                        <div class="collapse sherah__dropdown" id="menu-item_products" data-bs-parent="#sherahMenu">
+                            <ul class="menu-bar__one-dropdown">
+                                <li><a href='/admin/products'><span class="menu-bar__text"><span class="menu-bar__name">Danh sách sản phẩm</span></span></a></li>
+                                <li><a href='/admin/upload-product'><span class="menu-bar__text"><span class="menu-bar__name">Thêm mới sản phẩm</span></span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__orders"><span class="menu-bar__text">
+									<span class="sherah-menu-icon sherah-svg-icon__v1">
+										<svg  class="sherah-svg-icon" xmlns="http://www.w3.org/2000/svg" width="17.092" height="17.873" viewBox="0 0 17.092 17.873">
+											<g id="Icon" transform="translate(-409.241 -375.497)">
+											  <path id="Path_219" data-name="Path 219" d="M413.466,380.6a15.992,15.992,0,0,1,.123-1.943,4.18,4.18,0,0,1,4.549-3.151,4.054,4.054,0,0,1,3.919,3.741c.009.436,0,.872,0,1.354h2.872c.193,0,.386,0,.579,0,.589.012.879.286.813.811-.4,3.247-.8,6.495-1.227,9.739a2.674,2.674,0,0,1-2.769,2.2q-4.543.022-9.086,0a2.681,2.681,0,0,1-2.771-2.2c-.344-2.558-.649-5.12-.97-7.68-.078-.62-.147-1.242-.234-1.861-.108-.759.125-1.011.967-1.012Zm-2.723,1.3c.062.5.119.978.177,1.452.306,2.481.606,4.963.924,7.443.114.888.642,1.293,1.628,1.294q4.32,0,8.639,0a2.279,2.279,0,0,0,.57-.059,1.428,1.428,0,0,0,1.074-1.446c.213-1.836.452-3.669.679-5.5.13-1.052.257-2.1.387-3.174h-2.742v1.215c.038.015.076.032.115.046.437.159.649.424.563.746a.73.73,0,0,1-.826.524c-.43-.008-.861.008-1.291-.006a.668.668,0,0,1-.711-.588c-.021-.423.28-.612.676-.709v-1.218h-5.655v1.221c.434.1.724.3.683.722a.613.613,0,0,1-.636.565c-.518.026-1.039.024-1.558,0-.349-.016-.627-.224-.614-.526a1.458,1.458,0,0,1,.364-.659c.051-.071.2-.084.292-.118V381.9Zm4.154-1.321h5.727c0-.514.036-1-.007-1.491a2.723,2.723,0,0,0-2.627-2.306,2.77,2.77,0,0,0-2.967,1.982A12.7,12.7,0,0,0,414.9,380.578Z" transform="translate(0 0)"/>
+											  <path id="Path_220" data-name="Path 220" d="M475.527,506.525c.71-.887,1.409-1.754,2.1-2.627a.66.66,0,0,1,.828-.285.609.609,0,0,1,.258.961c-.841,1.079-1.7,2.145-2.563,3.206a.6.6,0,0,1-.858.123c-.635-.412-1.267-.829-1.89-1.259a.635.635,0,1,1,.71-1.053C474.584,505.888,475.043,506.2,475.527,506.525Z" transform="translate(-57.815 -117.848)"/>
+											</g>
+										</svg>
+									</span>
+									<span class="menu-bar__name">Đơn hàng</span></span><span class="sherah__toggle"></span></a></span>
+                        <!-- Dropdown Menu -->
+                        <div class="collapse sherah__dropdown" id="menu-item__orders" data-bs-parent="#sherahMenu">
+                            <ul class="menu-bar__one-dropdown">
+                                <li><a href='/admin/order-list'><span class="menu-bar__text"><span class="menu-bar__name">Danh sách đơn hàng</span></span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+					<li><a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__user"><span class="menu-bar__text">
+									<span class="sherah-menu-icon sherah-svg-icon__v1">
+										<i class="fa-solid fa-user"></i>
+									</span>
+									<span class="menu-bar__name">Người dùng</span></span><span class="sherah__toggle"></span></a></span>
+						<!-- Dropdown Menu -->
+						<div class="collapse sherah__dropdown" id="menu-item__user" data-bs-parent="#sherahMenu">
+							<ul class="menu-bar__one-dropdown">
+								<li><a href='/admin/user-list'><span class="menu-bar__text"><span class="menu-bar__name">Danh sách người dùng</span></span></a></li>
+							</ul>
+						</div>
+					</li>
+					<li><a href="#!" class="collapsed" data-bs-toggle="collapse" data-bs-target="#menu-item__voucher"><span class="menu-bar__text">
+									<span class="sherah-menu-icon sherah-svg-icon__v1">
+										<i class="fas fa-ticket-alt"></i>
+									</span>
+									<span class="menu-bar__name">Mã giảm giá</span></span><span class="sherah__toggle"></span></a></span>
+						<!-- Dropdown Menu -->
+						<div class="collapse sherah__dropdown" id="menu-item__voucher" data-bs-parent="#sherahMenu">
+							<ul class="menu-bar__one-dropdown">
+								<li><a href='/admin/vouchers'><span class="menu-bar__text"><span class="menu-bar__name">Danh sách mã giảm giá</span></span></a></li>
+								<li><a href='/admin/add-voucher'><span class="menu-bar__text"><span class="menu-bar__name">Thêm mã giảm giá</span></span></a></li>
+							</ul>
+						</div>
+					</li>
+                    <li><form id="logoutForm" th:action="@{/admin/logout}" method="post">
+
+					<a class='collapsed' onclick="logoutForm2()"><span class="menu-bar__text">
+									<span class="sherah-menu-icon sherah-svg-icon__v1">
+										<svg class="sherah-svg-icon" xmlns="http://www.w3.org/2000/svg" width="19.103" height="23.047" viewBox="0 0 19.103 23.047">
+											<g id="Icon" transform="translate(-209.904 -251.466)">
+											  <path id="Path_240" data-name="Path 240" d="M212.282,260.761c0-.958-.016-1.929,0-2.9a6.662,6.662,0,0,1,5.78-6.272c4.429-.777,8.475,2.182,8.562,6.273.021.97,0,1.94,0,2.925.264.049.49.077.708.134a2.1,2.1,0,0,1,1.656,1.995c.024,1.769.01,3.539.012,5.308,0,1.323.007,2.646,0,3.969-.009,1.47-.933,2.311-2.567,2.314q-6.98.011-13.96,0c-1.657,0-2.566-.847-2.568-2.362q-.007-4.448,0-8.9c0-1.438.616-2.115,2.185-2.421A1.584,1.584,0,0,0,212.282,260.761Zm7.156,12.3q3.436,0,6.871,0c.925,0,1.1-.163,1.1-1.014q0-4.4,0-8.8c0-.8-.2-.983-1.09-.984q-6.871,0-13.742,0c-.867,0-1.072.185-1.073.95q0,4.445,0,8.891c0,.776.2.95,1.063.951Q216,273.064,219.437,273.061Zm-5.62-12.274h11.215c0-1.014.034-2-.007-2.98a5.223,5.223,0,0,0-4.93-4.866c-2.992-.229-5.547,1.367-6.063,3.958A26.567,26.567,0,0,0,213.817,260.787Z" transform="translate(0)"/>
+											  <path id="Path_241" data-name="Path 241" d="M279.688,386.981a2.131,2.131,0,0,1,2.059,1.549,2.1,2.1,0,0,1-1.038,2.476.523.523,0,0,0-.32.557c.013.4.017.8-.008,1.193a.715.715,0,0,1-1.429.007c-.01-.143-.011-.286-.008-.429.015-.641.059-1.2-.691-1.617a1.921,1.921,0,0,1-.6-2.359A2.113,2.113,0,0,1,279.688,386.981Zm.689,2.152a.709.709,0,1,0-1.417.041.658.658,0,0,0,.7.678A.666.666,0,0,0,280.376,389.133Z" transform="translate(-60.212 -122.554)"/>
+											  <path id="Path_242" data-name="Path 242" d="M294.225,402.762a.666.666,0,0,1-.713.719.658.658,0,0,1-.7-.678.709.709,0,1,1,1.417-.041Z" transform="translate(-74.06 -136.182)"/>
+											</g>
+										</svg>
+									</span>
+									<span class="menu-bar__name">Đăng xuất</span></span></a></span></form>
+                    </li>
+					<script>
+						document.addEventListener("DOMContentLoaded", function() {
+							var path = window.location.pathname;
+							var page = path;  // Lấy phần cuối của đường dẫn
+
+							// Loại bỏ bất kỳ tham số URL không cần thiết
+							// page = page.split('?')[0];
+							console.log(page)
+							console.log(page.includes("product-details"))
+							// Kiểm tra các từ khóa trong URL và active menu tương ứng
+							if (page.includes("order")) {
+								setActiveMenu("menu-item__orders");
+							} else if (page.includes("product") || page.includes("product-details")) {
+								setActiveMenu("menu-item_products");
+							} else if (page.includes("employee")) {
+								setActiveMenu("menu-item_vendors");
+							} else if (page.includes("user")) {
+								setActiveMenu("menu-item__user");
+							} else if (page.includes("voucher")) {
+								setActiveMenu("menu-item__voucher");
+							}
+							else{
+								var home = document.getElementById("home-menu");
+								home.classList.remove("collapsed");
+							}
+						});
+
+						function setActiveMenu(menuId) {
+							var menu = document.getElementById(menuId);
+							if (menu) {
+								menu.classList.add("show"); // Thêm class "show" để hiển thị dropdown
+								menu.previousElementSibling.classList.remove("collapsed"); // Đặt link cha thành active
+							}
+						}
+						function logoutForm2() {
+							console.log("hehe");
+							var form = document.getElementById('logoutForm');
+							console.log(form);
+							form.submit();
+						}
+					</script>
+                </ul>
+            </div>
+            <!-- End Nav Menu -->
+        </div>
+
+    </div>
+    <!-- End Admin Menu -->
+</div>
+<!-- End sherah Admin Menu -->
+
+</body>
+</html>

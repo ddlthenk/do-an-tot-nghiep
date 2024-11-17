@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+<head>
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="Site keywords here">
+    <meta name="description" content="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Site Title -->
+    <title>Sherah - HTML eCommerce Dashboard Template</title>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+
+    <!-- Fav Icon -->
+    <link rel="icon" href="/img/logo.jpg">
+
+    <!-- sherah Stylesheet -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-all.min.css">
+    <link rel="stylesheet" href="/css/charts.min.css">
+    <link rel="stylesheet" href="/css/datatables.min.css">
+    <link rel="stylesheet" href="/css/jvector-map.css">
+    <link rel="stylesheet" href="/css/slickslider.min.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body id="sherah-dark-light">
+
+<div class="sherah-body-area">
+    <!-- sherah Admin Menu -->
+    <div th:replace="~{homePage/menu :: #sherah-smenu}"></div>
+    <!-- End sherah Admin Menu -->
+
+    <!-- Start Header -->
+    <div th:replace="~{homePage/header :: #sherah-header}"></div>
+    <!-- End Header -->
+
+    <!-- sherah Dashboard -->
+    <section class="sherah-adashboard sherah-show">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="sherah-body">
+                        <!-- Dashboard Inner -->
+                        <div class="sherah-dsinner">
+                            <div class="row mg-top-30">
+                                <div class="col-12 sherah-flex-between">
+                                    <!-- Sherah Breadcrumb -->
+                                    <div class="sherah-breadcrumb">
+                                        <h2 class="sherah-breadcrumb__title">Order list</h2>
+                                        <ul class="sherah-breadcrumb__list">
+                                            <li>
+                                                <a href="#">Home</a>
+                                            </li>
+                                            <li class="active">
+                                                <a href='/order-list'>Order List</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- End Sherah Breadcrumb -->
+                                    <a href="order-details" class="sherah-btn sherah-gbcolor">Add New Vendor</a>
+                                </div>
+                            </div>
+                            <div class="sherah-table sherah-page-inner sherah-border sherah-default-bg mg-top-25">
+                                <table id="sherah-table__vendor" class="sherah-table__main sherah-table__main-v3">
+                                    <!-- sherah Table Head -->
+                                    <thead class="sherah-table__head">
+                                    <tr>
+                                        <th class="sherah-table__column-1 sherah-table__h1">Order ID</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="sherah-table__body">
+                                    <tr>
+                                        <td class="sherah-table__column-1 sherah-table__data-1">
+                                            <!-- Single Product -->
+                                            <div class="sherah-product-card sherah-product-card__v2  sherah-default-bg sherah-border mg-top-30">
+                                                <!-- Card Image -->
+                                                <div class="sherah-product-card__img">
+                                                    <img src="/img/product-img2.png">
+                                                    <div class="sherah-product-card__buttons">
+                                                        <a class="sherah-product-card__buttons--single sherah-default-bg sherah-border"
+                                                           href="#">
+                                                            <svg class="sherah-default__fill sherah-default__heart"
+                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                 width="21.559" height="19.349"
+                                                                 viewBox="0 0 21.559 19.349">
+                                                                <path id="Path_533" data-name="Path 533"
+                                                                      d="M111.852,15.093v.924a1.034,1.034,0,0,0-.03.135,7.2,7.2,0,0,1-1.211,3.339,14.326,14.326,0,0,1-2.5,2.868c-1.887,1.684-3.8,3.337-5.713,4.994a1.2,1.2,0,0,1-1.7-.04q-2.192-1.885-4.378-3.777a22.751,22.751,0,0,1-3.411-3.5,7.509,7.509,0,0,1-1.514-3.347,6.362,6.362,0,0,1,1.4-5.335,5.368,5.368,0,0,1,5.028-1.9,5.245,5.245,0,0,1,3.221,1.768c.184.2.352.414.539.635.092-.119.171-.225.255-.327s.18-.216.277-.318a5.235,5.235,0,0,1,5.72-1.543,5.583,5.583,0,0,1,3.813,4.222C111.746,14.284,111.784,14.692,111.852,15.093Z"
+                                                                      transform="translate(-90.794 -8.871)"
+                                                                      stroke-width="1"/>
+                                                            </svg>
+                                                        </a>
+                                                        <a class="sherah-product-card__buttons--single sherah-default-bg sherah-border"
+                                                           href="#">
+                                                            <svg class="sherah-default__fill"
+                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                 width="15.671" height="15.67"
+                                                                 viewBox="0 0 15.671 15.67">
+                                                                <g id="View_full" data-name="View full"
+                                                                   transform="translate(0 -0.33)">
+                                                                    <path id="Path_529" data-name="Path 529"
+                                                                          d="M0,2.448V4.566H1.093V2.221L3.621,4.749,6.15,7.277l.4-.4.4-.4L4.419,3.952,1.89,1.423H4.236V.33H0Z"/>
+                                                                    <path id="Path_530" data-name="Path 530"
+                                                                          d="M11.435.877v.547h2.346L11.253,3.952,8.725,6.48l.4.4.4.4L12.05,4.749l2.528-2.528V4.566h1.093V.33H11.435Z"/>
+                                                                    <path id="Path_531" data-name="Path 531"
+                                                                          d="M3.608,11.59,1.093,14.11V11.764H0V16H4.236V14.907H1.89l2.528-2.528L6.947,9.85,6.56,9.463a4.274,4.274,0,0,0-.41-.387C6.136,9.076,4.993,10.21,3.608,11.59Z"/>
+                                                                    <path id="Path_532" data-name="Path 532"
+                                                                          d="M9.112,9.463l-.387.387,2.528,2.528,2.528,2.528H11.435V16h4.236V11.764H14.578V14.11L12.059,11.59c-1.38-1.38-2.524-2.514-2.537-2.514A4.273,4.273,0,0,0,9.112,9.463Z"/>
+                                                                </g>
+                                                            </svg>
+                                                        </a>
+                                                        <a class="sherah-product-card__buttons--single sherah-default-bg sherah-border"
+                                                           href="#">
+                                                            <svg class="sherah-default__fill"
+                                                                 xmlns="http://www.w3.org/2000/svg" width="18"
+                                                                 height="20" viewBox="0 0 18 20">
+                                                                <g id="Com" transform="translate(-0.268 0)">
+                                                                    <path id="Path_527" data-name="Path 527"
+                                                                          d="M7.895.663a4.9,4.9,0,0,1-.024.662c-.012,0-.206.035-.425.082A8.8,8.8,0,0,0,.334,8.8,9.839,9.839,0,0,0,.45,11.808a8.86,8.86,0,0,0,3.875,5.507l.226.14.56-.413a6.464,6.464,0,0,0,.56-.436.953.953,0,0,0-.218-.136,7.762,7.762,0,0,1-1.934-1.524,7.446,7.446,0,0,1-1.878-3.917,9.631,9.631,0,0,1,0-2.085,7.5,7.5,0,0,1,1.116-2.95A7.776,7.776,0,0,1,5.751,3.352a8.609,8.609,0,0,1,2.017-.678l.127-.023V3.2a3.624,3.624,0,0,0,.02.546c.04,0,2.521-1.843,2.521-1.871S7.954,0,7.915,0A5.311,5.311,0,0,0,7.895.663Z"
+                                                                          transform="translate(0 0)"/>
+                                                                    <path id="Path_528" data-name="Path 528"
+                                                                          d="M13.219,2.958a3.6,3.6,0,0,0-.54.44,1.467,1.467,0,0,0,.27.168,7.818,7.818,0,0,1,2.918,2.95,7.809,7.809,0,0,1,.842,2.615,8.959,8.959,0,0,1-.1,2.362,7.546,7.546,0,0,1-4.848,5.514,10.126,10.126,0,0,1-1.275.343c-.044,0-.056-.1-.056-.546a3.622,3.622,0,0,0-.02-.546c-.04,0-2.521,1.843-2.521,1.871S10.376,20,10.416,20a5.307,5.307,0,0,0,.02-.662v-.659l.151-.023a14,14,0,0,0,1.755-.468A8.765,8.765,0,0,0,18,11.154a9.922,9.922,0,0,0-.119-2.962,8.86,8.86,0,0,0-3.875-5.507l-.226-.14Z"
+                                                                          transform="translate(0.206)"/>
+                                                                </g>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- Card Content -->
+                                                <div class="sherah-product-card__content sherah-dflex-column sherah-flex-gap-5">
+                                                    <h4 class="sherah-product-card__title">
+                                                        <a href="product-detail.html" class="sherah-pcolor">Double
+                                                            breasted suit</a>
+                                                    </h4>
+                                                    <div class="sherah-product__bottom">
+                                                        <div class="sherah-product__bottom--single">
+                                                            <h5 class="sherah-product-card__price">$160</h5>
+                                                            <div class="sherah-product-card__meta sherah-dflex sherah-flex-gap-30">
+                                                                <div class="sherah-product-card__rating sherah-dflex sherah-flex-gap-5">
+                                                                        <span class="sherah-color4">
+                                                                            <i class="fa fa-star"></i>
+                                                                        </span>
+                                                                    <span class="sherah-color4">
+                                                                            <i class="fa fa-star"></i>
+                                                                        </span>
+                                                                    <span class="sherah-color4">
+                                                                            <i class="fa fa-star"></i>
+                                                                        </span>
+                                                                    <span class="sherah-color4">
+                                                                            <i class="fa fa-star"></i>
+                                                                        </span>
+                                                                    <span class="sherah-color4">
+                                                                            <i class="fa fa-star"></i>
+                                                                        </span>
+                                                                    (33)
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a href="product-detail.html"
+                                                           class="sherah-btn default">Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Single Product -->
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- End Dashboard Inner -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End sherah Dashboard -->
+</div>
+
+<!-- Sherah Scripts -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-migrate.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/charts.js"></script>
+<script src="/js/datatables.min.js"></script>
+<script src="/js/circle-progress.min.js"></script>
+<script src="/jquery-jvectormap.js"></script>
+<script src="/js/jvector-map.js"></script>
+<script src="/js/slickslider.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+
+        $('#sherah-map').vectorMap({
+            map: 'world_mill_en',
+            backgroundColor: 'transparent',
+            panControl: false,
+            zoomControl: false,
+            regionStyle: {
+                initial: {
+                    fill: '#C5C5C5'
+                },
+                hover: {
+                    fill: '#09AD95'
+                }
+            },
+            showTooltip: true,
+
+        });
+
+    });
+
+
+    $(".sherah-product-slider").slick({
+        autoplay: false,
+        speed: 800,
+        autoplaySpeed: 3500,
+        slidesToShow: 4,
+        pauseOnHover: true,
+        dots: false,
+        center: true,
+        arrows: true,
+        cssEase: 'ease',
+        margin: 30,
+        speed: 700,
+        draggable: true,
+        prevArrow: '<button class="Prev"><i class="fa-solid fa-angle-left"></i></button>',
+        nextArrow: '<button class="Next"><i class="fa-solid fa-angle-right"></i></button>',
+        responsive: [
+            {
+                breakpoint: 2000,
+                settings: {
+                    slidesToShow: 6,
+                }
+            },
+            {
+                breakpoint: 1600,
+                settings: {
+                    slidesToShow: 4,
+                }
+            },
+            {
+                breakpoint: 800,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 500,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+        ]
+    });
+
+
+</script>
+
+<script>
+    new CircleProgress('.circle__one', {
+        max: 100,
+        value: 60,
+
+    });
+
+    new CircleProgress('.circle__two', {
+        max: 100,
+        value: 60,
+
+    });
+</script>
+<script>
+    // Chart One
+    const ctx = document.getElementById('myChart_one_monthly').getContext('2d');
+    const myChart_one_monthly = new Chart(ctx, {
+        type: 'bar',
+
+        data: {
+            labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'],
+            datasets: [{
+                label: 'Profit',
+                data: [90, 60, 85, 40, 75, 45, 95, 75, 45, 65, 35, 90, 40, 50, 30, 70],
+                backgroundColor: [
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                ],
+                fill: true,
+                tension: 0.4,
+                borderWidth: 0,
+                borderSkipped: false,
+                borderRadius: 4,
+                barPercentage: 0.7,
+                categoryPercentage: 0.5,
+            }, {
+                label: 'Profit',
+                data: [85, 55, 80, 45, 70, 50, 90, 60, 55, 60, 45, 85, 50, 60, 40, 65],
+                backgroundColor: [
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                    '#6176FE',
+                ],
+                fill: true,
+                tension: 0.4,
+                borderWidth: 0,
+                borderSkipped: false,
+                borderRadius: 4,
+                barPercentage: 0.7,
+                categoryPercentage: 0.5,
+            }, {
+                label: 'Profit',
+                data: [90, 60, 85, 40, 75, 45, 95, 75, 45, 65, 35, 90, 40, 50, 30, 90],
+                backgroundColor: [
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                    '#09AD95',
+                ],
+                fill: true,
+                tension: 0.4,
+                borderWidth: 0,
+                borderSkipped: false,
+                borderRadius: 4,
+                barPercentage: 0.7,
+                categoryPercentage: 0.5,
+            },
+            ]
+        },
+        options: {
+            intersect: false,
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    ticks: {},
+                    grid: {
+                        display: false,
+                    },
+
+                },
+                y: {
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value + '%';
+                        }
+                    },
+                    grid: {
+                        drawBorder: false,
+                        color: '#c5c5c573',
+                        borderDash: [10, 10]
+                    },
+                },
+
+
+            },
+            plugins: {
+                tooltip: {
+                    padding: 10,
+                    displayColors: true,
+                    yAlign: 'bottom',
+                    backgroundColor: '#fff',
+                    titleColor: '#000',
+                    titleFont: {weight: 'normal'},
+                    bodyColor: '#2F3032',
+                    cornerRadius: 12,
+                    font: {
+                        size: 14
+                    },
+                    caretSize: 9,
+                    bodySpacing: 100,
+
+                },
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                    text: 'Sell History'
+                }
+            }
+        }
+    });
+    setInterval(() => {
+        if (document.body.classList.contains('active')) {
+            myChart_one_monthly.options.scales.y.grid.color = '#E2E7F11C ';
+        } else {
+            myChart_one_monthly.options.scales.y.grid.color = '#c5c5c573 ';
+        }
+        myChart_one_monthly.update();
+    }, 500);
+
+
+    // Chart Two
+    const ctx_two = document.getElementById('myChart_Total_Sales_Home').getContext('2d');
+
+    const gradientBg = ctx_two.createLinearGradient(0, 0, 0, 190);
+
+    gradientBg.addColorStop(0, 'rgba(97, 118, 254, 0.43)');
+    gradientBg.addColorStop(1, 'rgba(97, 118, 254, 0)');
+    const myChart_Total_Sales_Home = new Chart(ctx_two, {
+        type: 'line',
+
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Visitor',
+                data: [20, 15, 35, 45, 60, 45, 70, 50, 70, 70, 44, 50],
+                backgroundColor: gradientBg,
+                borderColor: '#6176FE',
+                pointRadius: 0,
+                tension: 0.5,
+                borderWidth: 6,
+                fill: true,
+                fillColor: '#fff',
+            }]
+        },
+
+        options: {
+
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: true,
+                        color: '#c5c5c573',
+                    },
+                    suggestedMax: 80, suggestedMin: 80,
+
+                },
+                y: {
+                    suggestedMax: 80, suggestedMin: 80,
+                    grid: {
+                        display: true,
+
+                        color: '#c5c5c573',
+                        borderDash: [10, 10]
+                    },
+                },
+            },
+
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                }
+            }
+        }
+    });
+
+    setInterval(() => {
+        if (document.body.classList.contains('active')) {
+            myChart_Total_Sales_Home.options.scales.x.grid.color = '#E2E7F11C ';
+            myChart_Total_Sales_Home.options.scales.y.grid.color = '#E2E7F11C ';
+        } else {
+            myChart_Total_Sales_Home.options.scales.x.grid.color = '#c5c5c573 ';
+            myChart_Total_Sales_Home.options.scales.y.grid.color = '#c5c5c573 ';
+        }
+        myChart_Total_Sales_Home.update();
+    }, 500);
+
+    // Chart Revenue
+    const ctx_market = document.getElementById('myChart_Revenue').getContext('2d');
+
+    const myChart_Revenue = new Chart(ctx_market, {
+        type: 'line',
+
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Visitor',
+                data: [10, 15, 15, 90, 90, 45, 45, 45, 70, 70, 45, 45],
+                backgroundColor: 'transparent',
+                borderColor: '#F2C94C',
+                borderWidth: 5,
+                fill: true,
+                fillColor: '#fff',
+                tension: 0.5,
+                pointRadius: 0,
+            },
+                {
+                    label: 'Sells',
+                    data: [20, 86, 79, 30, 60, 45, 70, 50, 70, 30, 44, 50],
+                    backgroundColor: 'transparent',
+                    borderColor: '#09AD95',
+                    borderWidth: 5,
+                    fill: true,
+                    tension: 0.5,
+                    fillColor: '#fff',
+                    fill: 'start',
+                    pointRadius: 0,
+                },
+                {
+                    label: 'Profit',
+                    data: [20, 20, 79, 80, 60, 45, 70, 30, 20, 90, 44, 50],
+                    backgroundColor: 'transparent',
+                    borderColor: '#6176FE',
+                    borderWidth: 5,
+                    fill: true,
+                    tension: 0.5,
+                    fillColor: '#fff',
+                    fill: 'start',
+                    pointRadius: 0,
+                }]
+        },
+
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: true,
+                        color: '#c5c5c573',
+                    },
+                    suggestedMax: 100, suggestedMin: 100,
+
+                },
+                y: {
+                    suggestedMax: 100, suggestedMin: 100,
+                    grid: {
+                        display: true,
+
+                        color: '#c5c5c573',
+                        borderDash: [10, 10]
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                    text: 'Sell History'
+                }
+            }
+        }
+    });
+
+    setInterval(() => {
+        if (document.body.classList.contains('active')) {
+            myChart_Revenue.options.scales.y.grid.color = '#E2E7F11C ';
+            myChart_Revenue.options.scales.x.grid.color = '#E2E7F11C ';
+        } else {
+            myChart_Revenue.options.scales.y.grid.color = '#c5c5c573 ';
+            myChart_Revenue.options.scales.x.grid.color = '#c5c5c573 ';
+        }
+        myChart_Revenue.update();
+    }, 500);
+
+
+    // Chart Seven
+    const ctx_total_clients = document.getElementById('myChart_active_creators').getContext('2d');
+
+    const myChart_active_creators = new Chart(ctx_total_clients, {
+        type: 'line',
+
+        data: {
+            labels: ['1', '2', '3', '4', '5'],
+            datasets: [{
+                label: 'Total Clients',
+                data: [0, 10, 15, 10, 20],
+                borderColor: '#F9C200',
+                backgroundColor: 'transparent',
+                pointRadius: 0,
+                tension: 0.5,
+                borderWidth: 7,
+                fill: true,
+                fillColor: '#fff',
+            }]
+        },
+
+        options: {
+
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    },
+                    suggestedMax: 10, suggestedMin: 30,
+
+                },
+
+                y: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    },
+                    suggestedMax: 10, suggestedMin: 30,
+                },
+            },
+
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display: false,
+                }
+            }
+        }
+    });
+
+    const ctx_recent_orders = document.getElementById('myChart_recent_orders').getContext('2d');
+
+    const myChart_recent_orders = new Chart(ctx_recent_orders, {
+        type: 'line',
+
+        data: {
+            labels: ['1', '2', '3', '4', '5'],
+            datasets: [{
+                label: 'Total Clients',
+                data: [0, 10, 15, 10, 20],
+                borderColor: '#09AD95',
+                backgroundColor: 'transparent',
+                pointRadius: 0,
+                tension: 0.5,
+                borderWidth: 7,
+                fill: true,
+                fillColor: '#fff',
+            }]
+        },
+
+        options: {
+
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    },
+                    suggestedMax: 10, suggestedMin: 30,
+
+                },
+
+                y: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    },
+                    suggestedMax: 10, suggestedMin: 30,
+                },
+            },
+
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display: false,
+                }
+            }
+        }
+    });
+</script>
+<script>
+    $('#sherah-table__vendor').DataTable({
+        searching: true,
+        info: false,
+        lengthChange: true,
+        scrollCollapse: true,
+        paging: true,
+        language: {
+            paginate: {
+                next: '<i class="fas fa-angle-right"></i>',
+                // Font Awesome class for next button
+                previous: '<i class="fas fa-angle-left"></i>'// Font Awesome class for previous button
+            },
+            lengthMenu: 'Showing _MENU_',
+            searchPlaceholder: 'Search...',
+            search: '<span class="sherah-data-table-label">Search</span>',
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+<head>
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="Site keywords here">
+    <meta name="description" content="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Site Title -->
+    <title>Sherah - HTML eCommerce Dashboard Template</title>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+
+    <!-- Fav Icon -->
+    <link rel="icon" href="/img/logo.jpg">
+
+    <!-- sherah Stylesheet -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-all.min.css">
+    <link rel="stylesheet" href="/css/charts.min.css">
+    <link rel="stylesheet" href="/css/datatables.min.css">
+    <link rel="stylesheet" href="/css/jvector-map.css">
+    <link rel="stylesheet" href="/css/slickslider.min.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<style>
+    .status-paid {
+        color: green;
+        background-color: #eaffea;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-canceled {
+        color: red;
+        background-color: #ffebeb;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-approved {
+        color: blue;
+        background-color: #e0f0ff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-waiting {
+        color: orange;
+        background-color: #fff4e0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-shipped {
+        color: darkblue;
+        background-color: #e0e5ff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-done {
+        color: darkgreen;
+        background-color: #f0fff0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-refund {
+        color: aliceblue;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        background-color: darkseagreen;
+    }
+
+    .table thead th {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table tr:nth-child(even ) {
+        background-color: #f8f9fa; /* Màu xám cho các dòng lẻ */
+    }
+
+    .table tr:nth-child(odd) {
+        background-color: #ffffff; /* Màu trắng cho các dòng chẵn */
+    }
+
+    .btn-approve {
+        color: #019706;
+        background-color: #aeedb3;
+        /*border-color: #f2be00;*/
+    }
+
+    .btn-cancel {
+        color: #ffffff;
+        background-color: #e8332f;
+    }
+</style>
+<body id="sherah-dark-light">
+
+<div class="sherah-body-area">
+    <!-- sherah Admin Menu -->
+    <div th:replace="~{homePage/menu :: #sherah-smenu}"></div>
+    <!-- End sherah Admin Menu -->
+
+    <!-- Start Header -->
+    <div th:replace="~{homePage/header :: #sherah-header}"></div>
+    <!-- End Header -->
+
+    <!-- sherah Dashboard -->
+    <section class="sherah-adashboard sherah-show">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 sherah-main__column">
+                    <div class="sherah-body">
+                        <!-- Dashboard Inner -->
+                        <div class="sherah-dsinner">
+
+                            <div class="row sherah-gap-30">
+                                <div class="col-lg-6 col-12">
+                                    <!-- Charts Two -->
+                                    <div class="charts-main sherah-default-bg charts-home-two sherah-border mg-top-30">
+                                        <div class="charts-main__heading  mg-btm-20 charts-main__heading--v2">
+                                            <h3 class="sherah-heading__title">Số lượng đơn hàng theo tháng</h3>
+                                            <div class="sherah-charts-tabs">
+                                                <!-- Tab List -->
+                                                <div class="sherah-charts-tabs__list list-group " id="list-tab"
+                                                     role="tablist">
+                                                    <a class="list-group-item active" data-bs-toggle="list"
+                                                       href="#sherah_tab1" role="tab">Tháng</a>
+                                                </div>
+                                            </div>
+                                            <!-- End Topbar -->
+                                        </div>
+                                        <div class="tab-content" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="sherah_tab1" role="tabpanel"
+                                                 aria-labelledby="sherah_tab1">
+                                                <div class="sherah-chart__inside sherah-chart__total--sales">
+                                                    <canvas id="myChart_Total_Sales_Home"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Charts Two -->
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-12">
+                                            <!-- Sherah Order Card -->
+                                            <div class="sherah-order-card sherah-default-bg sherah-border sherah-flex-between mg-top-30">
+                                                <div class="sherah-order-card__first">
+                                                    <p class="sherah-order-card__text mg-btm-10">Tài khoản đang hoạt
+                                                        động</p>
+                                                    <div class="sherah-chart__inside sherah-chart__inside--aorder">
+                                                        <canvas id="myChart_active_creators"></canvas>
+                                                    </div>
+                                                </div>
+                                                <div class="sherah-progress__single circle__one" data-value="0.115">
+                                                </div>
+                                            </div>
+                                            <!-- End Sherah Order Card -->
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-12">
+                                            <!-- Sherah Order Card -->
+                                            <div class="sherah-order-card sherah-default-bg sherah-border sherah-flex-between mg-top-30">
+                                                <div class="sherah-order-card__first">
+                                                    <p class="sherah-order-card__text mg-btm-10">Tỉ lệ đơn hàng đã thành
+                                                        công</p>
+                                                    <div class="sherah-chart__inside sherah-chart__inside--aorder">
+                                                        <canvas id="myChart_recent_orders"></canvas>
+                                                    </div>
+                                                </div>
+                                                <div class="sherah-progress__single circle__two"
+                                                     data-value="0.115"></div>
+                                            </div>
+                                            <!-- End Sherah Order Card -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <!-- Charts One -->
+                                    <div class="charts-main sherah-default-bg charts-home-two sherah-border mg-top-30">
+                                        <!-- Top Heading -->
+                                        <div class="charts-main__heading  mg-btm-20">
+                                            <h3 class="sherah-heading__title">Doanh thu hàng tháng</h3>
+                                        </div>
+                                        <div class="sherah-flex-between mg-btm-30">
+                                            <div class="charts-main__middle m-0">
+                                                <ul class="sherah-progress-list sherah-progress-list__bg sherah-progress-list__inline sherah-gap-50">
+                                                    <li>
+                                                        <span class="sherah-progress-list__color sherah-color4__bg"></span>
+                                                        <p>Doanh thu<span
+                                                                th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+                                                        </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- Chart Dropdown Menu -->
+                                            <div class="sherah-chart__dropdown sherah-chart__dropdown--bg">
+                                                <ul class="nav nav-tabs sherah-dropdown__list" id="nav-tab"
+                                                    role="tablist">
+                                                    <li class="nav-item dropdown">
+                                                        <a class="sherah-sidebar_btn sherah-offset-bg  sherah-border sherah-heading__tabs nav-link dropdown-toggle"
+                                                           data-bs-toggle="dropdown" href="#" role="button"
+                                                           aria-expanded="false">Doanh thu 12 tháng gần nhất
+                                                            <svg width="13" height="6" viewBox="0 0 13 6" fill="none"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path opacity="0.7"
+                                                                      d="M12.4124 0.247421C12.3327 0.169022 12.2379 0.106794 12.1335 0.0643287C12.0291 0.0218632 11.917 0 11.8039 0C11.6908 0 11.5787 0.0218632 11.4743 0.0643287C11.3699 0.106794 11.2751 0.169022 11.1954 0.247421L7.27012 4.07837C7.19045 4.15677 7.09566 4.219 6.99122 4.26146C6.88678 4.30393 6.77476 4.32579 6.66162 4.32579C6.54848 4.32579 6.43646 4.30393 6.33202 4.26146C6.22758 4.219 6.13279 4.15677 6.05312 4.07837L2.12785 0.247421C2.04818 0.169022 1.95338 0.106794 1.84895 0.0643287C1.74451 0.0218632 1.63249 0 1.51935 0C1.40621 0 1.29419 0.0218632 1.18975 0.0643287C1.08531 0.106794 0.990517 0.169022 0.910844 0.247421C0.751218 0.404141 0.661621 0.616141 0.661621 0.837119C0.661621 1.0581 0.751218 1.2701 0.910844 1.42682L4.84468 5.26613C5.32677 5.73605 5.98027 6 6.66162 6C7.34297 6 7.99647 5.73605 8.47856 5.26613L12.4124 1.42682C12.572 1.2701 12.6616 1.0581 12.6616 0.837119C12.6616 0.616141 12.572 0.404141 12.4124 0.247421Z"></path>
+                                                            </svg>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- End Chart Dropdown Menu -->
+                                        </div>
+                                        <div class="charts-main__one">
+                                            <div class="tab-content" id="nav-tabContent">
+                                                <div class="tab-pane fade show active" id="sherah-chart__t1"
+                                                     role="tabpanel" aria-labelledby="sherah-chart__t1">
+                                                    <div class="sherah-chart__inside sherah-chart__monthly--states">
+                                                        <!-- Chart One -->
+                                                        <canvas id="myChart_one_monthly"></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Charts One -->
+                                </div>
+                            </div>
+                            <div th:if="${orderPage != null && orderPage.getContent() != null && !orderPage.getContent().isEmpty()}"
+                                 class="row">
+                                <div class="col-12">
+                                    <div class="sherah-table sherah-default-bg sherah-border mg-top-30">
+                                        <div class="sherah-table__heading">
+                                            <h3 class="sherah-heading__title mb-0">Đơn hàng gần đây</h3>
+                                        </div>
+                                        <!-- sherah Table -->
+                                        <table id="sherah-table__main"
+                                               class="sherah-table__main sherah-table__main--front sherah-table__main-v1">
+                                            <!-- sherah Table Head -->
+                                            <thead class="sherah-table__head">
+                                            <tr>
+                                                <th class="sherah-table__column-1 sherah-table__h1">ID</th>
+                                                <th class="sherah-table__column-2 sherah-table__h2">Tên khách hàng</th>
+                                                <th class="sherah-table__column-3 sherah-table__h3">Ngày đặt hàng</th>
+                                                <th class="sherah-table__column-5 sherah-table__h5">Tổng đơn hàng</th>
+                                                <th class="sherah-table__column-6 sherah-table__h6">Phương thức thanh
+                                                    toán
+                                                </th>
+                                                <th class="sherah-table__column-7 sherah-table__h7">Trạng thái đơn
+                                                    hàng
+                                                </th>
+                                                <th class="sherah-table__column-8 sherah-table__h8">Hành động</th>
+                                            </tr>
+                                            </thead>
+                                            <!-- sherah Table Body -->
+                                            <tbody class="sherah-table__body"
+                                                   style="max-height: 330px !important; height: auto">
+                                            <tr th:if="${orderPage != null && !orderPage.getContent().isEmpty()}"
+                                                th:each="order : ${orderPage.getContent()}">
+                                                <td class="sherah-table__column-1 sherah-table__data-1">
+                                                    <div class="sherah-language-form__input">
+                                                        <p class="crany-table__product--number">
+                                                            <a th:href="'/admin/order-details/' + ${order.orderId}"
+                                                               class="sherah-color1"
+                                                               th:text="${order.orderId}"></a>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                                <td class="sherah-table__column-2 sherah-table__data-2">
+                                                    <div class="sherah-table__product-content">
+                                                        <p class="sherah-table__product-desc"
+                                                           th:text="${order.customerName}"></p>
+                                                    </div>
+                                                </td>
+                                                <td class="sherah-table__column-3 sherah-table__data-3">
+                                                    <p class="sherah-table__product-desc"
+                                                       th:text="${#dates.format(order.orderDate, 'dd/MM/yyyy')}"><span
+                                                            class="sherah-table__time"></span>
+                                                    </p>
+                                                </td>
+                                                <td class="sherah-table__column-5 sherah-table__data-5">
+                                                    <div class="sherah-table__product-content">
+                                                        <p class="sherah-table__product-desc"
+                                                           th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></p>
+                                                    </div>
+                                                </td>
+                                                <td class="sherah-table__column-6 sherah-table__data-6">
+                                                    <div class="sherah-table__product-content">
+                                                        <p class="sherah-table__product-desc"
+                                                           th:if="${order.paymentMethod == 1}">
+                                                            COD</p>
+                                                        <p class="sherah-table__product-desc"
+                                                           th:if="${order.paymentMethod == 2}">
+                                                            MOMO</p>
+                                                        <p class="sherah-table__product-desc"
+                                                           th:if="${order.paymentMethod == 3}">
+                                                            VNPAY</p>
+                                                    </div>
+                                                </td>
+                                                <td class="sherah-table__column-7 sherah-table__data-7">
+                                                    <span th:if="${order.orderStatus == 1}"
+                                                          class="status-paid">Paid</span>
+                                                    <span th:if="${order.orderStatus == 2}"
+                                                          class="status-canceled">Canceled</span>
+                                                    <span th:if="${order.orderStatus == 3}"
+                                                          class="status-approved">Approved</span>
+                                                    <span th:if="${order.orderStatus == 4}"
+                                                          class="status-waiting">Waiting</span>
+                                                    <span th:if="${order.orderStatus == 5}"
+                                                          class="status-shipped">Shipped</span>
+                                                    <span th:if="${order.orderStatus == 6}"
+                                                          class="status-done">Done</span>
+                                                    <span th:if="${order.orderStatus == 7}"
+                                                          class="status-refund">Waiting Refund</span>
+                                                </td>
+                                                <td class="sherah-table__column-8 sherah-table__data-8">
+                                                    <div class="sherah-table__status__group">
+                                                        <a th:href="'/admin/order-details/' + ${order.orderId}"
+                                                           class="btn btn-info p-1"
+                                                           style="width: 30px; height: 30px; border-radius: 5px"><i
+                                                                class="fas fa-eye"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                            <!-- End sherah Table Body -->
+                                        </table>
+                                        <!-- End sherah Table -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div th:if="${listTopSelling != null && !listTopSelling.isEmpty()}" class="row">
+                                <div class="col-12">
+                                    <div class="sherah-products sherah-default-bg sherah-border  mg-top-30">
+                                        <h4 class="sherah-heading__title">Sản phẩm bán chạy</h4>
+                                        <div class="sherah-product-slider">
+                                            <!-- Sharah Product Card -->
+                                            <div th:each="product : ${listTopSelling}"
+                                                 class="sherah-product-card sherah-default-bg sherah-border mg-top-30">
+                                                <!-- Card Image -->
+                                                <div class="sherah-product-card__img">
+                                                    <img th:if="${topSellingMap != null && topSellingMap.get(product.productId) != null}"
+                                                         th:src="${topSellingMap.get(product.productId).url}">
+                                                    <img th:unless="${topSellingMap != null && topSellingMap.get(product.productId) != null}"
+                                                         src="/img/product-slider-1.png">
+                                                </div>
+                                                <!-- Card Content -->
+                                                <div class="sherah-product-card__content sherah-dflex-column sherah-flex-gap-5">
+                                                    <h4 class="sherah-product-card__title">
+                                                        <a href="#" class="sherah-pcolor"
+                                                           th:if="${product.productTitle.length() > 50}"
+                                                           th:href="'/admin/product-details/' + ${product.productId}"
+                                                           th:text="${#strings.substring(product.productTitle, 0, 50)} + (${product.productTitle.length() > 50 ? '...' : ''})"></a>
+                                                        <a href="#" class="sherah-pcolor"
+                                                           th:unless="${product.productTitle.length() > 50}"
+                                                           th:href="'/admin/product-details/' + ${product.productId}"
+                                                           th:text="${product.productTitle}"></a>
+                                                    </h4>
+                                                    <div class="text-center py-2 star">
+                                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                                            <h6 class="text-muted">
+                                                                <del th:text="${#numbers.formatDecimal(product.productDiscountPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                                                </del>
+                                                            </h6>
+                                                            <h5 class="ml-2" style="color:#F27927"
+                                                                th:text="${#numbers.formatDecimal(product.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                                            </h5>
+                                                        </div>
+                                                        <div th:if="${product.productRating > 4.5}"
+                                                             class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
+                                                        <div th:if="${product.productRating <= 4.5 && product.productRating > 3.5}"
+                                                             class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
+                                                        <div th:if="${product.productRating <= 3.5 && product.productRating > 2.5}"
+                                                             class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
+                                                        <div th:if="${product.productRating <= 2.5 && product.productRating > 1.5}"
+                                                             class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
+                                                        <div th:unless="${product.productRating > 1.5}"
+                                                             class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
+                                                        <div class="mb-1 mt-2">
+                                                            <a class="btn btn-buy p-1"
+                                                               style="color: white; background-color: #F27927; border-radius: 132px"
+                                                               th:href="'/admin/product-details/' + ${product.productId}">Xem
+                                                                sản phẩm</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Sharah Product Card -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- End Dashboard Inner -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End sherah Dashboard -->
+</div>
+
+<!-- Sherah Scripts -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-migrate.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/charts.js"></script>
+<script src="/js/datatables.min.js"></script>
+<script src="/js/circle-progress.min.js"></script>
+<script src="///jquery-jvectormap.js"></script>
+<script src="/js/jvector-map.js"></script>
+<script src="/js/slickslider.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#sherah-map').vectorMap({
+            map: 'world_mill_en',
+            backgroundColor: 'transparent',
+            panControl: false,
+            zoomControl: false,
+            regionStyle: {
+                initial: {
+                    fill: '#C5C5C5'
+                },
+                hover: {
+                    fill: '#09AD95'
+                }
+            },
+            showTooltip: true,
+
+        });
+
+    });
+
+
+    $(".sherah-product-slider").slick({
+        autoplay: false,
+        speed: 800,
+        autoplaySpeed: 3500,
+        slidesToShow: 4,
+        pauseOnHover: true,
+        dots: false,
+        center: true,
+        arrows: true,
+        cssEase: 'ease',
+        margin: 30,
+        speed: 700,
+        draggable: true,
+        prevArrow: '<button class="Prev"><i class="fa-solid fa-angle-left"></i></button>',
+        nextArrow: '<button class="Next"><i class="fa-solid fa-angle-right"></i></button>',
+        responsive: [
+            {
+                breakpoint: 2000,
+                settings: {
+                    slidesToShow: 6,
+                }
+            },
+            {
+                breakpoint: 1600,
+                settings: {
+                    slidesToShow: 4,
+                }
+            },
+            {
+                breakpoint: 800,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 500,
+                settings: {
+                    slidesToShow: 2,
+                }
+            },
+        ]
+    });
+
+
+</script>
+
+<script th:inline="javascript">
+    const activeUser = /*[[${activeUser}]]*/ [];
+    const allUser = /*[[${allUser}]]*/ [];
+    new CircleProgress('.circle__one', {
+        max: allUser,
+        value: activeUser,
+    });
+
+    const totalOrder = /*[[${totalOrder}]]*/ [];
+    const totalDoneOrder = /*[[${totalDoneOrder}]]*/ [];
+    new CircleProgress('.circle__two', {
+        max: totalOrder,
+        value: totalDoneOrder,
+
+    });
+</script>
+<script th:inline="javascript">
+    const monthNames = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"];
+    const currentMonth = new Date().getMonth();
+    let monthsStartingToday = [];
+    for (let i = 0; i < 12; i++) {
+        let monthIndex = (currentMonth - i + 12) % 12;
+        monthsStartingToday.push(monthNames[monthIndex]);
+    }
+    monthsStartingToday.reverse();
+    // Chart One
+    const listTotalPrice = /*[[${listTotalPrice}]]*/ [];
+    const ctx = document.getElementById('myChart_one_monthly').getContext('2d');
+    const myChart_one_monthly = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: monthsStartingToday,
+            datasets: [{
+                label: 'Tổng doanh thu',
+                data: listTotalPrice,
+                backgroundColor: [
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                    '#F9C200',
+                ],
+                fill: true,
+                tension: 0.4,
+                borderWidth: 0,
+                borderSkipped: false,
+                borderRadius: 4,
+                barPercentage: 0.7,
+                categoryPercentage: 0.5,
+            },
+            ]
+        },
+        options: {
+            intersect: false,
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    ticks: {},
+                    grid: {
+                        display: false,
+                    },
+
+                },
+                y: {
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                        }
+                    },
+                    grid: {
+                        drawBorder: false,
+                        color: '#c5c5c573',
+                        borderDash: [10, 10]
+                    },
+                },
+
+
+            },
+            plugins: {
+                tooltip: {
+                    padding: 10,
+                    displayColors: true,
+                    yAlign: 'bottom',
+                    backgroundColor: '#fff',
+                    titleColor: '#000',
+                    titleFont: {weight: 'normal'},
+                    bodyColor: '#2F3032',
+                    cornerRadius: 12,
+                    font: {
+                        size: 14
+                    },
+                    caretSize: 9,
+                    bodySpacing: 100,
+
+                },
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                    text: 'Sell History'
+                }
+            }
+        }
+    });
+    setInterval(() => {
+        if (document.body.classList.contains('active')) {
+            myChart_one_monthly.options.scales.y.grid.color = '#E2E7F11C ';
+        } else {
+            myChart_one_monthly.options.scales.y.grid.color = '#c5c5c573 ';
+        }
+        myChart_one_monthly.update();
+    }, 500);
+
+    // Chart Two
+    const ctx_two = document.getElementById('myChart_Total_Sales_Home').getContext('2d');
+
+    const gradientBg = ctx_two.createLinearGradient(0, 0, 0, 190);
+    const visitorData = /*[[${totalSales}]]*/ [];
+    gradientBg.addColorStop(0, 'rgba(97, 118, 254, 0.43)');
+    gradientBg.addColorStop(1, 'rgba(97, 118, 254, 0)');
+    const myChart_Total_Sales_Home = new Chart(ctx_two, {
+        type: 'line',
+        data: {
+            labels: monthsStartingToday,
+            datasets: [{
+                label: 'Visitor',
+                data: visitorData,
+                backgroundColor: gradientBg,
+                borderColor: '#6176FE',
+                pointRadius: 0,
+                tension: 0.5,
+                borderWidth: 6,
+                fill: true,
+                fillColor: '#fff',
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: true,
+                        color: '#c5c5c573',
+                    },
+                    suggestedMax: 80, suggestedMin: 80,
+
+                },
+                y: {
+                    suggestedMax: 40, suggestedMin: 40,
+                    grid: {
+                        display: true,
+
+                        color: '#c5c5c573',
+                        borderDash: [10, 10]
+                    },
+                },
+            },
+
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                }
+            }
+        }
+    });
+    setInterval(() => {
+        if (document.body.classList.contains('active')) {
+            myChart_Total_Sales_Home.options.scales.x.grid.color = '#E2E7F11C ';
+            myChart_Total_Sales_Home.options.scales.y.grid.color = '#E2E7F11C ';
+        } else {
+            myChart_Total_Sales_Home.options.scales.x.grid.color = '#c5c5c573 ';
+            myChart_Total_Sales_Home.options.scales.y.grid.color = '#c5c5c573 ';
+        }
+        myChart_Total_Sales_Home.update();
+    }, 500);
+
+    // Chart Revenue
+    const ctx_market = document.getElementById('myChart_Revenue').getContext('2d');
+
+    const myChart_Revenue = new Chart(ctx_market, {
+        type: 'line',
+
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Visitor',
+                data: [10, 15, 15, 90, 90, 45, 45, 45, 70, 70, 45, 45],
+                backgroundColor: 'transparent',
+                borderColor: '#F2C94C',
+                borderWidth: 5,
+                fill: true,
+                fillColor: '#fff',
+                tension: 0.5,
+                pointRadius: 0,
+            },
+                {
+                    label: 'Sells',
+                    data: [20, 86, 79, 30, 60, 45, 70, 50, 70, 30, 44, 50],
+                    backgroundColor: 'transparent',
+                    borderColor: '#09AD95',
+                    borderWidth: 5,
+                    fill: true,
+                    tension: 0.5,
+                    fillColor: '#fff',
+                    fill: 'start',
+                    pointRadius: 0,
+                },
+                {
+                    label: 'Profit',
+                    data: [20, 20, 79, 80, 60, 45, 70, 30, 20, 90, 44, 50],
+                    backgroundColor: 'transparent',
+                    borderColor: '#6176FE',
+                    borderWidth: 5,
+                    fill: true,
+                    tension: 0.5,
+                    fillColor: '#fff',
+                    fill: 'start',
+                    pointRadius: 0,
+                }]
+        },
+
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: true,
+                        color: '#c5c5c573',
+                    },
+                    suggestedMax: 100, suggestedMin: 100,
+
+                },
+                y: {
+                    suggestedMax: 100, suggestedMin: 100,
+                    grid: {
+                        display: true,
+
+                        color: '#c5c5c573',
+                        borderDash: [10, 10]
+                    },
+                },
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                    text: 'Sell History'
+                }
+            }
+        }
+    });
+
+    setInterval(() => {
+        if (document.body.classList.contains('active')) {
+            myChart_Revenue.options.scales.y.grid.color = '#E2E7F11C ';
+            myChart_Revenue.options.scales.x.grid.color = '#E2E7F11C ';
+        } else {
+            myChart_Revenue.options.scales.y.grid.color = '#c5c5c573 ';
+            myChart_Revenue.options.scales.x.grid.color = '#c5c5c573 ';
+        }
+        myChart_Revenue.update();
+    }, 500);
+
+
+    // Chart Seven
+    const ctx_total_clients = document.getElementById('myChart_active_creators').getContext('2d');
+
+    const myChart_active_creators = new Chart(ctx_total_clients, {
+        type: 'line',
+
+        data: {
+            labels: ['1', '2', '3', '4', '5'],
+            datasets: [{
+                label: 'Total Clients',
+                data: [0, 10, 15, 10, 20],
+                borderColor: '#F9C200',
+                backgroundColor: 'transparent',
+                pointRadius: 0,
+                tension: 0.5,
+                borderWidth: 7,
+                fill: true,
+                fillColor: '#fff',
+            }]
+        },
+
+        options: {
+
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    },
+                    suggestedMax: 10, suggestedMin: 30,
+
+                },
+
+                y: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    },
+                    suggestedMax: 10, suggestedMin: 30,
+                },
+            },
+
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display: false,
+                }
+            }
+        }
+    });
+
+    const ctx_recent_orders = document.getElementById('myChart_recent_orders').getContext('2d');
+
+    const myChart_recent_orders = new Chart(ctx_recent_orders, {
+        type: 'line',
+
+        data: {
+            labels: ['1', '2', '3', '4', '5'],
+            datasets: [{
+                label: 'Total Clients',
+                data: [0, 10, 15, 10, 20],
+                borderColor: '#09AD95',
+                backgroundColor: 'transparent',
+                pointRadius: 0,
+                tension: 0.5,
+                borderWidth: 7,
+                fill: true,
+                fillColor: '#fff',
+            }]
+        },
+
+        options: {
+
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    },
+                    suggestedMax: 10, suggestedMin: 30,
+
+                },
+
+                y: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    },
+                    suggestedMax: 10, suggestedMin: 30,
+                },
+            },
+
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display: false,
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

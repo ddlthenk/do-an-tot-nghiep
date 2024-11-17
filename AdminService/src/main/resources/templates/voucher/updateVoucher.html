@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+<head>
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="Site keywords here">
+    <meta name="description" content="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Site Title -->
+    <title>Sherah - HTML eCommerce Dashboard Template</title>
+    <script src="/CkEditor5/ckeditor.js"></script>
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+    <!-- Fav Icon -->
+    <link rel="icon" href="/img/logo.jpg">
+
+    <!-- sherah Stylesheet -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-all.min.css">
+    <link rel="stylesheet" href="/css/charts.min.css">
+    <link rel="stylesheet" href="/css/datatables.min.css">
+    <link rel="stylesheet" href="/css/jvector-map.css">
+    <link rel="stylesheet" href="/css/slickslider.min.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const errorValue = urlParams.get('uploaded');
+            if (errorValue === 'true') {
+                swal({
+                    title: "File uploaded!",
+                    icon: "success",
+                });
+            }
+        });
+    </script>
+</head>
+<style>
+    .ck-editor__editable {
+        min-height: 200px !important;
+    }
+</style>
+<body id="sherah-dark-light">
+
+<div class="sherah-body-area">
+    <!-- sherah Admin Menu -->
+    <div th:replace="~{homePage/menu :: #sherah-smenu}"></div>
+    <!-- End sherah Admin Menu -->
+
+    <!-- Start Header -->
+    <div th:replace="~{homePage/header :: #sherah-header}"></div>
+    <!-- End Header -->
+
+    <!-- sherah Dashboard -->
+    <section class="sherah-adashboard sherah-show">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="sherah-body">
+                        <!-- Dashboard Inner -->
+                        <div class="sherah-dsinner">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="sherah-breadcrumb mg-top-30">
+                                        <h2 class="sherah-breadcrumb__title">Update voucher</h2>
+                                        <ul class="sherah-breadcrumb__list">
+                                            <li>
+                                                <a href="#">Home</a>
+                                            </li>
+                                            <li class="active">
+                                                <a href='/admin/upload-product'>Update voucher</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sherah-page-inner sherah-border sherah-default-bg mg-top-25">
+                                <form class="sherah-wc__form-main"
+                                      th:action="'/admin/update-voucher/' + ${voucher.voucherId}"
+                                      method="post" enctype="multipart/form-data"
+                                      id="addProductForm"
+                                      th:object="${voucher}">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-12">
+                                            <!-- Product Info -->
+                                            <div class="product-form-box sherah-border mg-top-30">
+                                                <h4 class="form-title m-0">Basic Information</h4>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Voucher name</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="text"
+                                                                       th:field="*{voucherName}"
+                                                                       id="productTitle"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Start date</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="date"
+                                                                       th:field="*{start}"
+                                                                       id="start"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">End date</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="date"
+                                                                       th:field="*{end}"
+                                                                       id="end"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">User Id</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="number"
+                                                                       id="user-id" name="user-id" th:field="*{userId}"
+                                                                       disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Voucher type*</label>
+                                                            <select class="form-group__input" id="categorySelect"
+                                                                    name="selectedCategory"
+                                                                    aria-label="Default select example"
+                                                                    th:field="*{type}">
+                                                                <option value="0">
+                                                                    Free ship
+                                                                </option>
+                                                                <option value="1">
+                                                                    Discount
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Min price</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="number"
+                                                                       th:field="*{minPrice}"
+                                                                       id="minPrice"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-12" id="discountInput">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Discount</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="number"
+                                                                       th:field="*{discount}"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-4 col-12" id="discountPercentInput">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Discount
+                                                                percent</label>
+                                                            <div class="form-group__input">
+                                                                <input
+                                                                        class="sherah-wc__form-input"
+                                                                        placeholder="Type here" type="number"
+                                                                        th:field="*{discountPercent}"
+                                                                        name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-12" id="discountPercentInput1">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Min discount</label>
+                                                            <div class="form-group__input">
+                                                                <input
+                                                                        class="sherah-wc__form-input"
+                                                                        placeholder="Type here" type="number"
+                                                                        th:field="*{minDiscount}"
+                                                                        name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-12" id="discountPercentInput2">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Max discount</label>
+                                                            <div class="form-group__input">
+                                                                <input
+                                                                        class="sherah-wc__form-input"
+                                                                        placeholder="Type here" type="number"
+                                                                        th:field="*{maxDiscount}"
+                                                                        name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!-- End Product Info -->
+                                        </div>
+                                    </div>
+                                    <div class=" mg-top-40 sherah-dflex sherah-dflex-gap-30 justify-content-end">
+                                        <button id="publish-product" type="submit"
+                                                class="sherah-btn sherah-btn__primary">Publish voucher
+                                        </button>
+                                        <a href="/admin/vouchers"
+                                           class="sherah-btn sherah-btn__third">Cancel
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End Dashboard Inner -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End sherah Dashboard -->
+</div>
+
+<!-- Sherah Scripts -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-migrate.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/charts.js"></script>
+<script src="/js/datatables.min.js"></script>
+<script src="/js/fullcalendar.min.js"></script>
+<script src="/js/circle-progress.min.js"></script>
+<script src="/jquery-jvectormap.js"></script>
+<script src="/js/jvector-map.js"></script>
+<script src="/js/slickslider.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script>
+    jQuery(document).ready(function ($) {
+        $('[data-countdown]').each(function () {
+            var $this = $(this)
+                , finalDate = $(this).data('countdown');
+            $this.countdown(finalDate, function (event) {
+                $this.html(event.strftime(' %H : %M : %S'));
+            });
+        });
+    });
+</script>
+<script>
+    const ctx_side_two = document.getElementById('myChart_Side_One').getContext('2d');
+    const myChart_Side_One = new Chart(ctx_side_two, {
+        type: 'doughnut',
+
+        data: {
+            labels: ['Total Sold', 'Total Cancel', 'Total Cancel', 'Total Planding'],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [16, 16, 16, 30],
+                backgroundColor: ['#5356FB', '#F539F8', '#FFC210', '#E3E4FE'],
+                hoverOffset: 2,
+                borderWidth: 0,
+            }]
+        },
+
+        options: {
+
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                    text: 'Sell History'
+                }
+            }
+        }
+
+    });
+
+    const ctx_side_three = document.getElementById('myChart_Side_Two').getContext('2d');
+    const myChart_Side_Two = new Chart(ctx_side_three, {
+        type: 'line',
+
+        data: {
+            labels: ['12:00 AM', '04:00 AM', '08:00 AM'],
+            datasets: [{
+                label: 'Visitor',
+                data: [40, 90, 10],
+                backgroundColor: '#D8D8FE',
+                borderColor: '#5356FB',
+                pointRadius: 3,
+                pointBackgroundColor: '#5356FB',
+                pointBorderColor: '#5356FB',
+                borderWidth: 4,
+                tension: 0.9,
+                fill: true,
+                fillColor: '#fff',
+
+            }]
+        },
+
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+
+                },
+                y: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    }
+                },
+            },
+
+            plugins: {
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                    text: 'Visitor: 2k'
+                }
+            }
+        }
+    });
+</script>
+<script>
+    function checkUserId() {
+        const idInput = document.getElementById("user-id");
+        const idOut = document.getElementById("user-name");
+        if (idInput.value === "") return false;
+        var result = false;
+        fetch('/admin/employee/checkUser/' + idInput.value, {
+            method: 'GET',
+            credentials: 'include'
+        })
+            .then(response => response.text())
+            .then(data => {
+                const userName = data;
+                idOut.value = userName;
+                if (userName == "") {
+                    result = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching child categories:', error)
+                result = false;
+            });
+        return result;
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var categorySelect = document.getElementById('categorySelect');
+        var discountInput = document.getElementById('discountInput');
+        var discountPercentInput = document.getElementById('discountPercentInput');
+        var discountPercentInput1 = document.getElementById('discountPercentInput1');
+        var discountPercentInput2 = document.getElementById('discountPercentInput2');
+
+        discountInput.style.display = 'none';
+        discountPercentInput.style.display = 'block';
+        discountPercentInput1.style.display = 'none';
+        discountPercentInput2.style.display = 'none';
+
+        categorySelect.addEventListener('change', function () {
+            var selectedValue = this.value;
+
+            if (selectedValue === '0') {  // Free ship
+                discountInput.style.display = 'block';
+                discountPercentInput.style.display = 'none';
+                discountPercentInput1.style.display = 'none';
+                discountPercentInput2.style.display = 'none';
+            } else if (selectedValue === '1') {  // Discount
+                discountInput.style.display = 'none';
+                discountPercentInput.style.display = 'block';
+                discountPercentInput1.style.display = 'block';
+                discountPercentInput2.style.display = 'block';
+            } else {
+                discountInput.style.display = 'none';
+                discountPercentInput.style.display = 'none';
+                discountPercentInput1.style.display = 'none';
+                discountPercentInput2.style.display = 'none';
+            }
+        });
+    });
+    document.getElementById("publish-product").addEventListener("click", function (event) {
+        event.preventDefault();
+        var checked = true;
+        var error = ""
+
+        var productTitle = document.getElementById("productTitle");
+        if (productTitle.value === "") {
+            error += "Voucher name is empty \n";
+            checked = false;
+        }
+
+        var productTitle = document.getElementById("start");
+        if (productTitle.value === "") {
+            error += "Start date is empty \n";
+            checked = false;
+        }
+        var productTitle = document.getElementById("end");
+        if (productTitle.value === "") {
+            error += "End date is empty \n";
+            checked = false;
+        }
+
+        var categoryChildSelect = document.getElementById("categorySelect");
+        var selectedValue = categoryChildSelect.value;
+        if (selectedValue === "" || selectedValue == null) {
+            error += "Voucher type not selected \n";
+            checked = false;
+        }
+
+        const idInput = document.getElementById("user-id");
+        const idOut = document.getElementById("user-name");
+        console.log(idInput.value);
+        console.log(idOut.value);
+        if (idInput.value === "" || idOut.value === "") {
+            error += "User ID is not true \n";
+            checked = false;
+        }
+        var form = document.getElementById("addProductForm");
+        if (checked == true) {
+            swal({
+                title: "Are you sure?",
+                icon: "success",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+
+        } else {
+            swal({
+                icon: "info",
+                text: error,
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

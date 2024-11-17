@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+<head>
+    <!-- Meta Tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="Site keywords here">
+    <meta name="description" content="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Site Title -->
+    <title>Sherah - HTML eCommerce Dashboard Template</title>
+    <script src="/CkEditor5/ckeditor.js"></script>
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+    <!-- Fav Icon -->
+    <link rel="icon" href="/img/logo.jpg">
+
+    <!-- sherah Stylesheet -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome-all.min.css">
+    <link rel="stylesheet" href="/css/charts.min.css">
+    <link rel="stylesheet" href="/css/datatables.min.css">
+    <link rel="stylesheet" href="/css/jvector-map.css">
+    <link rel="stylesheet" href="/css/slickslider.min.css">
+    <link rel="stylesheet" href="/css/jquery-ui.css">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const errorValue = urlParams.get('uploaded');
+            if (errorValue === 'true') {
+                swal({
+                    title: "File uploaded!",
+                    icon: "success",
+                });
+            }
+        });
+    </script>
+</head>
+<style>
+    .ck-editor__editable {
+        min-height: 200px !important;
+    }
+</style>
+<body id="sherah-dark-light">
+
+<div class="sherah-body-area">
+    <!-- sherah Admin Menu -->
+    <div th:replace="~{homePage/menu :: #sherah-smenu}"></div>
+    <!-- End sherah Admin Menu -->
+
+    <!-- Start Header -->
+    <div th:replace="~{homePage/header :: #sherah-header}"></div>
+    <!-- End Header -->
+
+    <!-- sherah Dashboard -->
+    <section class="sherah-adashboard sherah-show">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="sherah-body">
+                        <!-- Dashboard Inner -->
+                        <div class="sherah-dsinner">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="sherah-breadcrumb mg-top-30">
+                                        <h2 class="sherah-breadcrumb__title">Cập nhật sản phẩm</h2>
+                                        <ul class="sherah-breadcrumb__list">
+                                            <li>
+                                                <a href="#">Trang chủ</a>
+                                            </li>
+                                            <li class="active">
+                                                <a href='/admin/upload-product'>Cập nhật sản phẩm</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sherah-page-inner sherah-border sherah-default-bg mg-top-25">
+                                <form class="sherah-wc__form-main" th:action="@{/admin/update-product}"
+                                      method="post" enctype="multipart/form-data"
+                                      id="addProductForm"
+                                      th:object="${product}">
+                                    <input th:field="${product.productId}" hidden="">
+                                    <div class="product-form-box2 sherah-border mg-top-30">
+                                        <div class="form-group">
+                                            <div class="image-upload-group" id="image-upload-group"
+                                                 th:total-image="${imageList.size()}">
+                                                <input name="delete-image" id="delete-image" hidden="">
+                                                <div class=" image-upload-group__single--upload"
+                                                     id="parent-img">
+                                                    <input type="file" accept=".jpg, .png, .jpeg" class="btn-check"
+                                                           multiple
+                                                           name="image_upload" id="image-input"
+                                                           autocomplete="off">
+                                                    <label class="image-upload-label" for="image-input">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                            <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                                            <path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/>
+                                                        </svg>
+                                                        <span>Tải ảnh lên</span>
+                                                    </label>
+                                                </div>
+                                                <div th:if="${imageList != null && !imageList.isEmpty()}"
+                                                     th:each="image :${imageList}"
+                                                     class="image-upload-group__single border"
+                                                     ar-index="1"
+                                                     id="image-review2">
+                                                    <span class="close-image__btn" id="close-image__btn2"
+                                                          th:image-id="${image.imageId}"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
+                                                            d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"></path></svg></span>
+                                                    <img width="auto" th:src="${image.url}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-12">
+                                            <!-- Product Info -->
+                                            <div class="product-form-box sherah-border mg-top-30">
+                                                <h4 class="form-title m-0">Thông tin cơ bản</h4>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Tên sản phẩm</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="text"
+                                                                       th:field="*{productTitle}"
+                                                                       id="productTitle"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">SkuCode</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="text"
+                                                                       th:field="*{skuCode}"
+                                                                       id="skuCode"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Giá sản phẩm (chưa
+                                                                giảm)</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="number"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Rộng (cm)</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="number"
+                                                                       th:field="*{width}"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Dài (cm)</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="number"
+                                                                       th:field="*{length}"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Cao (cm)</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="number"
+                                                                       th:field="*{height}"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Cân nặng (Gram)</label>
+                                                            <div class="form-group__input">
+                                                                <input class="sherah-wc__form-input"
+                                                                       placeholder="Type here" type="number"
+                                                                       th:field="*{weight}"
+                                                                       name="p_title">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="sherah-wc__form-label">Thông tin chi tiết</label>
+                                                        <textarea id="editor1"
+                                                                  th:field="*{productDescription}"
+                                                                  class="sherah-wc__form-input"
+                                                                  placeholder="Type here" type="text"
+                                                                  name="p_title content"></textarea>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Danh mục sản
+                                                                phẩm*</label>
+                                                            <select class="form-group__input" id="categorySelect"
+                                                                    name="selectedCategory"
+                                                                    th:field="${category.parentId}"
+                                                                    aria-label="Default select example">
+                                                                <option th:if="${categoryList != null && !categoryList.isEmpty()}"
+                                                                        th:each="categoryParent : ${categoryList}"
+                                                                        th:value="${categoryParent.categoryId}"
+                                                                        th:text="${categoryParent.categoryName}"
+                                                                >
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label class="sherah-wc__form-label">Danh mục con*</label>
+                                                            <select class="form-group__input"
+                                                                    id="categoryChildSelect"
+                                                                    name="categoryChildSelect"
+                                                                    th:field="*{categoryId}"
+                                                                    aria-label="Default select example">
+                                                                <option th:if="${categoryChilds != null && !categoryChilds.isEmpty()}"
+                                                                        th:each="categoryChild : ${categoryChilds}"
+                                                                        th:value="${categoryChild.categoryId}"
+                                                                        th:text="${categoryChild.categoryName}"
+                                                                >
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Product Info -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-12">
+                                            <!-- Add product details -->
+                                            <div class="product-form-box sherah-border mg-top-30"
+                                            >
+                                                <h4 class="form-title m-0">Phân loại sản phẩm</h4>
+                                                <div id="product-details-container"
+                                                     th:each="productD, iterStat : ${product.productDetailsList}">
+                                                    <div class="form-group sherah-border p-3"
+                                                         id="product-details-item">
+                                                        <input type="number"
+                                                               th:field="*{productDetailsList[__${iterStat.index}__].detailId}"
+                                                               hidden="">
+                                                        <h3 class="form-title m-0"
+                                                            th:text="'Phân loại ' + ${iterStat.index + 1}"></h3>
+                                                        <div class="row">
+                                                            <div class="col-lg-12 col-12">
+                                                                <label class="sherah-wc__form-label">Tên phân
+                                                                    loại</label>
+                                                                <div class="form-group__input">
+                                                                    <input class="sherah-wc__form-input"
+                                                                           placeholder="Type here"
+                                                                           th:field="*{productDetailsList[__${iterStat.index}__].optionValue}"
+                                                                           type="text" name="p_title text_inp">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6 col-12">
+                                                                <label class="sherah-wc__form-label">Số lượng</label>
+                                                                <div class="form-group__input">
+                                                                    <input class="sherah-wc__form-input"
+                                                                           placeholder="Type here"
+                                                                           th:field="*{productDetailsList[__${iterStat.index}__].total}"
+                                                                           type="number" name="p_title text_inp">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6 col-12">
+                                                                <label class="sherah-wc__form-label">Giá tiền</label>
+                                                                <div class="form-group__input">
+                                                                    <input class="sherah-wc__form-input"
+                                                                           placeholder="Type here"
+                                                                           th:field="*{productDetailsList[__${iterStat.index}__].price}"
+                                                                           type="text" name="p_title text_inp">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <button class="sherah-btn sherah-btn__small sherah-btn__third mt-3"
+                                                                id="remove-button"
+                                                                onclick="removeProduct(this)"
+                                                                type="button">Xóa
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <button class="sherah-btn sherah-btn__secondary mt-5"
+                                                        onclick="addProduct()"
+                                                        type="button">Thêm phân loại
+                                                </button>
+                                            </div>
+
+                                            <!-- End Organization -->
+                                        </div>
+                                    </div>
+                                    <div class=" mg-top-40 sherah-dflex sherah-dflex-gap-30 justify-content-end">
+                                        <button id="publish-product" type="submit"
+                                                class="sherah-btn sherah-btn__primary">Thêm sản phẩm
+                                        </button>
+                                        <button class="sherah-btn sherah-btn__third">Hủy</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- End Dashboard Inner -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End sherah Dashboard -->
+</div>
+
+<!-- Sherah Scripts -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-migrate.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/charts.js"></script>
+<script src="/js/datatables.min.js"></script>
+<script src="/js/fullcalendar.min.js"></script>
+<script src="/js/circle-progress.min.js"></script>
+<script src="/jquery-jvectormap.js"></script>
+<script src="/js/jvector-map.js"></script>
+<script src="/js/slickslider.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script>
+    jQuery(document).ready(function ($) {
+        $('[data-countdown]').each(function () {
+            var $this = $(this)
+                , finalDate = $(this).data('countdown');
+            $this.countdown(finalDate, function (event) {
+                $this.html(event.strftime(' %H : %M : %S'));
+            });
+        });
+    });
+</script>
+<script>
+    const ctx_side_two = document.getElementById('myChart_Side_One').getContext('2d');
+    const myChart_Side_One = new Chart(ctx_side_two, {
+        type: 'doughnut',
+
+        data: {
+            labels: ['Total Sold', 'Total Cancel', 'Total Cancel', 'Total Planding'],
+            datasets: [{
+                label: 'My First Dataset',
+                data: [16, 16, 16, 30],
+                backgroundColor: ['#5356FB', '#F539F8', '#FFC210', '#E3E4FE'],
+                hoverOffset: 2,
+                borderWidth: 0,
+            }]
+        },
+
+        options: {
+
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                    text: 'Sell History'
+                }
+            }
+        }
+
+    });
+
+    const ctx_side_three = document.getElementById('myChart_Side_Two').getContext('2d');
+    const myChart_Side_Two = new Chart(ctx_side_three, {
+        type: 'line',
+
+        data: {
+            labels: ['12:00 AM', '04:00 AM', '08:00 AM'],
+            datasets: [{
+                label: 'Visitor',
+                data: [40, 90, 10],
+                backgroundColor: '#D8D8FE',
+                borderColor: '#5356FB',
+                pointRadius: 3,
+                pointBackgroundColor: '#5356FB',
+                pointBorderColor: '#5356FB',
+                borderWidth: 4,
+                tension: 0.9,
+                fill: true,
+                fillColor: '#fff',
+
+            }]
+        },
+
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+
+                },
+                y: {
+                    grid: {
+                        display: false,
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        display: false
+                    }
+                },
+            },
+
+            plugins: {
+                legend: {
+                    position: 'top',
+                    display: false,
+                },
+                title: {
+                    display: false,
+                    text: 'Visitor: 2k'
+                }
+            }
+        }
+    });
+</script>
+<script>
+    let editorInstance;
+    CKEDITOR.ClassicEditor.create(document.getElementById("editor1"),
+        {
+            // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+            toolbar: {
+                items: [
+                    'heading', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', 'removeFormat', '|',
+                    'bulletedList', 'numberedList', 'todoList', '|',
+                    'outdent', 'indent', '|',
+                    'undo', 'redo',
+                    '-',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                    'alignment', '|',
+                    'link', 'uploadImage', 'insertTable', '|',
+                    'sourceEditing'
+                ],
+                shouldNotGroupWhenFull: true
+            },
+            // Changing the language of the interface requires loading the language file using the <script> tag.
+            // language: 'es',
+            list: {
+                properties: {
+                    styles: true,
+                    startIndex: true,
+                    reversed: true
+                }
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+            heading: {
+                options: [
+                    {model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph'},
+                    {model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1'},
+                    {model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2'},
+                    {model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3'},
+                    {model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4'},
+                    {model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5'},
+                    {model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6'}
+                ]
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+            placeholder: 'Enter product infomation',
+            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+            fontFamily: {
+                options: [
+                    'default',
+                    'Arial, Helvetica, sans-serif',
+                    'Courier New, Courier, monospace',
+                    'Georgia, serif',
+                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                    'Tahoma, Geneva, sans-serif',
+                    'Times New Roman, Times, serif',
+                    'Trebuchet MS, Helvetica, sans-serif',
+                    'Verdana, Geneva, sans-serif'
+                ],
+                supportAllValues: true
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+            fontSize: {
+                options: [10, 12, 14, 'default', 18, 20, 22],
+                supportAllValues: true
+            },
+            // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+            // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+            htmlSupport: {
+                allow: [
+                    {
+                        name: /.*/,
+                        attributes: true,
+                        classes: true,
+                        styles: true
+                    }
+                ]
+            },
+            // Be careful with enabling previews
+            // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+            htmlEmbed: {
+                showPreviews: true
+            },
+            // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+            link: {
+                decorators: {
+                    addTargetToExternalLinks: true,
+                    defaultProtocol: 'https://',
+                    toggleDownloadable: {
+                        mode: 'manual',
+                        label: 'Downloadable',
+                        attributes: {
+                            download: 'file'
+                        }
+                    }
+                }
+            },
+            removePlugins: [
+                'AIAssistant',
+                'CKBox',
+                'CKFinder',
+                'EasyImage',
+                'MultiLevelList',
+                'RealTimeCollaborativeComments',
+                'RealTimeCollaborativeTrackChanges',
+                'RealTimeCollaborativeRevisionHistory',
+                'PresenceList',
+                'Comments',
+                'TrackChanges',
+                'TrackChangesData',
+                'RevisionHistory',
+                'Pagination',
+                'WProofreader',
+                'SlashCommand',
+                'Template',
+                'DocumentOutline',
+                'FormatPainter',
+                'TableOfContents',
+                'PasteFromOfficeEnhanced',
+                'CaseChange'
+            ]
+        })
+        .then(editor => {
+            editorInstance = editor;
+        });
+
+    const ipnFileElement = document.querySelector('#image-input')
+    const resultElement = document.querySelector('#image-upload-group')
+    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png']
+    var imgArray = [];
+    var deleteImage = [];
+    jQuery(document).ready(function () {
+        ImgUpload();
+        ImgUpload2()
+    });
+
+    function ImgUpload() {
+        var imgWrap = $("#image-upload-group");
+
+        $("#image-input").each(function () {
+            $(this).on("change", function (e) {
+                var exitsImg = $("#image-upload-group").attr("total-image");
+                var maxLength = 3 - exitsImg;
+                var files = e.target.files;
+                var filesArr = Array.prototype.slice.call(files);
+                $('.image-upload-group__single#image-review').remove();
+                filesArr.forEach(function (f, index) {
+                    if (!f.type.match("image.*")) {
+                        return;
+                    }
+                    if (imgArray.length > maxLength) {
+                        swal({
+                            icon: "error",
+                            text: "Only allowed to upload a maximum of 4 photos.",
+                        });
+                        return false;
+                    } else {
+                        var len = 0;
+                        for (var i = 0; i < imgArray.length; i++) {
+                            if (imgArray[i] !== undefined) {
+                                len++;
+                            }
+                        }
+                        if (len > maxLength) {
+                            return false;
+                        } else {
+                            checkImageSizes(imgArray);
+                            imgArray.push(f);
+                        }
+                    }
+                });
+
+                function checkImageSizes(imageArray) {
+                    imageArray.forEach(file => {
+                        // Tạo một đối tượng Image
+                        var img = new Image();
+                        img.onload = function () {
+                            var width = this.naturalWidth;
+                            var height = this.naturalHeight;
+                        };
+
+                        // Tạo đường dẫn URL cho ảnh để kiểm tra
+                        img.src = URL.createObjectURL(file);
+                    });
+                }
+
+                var iterator = 0;
+                imgArray.forEach(function (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        const url = reader.result;
+                        var html = `
+                                    <div class="image-upload-group__single border" ar-index="${iterator}" id="image-review">
+                                    <span class="close-image__btn" id="close-image__btn" ar-index="${iterator}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg></span>
+                                    <img width="auto" src="${url}">
+                                    </div>`
+                        imgWrap.append(html);
+                        iterator++;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+        });
+        $("body").on("click", "#close-image__btn", function (e) {
+            var imageUploadGroup = document.getElementById('image-upload-group');
+            var totalImages = imageUploadGroup.getAttribute('total-image');
+            imageUploadGroup.setAttribute('total-image', totalImages - 1);
+            var index = $(this).attr("ar-index");
+            imgArray.splice(index, 1);
+            $(this).parent().remove();
+        });
+    };
+
+    function ImgUpload2() {
+        $("body").on("click", "#close-image__btn2", function (e) {
+            var imageUploadGroup = document.getElementById('image-upload-group');
+            var totalImages = imageUploadGroup.getAttribute('total-image');
+            imageUploadGroup.setAttribute('total-image', totalImages - 1);
+            var imageId = $(this).attr("image-id");
+            deleteImage.push(imageId);
+            var inputElement = document.getElementById('delete-image');
+            var deleteI = "";
+            for (var i = 0; i < deleteImage.length; i++) {
+                deleteI += deleteImage[i] + ","
+            }
+            inputElement.value = deleteI;
+            $(this).parent().remove();
+        });
+    };
+
+
+    document.getElementById("publish-product").addEventListener("click", function (event) {
+        event.preventDefault();
+        var checked = true;
+        var error = ""
+        var productTitle = document.getElementById("productTitle");
+        if (productTitle.value == "") {
+            error += "Product title is empty \n";
+            checked = false;
+        }
+        var skuCode = document.getElementById("skuCode");
+        if (skuCode.value == "") {
+            error += "SKU-code title is empty \n";
+            checked = false;
+        }
+        if (editorInstance.getData() == "") {
+            error += "Product description title is empty \n";
+            checked = false;
+        }
+
+        var categoryChildSelect = document.getElementById("categoryChildSelect");
+        var selectedValue = categoryChildSelect.value;
+        if (selectedValue == "" || selectedValue == null) {
+            error += "Category is not selected \n";
+            checked = false;
+        }
+
+        // $("#image-input")
+        var dataTransfer = new DataTransfer();
+        $('#image-input').prop('files', dataTransfer.files);
+        imgArray.forEach(function (file) {
+            dataTransfer.items.add(file);
+        });
+        var inputImage = document.getElementById("image-input");
+        $('#image-input').prop('files', dataTransfer.files);
+        var imageUploadGroup = document.getElementById('image-upload-group');
+        var totalImages = imageUploadGroup.getAttribute('total-image');
+        if (totalImages <= 0) {
+            error += "Image is not uploaded \n";
+            checked = false;
+        }
+        var form = document.getElementById("addProductForm");
+        if (checked == true) {
+            swal({
+                title: "Are you sure?",
+                icon: "success",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+
+        } else {
+            swal({
+                icon: "info",
+                text: error,
+            });
+        }
+    });
+</script>
+<script>
+    document.getElementById('categorySelect').addEventListener('change', function () {
+        var categoryId = this.value;
+        fetch('/admin/get-category-children/' + categoryId, {
+            method: 'GET',
+            credentials: 'include'
+        })
+            .then(response => response.json())
+            .then(data => {
+                const childSelect = document.getElementById('categoryChildSelect');
+                childSelect.innerHTML = '';  // Xóa các options hiện tại
+                data.forEach(child => {
+                    var option = new Option(child.categoryName, child.categoryId);
+                    childSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching child categories:', error));
+    });
+</script>
+<script>
+    function addProduct() {
+        var container = document.getElementById('product-details-container');
+        var index = container.children.length;
+        var div = document.createElement('div');
+        div.className = 'form-group sherah-border p-3'; // Thiết lập thuộc tính class
+        div.id = 'product-details-item';
+        div.innerHTML = `
+            <h3 class="form-title m-0">
+            Option ${index + 1}
+        </h3>
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <label class="sherah-wc__form-label">Option Name</label>
+                <div class="form-group__input">
+                    <input class="sherah-wc__form-input"
+                           placeholder="Type here"
+                           type="text" name="productDetailsList[${index}].optionValue">
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <label class="sherah-wc__form-label">Quantity</label>
+                <div class="form-group__input">
+                    <input class="sherah-wc__form-input"
+                           placeholder="Type here"
+                           type="number" name="productDetailsList[${index}].total">
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <label class="sherah-wc__form-label">Price</label>
+                <div class="form-group__input">
+                    <input class="sherah-wc__form-input"
+                           placeholder="Type here"
+                           type="text" name="productDetailsList[${index}].price">
+                </div>
+            </div>
+        </div>
+
+        <button class="sherah-btn sherah-btn__small sherah-btn__third mt-3 remove-button"
+                onclick="removeProduct(this)"
+                type="button">Delete
+        </button>
+    `;
+        container.appendChild(div);
+    }
+
+    function removeProduct(button) {
+        const divElements = document.querySelectorAll('div#product-details-item');
+        console.log(divElements);
+        if (divElements.length > 1) {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        button.parentNode.remove();
+                    }
+                });
+        } else {
+            swal({
+                icon: "info",
+                text: "Product need have at least 1 option!",
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
