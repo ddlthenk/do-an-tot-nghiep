@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Danh sách sản phẩm</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/home">Trang chủ</a>
+                <a class="breadcrumb-item text-dark"
+                   th:href="'/search'"
+                   th:text="${pageName}"
+                ></a>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Products Start -->
+<div class="row px-xl-5 cus-res-12">
+    <div class="col-lg-12">
+        <div class="container-fluid pt-5 pb-3">
+            <div class="row">
+                <div class="col-lg-6 header-dm-res">
+                    <h2 class="section-title text-uppercase mx-xl-5 mb-4">
+                        <span class="pr-3 header-dm-res-sp1" style="border-bottom: 2px solid #F27927;color: #F27927;"
+                              th:text="${pageName}"></span>
+                    </h2>
+                </div>
+                <div class="col-lg-6 header-dm-res">
+                    <img src="/img/icon-filter.png" style="float: right; margin-right: 10px;" height="15px" width="15px"
+                         alt="">
+                </div>
+            </div>
+            <div class="row px-xl-5 dm-res">
+                <div th:if="${pageProduct.getContent() != null && !pageProduct.isEmpty()}"
+                     th:each="product : ${pageProduct.getContent()}"
+                     class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden text-center">
+                            <img th:if="${productImageMap != null && !productImageMap.isEmpty() &&
+                    productImageMap.get(product.productId) != null}" class="img-fluid d-block"
+                                 th:src="${productImageMap.get(product.productId).url}" alt="">
+                            <img th:unless="${productImageMap != null && !productImageMap.isEmpty() &&
+                    productImageMap.get(product.productId) != null}" class="img-fluid d-block" src="/img/KM_1.png">
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate link-pd-res"
+                               th:if="${product.productTitle.length() > 50}"
+                               th:href="'/product-details/' + ${product.productId}"
+                               th:text="${#strings.substring(product.productTitle, 0, 50)} + (${product.productTitle.length() > 50 ? '...' : ''})"></a>
+                            <a class="h6 text-decoration-none text-truncate link-pd-res"
+                               th:unless="${product.productTitle.length() > 50}"
+                               th:href="'/product-details/' + ${product.productId}"
+                               th:text="${product.productTitle}"></a>
+                            <div class="d-flex align-items-center justify-content-center mt-2 text-res">
+                                <h6 class="text-muted">
+                                    <del th:text="${product.productDiscountPrice}"></del>
+                                </h6>
+                                <h5 class="ml-2" style="color:#F27927"
+                                    th:text="${#numbers.formatDecimal(product.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                </h5>
+                            </div>
+                            <div th:if="${product.productRating > 4.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 4.5 && product.productRating > 3.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 3.5 && product.productRating > 2.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 2.5 && product.productRating > 1.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:unless="${product.productRating > 1.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="mb-1 mt-2">
+                                <a class="btn btn-buy p-1"
+                                   style="color: white; background-color: #F27927; border-radius: 132px"
+                                   th:href="'/product-details/' + ${product.productId}">Xem sản phẩm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="paging">
+            <ul>
+                <li>Trang</li>
+                <li th:if="${pageProduct.getNumber() > 0}"
+                    class="sherah-pagination__button">
+                    <a th:href="'/search' +'?page=0'">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li th:if="${pageProduct.getNumber() > 0}"
+                    class="sherah-pagination__button">
+                    <a th:href="'/search' +'?page=' + ${pageProduct.getNumber()}">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
+                <li th:if="${pageProduct.getNumber() > 1}">
+                    <a th:href="'/search' +'?page=' + ${pageProduct.getNumber() - 1}"
+                       th:text="${pageProduct.getNumber() - 1}"></a>
+                </li>
+                <li th:if="${pageProduct.getNumber() > 0}">
+                    <a th:href="'/search' +'?page=' + ${pageProduct.getNumber()}"
+                       th:text="${pageProduct.getNumber()}"></a>
+                </li>
+                <li>
+                    <a class="active"
+                       th:text="${pageProduct.getNumber() + 1}"></a>
+                </li>
+                <li th:if="${pageProduct.getNumber() < pageProduct.getTotalPages() - 1}">
+                    <a th:href="'/search' +'?page=' + ${pageProduct.getNumber() + 2}"
+                       th:text="${pageProduct.getNumber() + 2}"></a>
+                </li>
+                <li th:if="${pageProduct.getNumber() + 1 < pageProduct.getTotalPages() - 1}">
+                    <a th:href="'/search' +'?page=' + ${pageProduct.getNumber() + 3}"
+                       th:text="${pageProduct.getNumber() + 3}"></a>
+                </li>
+                <li th:if="${pageProduct.getNumber() < pageProduct.getTotalPages() - 1}"
+                    class="sherah-pagination__button">
+                    <a th:href="'/search' +'?page=' + ${pageProduct.getNumber() + 2}">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li th:if="${pageProduct.getNumber() < pageProduct.getTotalPages() - 1}"
+                    class="sherah-pagination__button">
+                    <a th:href="'/search' +'?page=' + ${pageProduct.getTotalPages()}">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row px-xl-5 cus-res-9">
+    <div class="col-lg-12">
+        <div class="container-fluid pt-5 pb-3">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="section-title text-uppercase mx-xl-5 mb-4">
+                        <span class="pr-3" style="border-bottom: 2px solid #F27927;color: #F27927;"
+                              th:text="${pageName}"></span>
+                    </h2>
+                </div>
+            </div>
+            <div class="row px-xl-5">
+                <div th:if="${pageProduct.getContent() != null && !pageProduct.getContent().isEmpty()}"
+                     th:each="product : ${pageProduct.getContent()}"
+                     class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden d-flex justify-content-center">
+                            <a th:href="'/product-details/' + ${product.productId}">
+                                <img th:if="${productImageMap != null && !productImageMap.isEmpty() &&
+                    productImageMap.get(product.productId) != null}" class="img-fluid product_img d-block"
+                                     th:src="${productImageMap.get(product.productId).url}" alt="">
+                                <img th:unless="${productImageMap != null && !productImageMap.isEmpty() &&
+                    productImageMap.get(product.productId) != null}" class="img-fluid product_img d-block"
+                                     src="/img/KM_1.png">
+                            </a>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate link-pd-res"
+                               th:if="${product.productTitle.length() > 50}"
+                               th:href="'/product-details/' + ${product.productId}"
+                               th:text="${#strings.substring(product.productTitle, 0, 50)} + (${product.productTitle.length() > 50 ? '...' : ''})"></a>
+                            <a class="h6 text-decoration-none text-truncate link-pd-res"
+                               th:unless="${product.productTitle.length() > 50}"
+                               th:href="'/product-details/' + ${product.productId}"
+                               th:text="${product.productTitle}"></a>
+                            <div class="d-flex align-items-center justify-content-center mt-2 text-res">
+                                <h6 class="text-muted">
+                                    <del th:text="${product.productDiscountPrice}"></del>
+                                </h6>
+                                <h5 class="ml-2" style="color:#F27927"
+                                    th:text="${#numbers.formatDecimal(product.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                </h5>
+                            </div>
+                            <div th:if="${product.productRating > 4.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 4.5 && product.productRating > 3.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 3.5 && product.productRating > 2.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 2.5 && product.productRating > 1.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:unless="${product.productRating > 1.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="mb-1 mt-2">
+                                <a class="btn btn-buy p-1"
+                                   style="color: white; background-color: #F27927; border-radius: 132px"
+                                   th:href="'/product-details/' + ${product.productId}">Xem sản phẩm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div th:if="${!pageProduct.isEmpty()}" class="pagination2 d-flex justify-content-center">
+            <ul style="float: none;">
+                <li th:classappend="${pageProduct.number == 0} ? 'disabled' : ''" class="pagination__button">
+                    <a name="page-link" th:href="${pageProduct.number > 0} ? '/search' + '?page=0' : '#'">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li th:classappend="${pageProduct.number == 0} ? 'disabled' : ''" class="pagination__button">
+                    <a name="page-link"
+                       th:href="${pageProduct.number > 0} ? '/search' + '?page=' + (${pageProduct.number} - 1) : '#'">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
+                <li th:if="${pageProduct.number > 1}">
+                    <a name="page-link" th:href="'/search' + '?page=' + (${pageProduct.number} - 1)">
+                        <span th:text="${pageProduct.number - 1}"></span>
+                    </a>
+                </li>
+                <li th:if="${pageProduct.number > 0}">
+                    <a name="page-link" th:href="'/search' + '?page=' + ${pageProduct.number}">
+                        <span th:text="${pageProduct.number}"></span>
+                    </a>
+                </li>
+                <li>
+                    <a name="page-link" href="#" class="active" th:text="${pageProduct.number + 1}"></a>
+                </li>
+                <li th:if="${pageProduct.totalPages > pageProduct.number + 2}">
+                    <a name="page-link" th:href="'/search' + '?page=' + (${pageProduct.number} + 2)">
+                        <span th:text="${pageProduct.number + 2}"></span>
+                    </a>
+                </li>
+                <li th:if="${pageProduct.totalPages > pageProduct.number + 3}">
+                    <a name="page-link" th:href="'/search' + '?page=' + (${pageProduct.number} + 3)">
+                        <span th:text="${pageProduct.number + 3}"></span>
+                    </a>
+                </li>
+                <li th:classappend="${pageProduct.number >= pageProduct.totalPages - 1} ? 'disabled' : ''"
+                    class="pagination__button">
+                    <a name="page-link"
+                       th:href="${pageProduct.totalPages > pageProduct.number + 2} ? '/search' + '?page=' + (${pageProduct.number} + 2) : '#'">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li th:classappend="${pageProduct.number >= pageProduct.totalPages - 1} ? 'disabled' : ''"
+                    class="pagination__button">
+                    <a name="page-link"
+                       th:href="${pageProduct.totalPages > pageProduct.number} ? '/search' + '?page=' + (${pageProduct.totalPages} - 1) : '#'">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Products End -->
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+<script>
+    let gotParams2 = new URLSearchParams(window.location.search);
+    var searchButton2 = document.getElementById('search-button');
+    var input2 = document.getElementById('search-input');
+    const paginationLinks2 = document.querySelectorAll('a[name="page-link"]');
+    paginationLinks2.forEach(link => {
+        let originHref = link.href;
+        if (!originHref.endsWith("#")) {
+            const url = new URL(link.href);
+            let orParams = new URLSearchParams(url.search);
+            if (gotParams2.get("searchValue") != null) {
+                orParams.set("searchValue", gotParams2.get("searchValue"));
+            }
+            url.search = orParams.toString();
+            link.href = url.toString();
+        }
+    });
+</script>
+</body>
+
+</html>

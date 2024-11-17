@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Đăng ký</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<div th:if="${error != null}" th:data-error="${error}" id="error"></div>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5 cus-w-150">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="Index.html">Trang chủ</a>
+                <span class="breadcrumb-item active">Đăng ký</span>
+            </nav>
+        </div>
+    </div>
+    <div class="row px-xl-5 cus-500">
+        <div class="col-12" style="font-size: 12px;">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="Index.html">Trang chủ</a>
+                <span class="breadcrumb-item active">Đăng ký</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+
+<!-- Cart Start -->
+<form th:action="@{/sign-up}" id="registrationForm" method="post" class="container-fluid cus-w-150">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+            <p class="text-center text-uppercase" style="color: #F27927;">Đăng ký</p>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="d-block" style="width: 20%">
+            <label style="margin-left: 20px">Họ và tên:</label>
+            <input type="text" name="full-name" class="form-pay-no-acc-lg" style="width: 100%"/>
+            <span class="error" style="color: red; display: none;"></span>
+
+            <label style="margin-left: 20px; margin-top: 10px">Email:</label>
+            <input type="text" name="email" class="form-pay-no-acc-lg" style="width: 100%"/>
+            <span class="error" style="color: red; display: none;"></span>
+
+            <label style="margin-left: 20px; margin-top: 10px">Số điện thoại:</label>
+            <input type="text" name="phone-number" class="form-pay-no-acc-lg" style="width: 100%"/>
+            <span class="error" style="color: red; display: none;"></span>
+
+            <label style="margin-left: 20px; margin-top: 10px">Ngày sinh:</label>
+            <input type="date" name="date-of-birth" class="form-pay-no-acc-lg" value="1990-01-01" style="width: 100%"/>
+            <span class="error" style="color: red; display: none;"></span>
+
+            <label style="margin-left: 20px; margin-top: 10px">Mật khẩu:</label>
+            <input type="password" name="password" class="form-pay-no-acc-lg" style="width: 100%"/>
+            <span class="error" style="color: red; display: none;"></span>
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 35px;">
+        <button class="btn btn-buy" type="button" onclick="submitForm()">Đăng ký</button>
+    </div>
+    <div style="text-align: center;margin-top: 14px;">
+        <a href="/forgot-password" class="text-center" style="text-decoration: underline; color: #000;">Quên mật
+            khẩu</a>
+    </div>
+</form>
+<form th:action="@{/sign-up}" method="post" class="container-fluid cus-500">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+            <p class="text-center text-uppercase" style="color: #F27927;">Đăng ký</p>
+        </div>
+    </div>
+    <div style="text-align: center; font-size: 12px;">
+        <label style="margin-right: 18rem;">Họ và tên:</label>
+        <input type="text" name="full-name" class="form-pay-no-acc-lg"/>
+        <label style="margin-right: 18rem;">Email:</label>
+        <input type="text" name="email" class="form-pay-no-acc-lg"/>
+        <label style="margin-right: 18rem;">Số điện thoại:</label>
+        <input type="text" name="phone-number" class="form-pay-no-acc-lg"/>
+        <label style="margin-right: 18rem;">Ngày sinh:</label>
+        <input type="date" name="date-of-birth" class="form-pay-no-acc-lg"/>
+        <label style="margin-right: 22rem;margin-top: 20px">Mật khẩu:</label>
+        <input type="password" name="password" class="form-pay-no-acc-lg"/>
+    </div>
+    <div style="text-align: center; margin-top: 35px;">
+        <button class="btn btn-login">Đăng ký</button>
+    </div>
+    <div style="text-align: center;margin-top: 14px; font-size: 12px;">
+        <a href="/forgot-password" class="text-center" style="text-decoration: underline; color: #000;">Quên mật
+            khẩu</a>
+    </div>
+</form>
+<!-- Cart End -->
+
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+<script>
+    function submitForm() {
+        var form = document.getElementById('registrationForm');
+        const result = validateForm();
+        console.log(result)
+        if (result == true) {
+            form.submit()
+        }
+    }
+
+    function validateForm() {
+        // Clear previous errors
+        document.querySelectorAll('.error').forEach(function (el) {
+            el.style.display = 'none';
+        });
+
+        var isValid = true;
+        var form = document.getElementById('registrationForm');
+
+        // Validate Full Name
+        var fullName = form['full-name'].value;
+        if (!fullName) {
+            showError(form['full-name'], 'Họ và tên không được để trống.');
+            isValid = false;
+        }
+
+        // Validate Email
+        var email = form['email'].value;
+        if (!email) {
+            showError(form['email'], 'Email không được để trống.');
+            isValid = false;
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+            showError(form['email'], 'Email không hợp lệ.');
+            isValid = false;
+        }
+
+        // Validate Phone Number
+        var phoneNumber = form['phone-number'].value;
+        if (phoneNumber) {
+            if (!/^\d{10,}$/.test(phoneNumber.replace(/[\s\-()]/g, ''))) {
+                showError(form['phone-number'], 'Số điện thoại không hợp lệ.');
+                isValid = false;
+            }
+        }
+
+        // Validate Password
+        var password = form['password'].value;
+        if (!password) {
+            showError(form['password'], 'Mật khẩu không được để trống.');
+            isValid = false;
+        } else if (password.length < 6) {
+            showError(form['password'], 'Mật khẩu phải có ít nhất 6 ký tự.');
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    function showError(inputElement, message) {
+        var errorSpan = inputElement.nextElementSibling;
+        errorSpan.textContent = message;
+        errorSpan.style.display = 'block';
+    }
+
+    var errorElement2 = document.getElementById('error');
+    if (errorElement2 != null) {
+        var hasError2 = errorElement2.getAttribute('data-error');
+        if (hasError2 === 'true') {
+            swal({
+                title: "Tài khoản đăng nhập đã tồn tại trong hệ thống, vui lòng thử lại!",
+                icon: "error",
+            });
+        }
+    }
+</script>
+</body>
+
+</html>

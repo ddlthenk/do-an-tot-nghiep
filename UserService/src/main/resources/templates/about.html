@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Về chúng tôi</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</head>
+
+<body>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/home">Trang chủ</a>
+                <span class="breadcrumb-item active">Giới thiệu</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+
+<!-- Cart Start -->
+<div class="container">
+    <div class="row px-xl-5">
+        <div class="col-lg-8">
+            <header>
+                <h1>Chào mừng đến với Catto!</h1>
+                <p>Trang web thương mại điện tử hàng đầu cung cấp đa dạng sản phẩm từ thời trang đến công nghệ.</p>
+            </header>
+            <section>
+                <h2>Giới thiệu</h2>
+                <p>Tại Catto, chúng tôi cung cấp một trải nghiệm mua sắm trực tuyến không thể bỏ qua. Với hàng ngàn
+                    sản phẩm chất lượng từ các thương hiệu uy tín trên toàn thế giới, bạn chắc chắn sẽ tìm thấy mọi thứ
+                    bạn cần tại cửa hàng của chúng tôi. Từ quần áo thời trang mới nhất, phụ kiện, đến các thiết bị điện
+                    tử hiện đại, mọi thứ đều có sẵn chỉ trong vài cú click chuột.</p>
+                <p>Chúng tôi cam kết cung cấp dịch vụ khách hàng tuyệt vời và một quá trình thanh toán an toàn, nhanh
+                    chóng. Mua sắm tại Catto, bạn sẽ được hưởng các chính sách đổi trả linh hoạt và các chương
+                    trình khuyến mãi hấp dẫn.</p>
+            </section>
+            <footer>
+                <p>Hãy bắt đầu mua sắm ngay hôm nay và trải nghiệm sự tiện lợi và dễ dàng tại <a style="color:#F27927  "
+                                                                                                 href="/home">Catto</a>.
+                </p>
+            </footer>
+        </div>
+        <div class="col-lg-4">
+            <img src="img/About_1.png" width="402px" height="205px" alt=""/>
+            <img src="img/About_2.png" width="402px" height="205px" alt=""/>
+        </div>
+    </div>
+
+</div>
+<!-- Cart End -->
+
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+</body>
+
+</html>

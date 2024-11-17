@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Topbar Start -->
+<div class="container-fluid" id="topbar">
+    <div class="row bg-secondary py-1 px-xl-5">
+        <div sec:authorize="isAnonymous()" class="col-lg-12 text-center text-lg-right">
+            <label class="label-se-bg">
+                <i class="fa fa-phone icon-se-bg">
+                </i>
+                1800.270.27
+            </label>
+            <a href="/login">Đăng nhập</a>
+            <label class="label-he-bg">|</label>
+            <a href="/sign-up">Đăng ký</a>
+        </div>
+        <div sec:authorize="isAuthenticated()" th:if="${session.user != null}"
+             class="col-lg-12 text-center text-lg-right d-flex justify-content-end">
+            <label class="label-se-bg">
+                <i class="fa fa-phone icon-se-bg">
+                </i>
+                1800.270.27
+            </label>
+            <div class="d-flex justify-content-end " style="margin-top: 10px;">
+                <img th:if="${session.image != null}" th:src="${session.image.url}" width="25px" height="25px"/>
+                <img th:unless="${session.image != null}" src="/img/icon_avtar_comments.png" width="25px"
+                     height="25px"/>
+                <div class="nav-item dropdown">
+                    <a href="/personal-information" style="padding: 0 !important;color: #fff;margin-left: 10px;"
+                       data-toggle="dropdown"
+                       class="nav-link dropdown-toggle"
+                       th:text="${session.user.name}"> </a>
+                    <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                        <a href="/personal-information" class="dropdown-item">Thông tin cá nhân</a>
+                        <a href="/order-list" class="dropdown-item">Lịch sử đơn hàng</a>
+                        <form id="logoutForm" th:action="@{/logout}" method="post">
+                            <a type="submit" id="logoutLink" class="dropdown-item">Đăng xuất</a>
+                            <script>
+                                document.getElementById('logoutLink').addEventListener('click', function (e) {
+                                    console.log("hehe");
+                                    e.preventDefault();
+                                    document.getElementById('logoutForm').submit();
+                                });
+                            </script>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+        <div class="col-lg-2">
+            <a href="/" class="text-decoration-none">
+                <img src="/img/logo.jpg" style="width: 158px; height: 79.81px;"/>
+            </a>
+        </div>
+        <div class="col-lg-8 col-6 text-left">
+            <div action="">
+                <div class="input-group">
+                    <input id="search-input" type="text" class="form-control ip-search-text"
+                           placeholder="Tìm kiếm sản phẩm...">
+                    <div class="input-group-append span-search-ic">
+                        <a id="search-button" class="input-group-text bg-transparent text-white">
+                            <i class="fa fa-search"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <script>
+                let gotParams = new URLSearchParams(window.location.search);
+                var searchButton = document.getElementById('search-button');
+                var input = document.getElementById('search-input');
+
+                if (gotParams.get("searchValue") != null) {
+                    input.value = gotParams.get("searchValue");
+                }
+                document.addEventListener('DOMContentLoaded', function () {
+                    input.addEventListener('input', function () {
+                        var searchValue = input.value;
+                        if (searchValue == "") {
+                            searchButton.removeAttribute('href');
+                            return;
+                        }
+                        var newUrl = '/search?searchValue=' + encodeURIComponent(searchValue); // Tạo URL mới với searchValue
+                        searchButton.setAttribute('href', newUrl); // Gán href cho thẻ a
+                    });
+                });
+            </script>
+        </div>
+        <div class="col-lg-2 col-6 text-left">
+            <label class="label-cart-bg" style="margin-left: 42px; margin-top: 9px;font-weight: 600;">
+                <a href="/cart" onclick="checkAuthenticationAndRedirect(event)"><img src="/img/cart.png" width="28px"
+                                                                                     height="28px"
+                                                                                     style="margin-right: 10px;"/></a>
+                <a href="/cart" style="color:#000" onclick="checkAuthenticationAndRedirect(event)">Giỏ hàng</a>
+            </label>
+            <script>
+                function checkAuthenticationAndRedirect(event) {
+                    var isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
+                    if (!isAuthenticated) {
+                        swal({
+                            title: "Bạn chưa đăng nhập, chuyển hướng đến trang đăng nhập!!!",
+                            icon: "info",
+                            buttons: true,
+                            dangerMode: true,
+                        })
+                            .then((willDelete) => {
+                                if (willDelete) {
+                                    window.location.replace('/login');
+                                }
+                            });
+                        event.preventDefault();
+                    }
+                    swal({
+                        title: "Bạn chưa đăng nhập, chuyển hướng đến trang đăng nhập!!!",
+                        icon: "info",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                window.location.replace('/cart');
+                            }
+                        });
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->
+</body>
+</html>

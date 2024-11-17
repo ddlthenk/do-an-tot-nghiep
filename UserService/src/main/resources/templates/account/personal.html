@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Thông tin cá nhân</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</head>
+<style>
+    .nav-link.active {
+        background-color: #F27927 !important;
+        color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .nav-link2 {
+        margin-top: 5px;
+        color: black;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-container2 {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+<body>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/home">Trang chủ</a>
+                <a class="breadcrumb-item text-dark">Hồ sơ</a>
+                <a class="breadcrumb-item text-dark">Thông tin cá nhân</a>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Cart Start -->
+<div class="container mt-3 border p-5">
+    <div class="row text-center">
+        <h3 class="text-center w-100 mb-5 p-3" style="background-color: #F27927; color: white">Thông tin cá nhân</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-4 p-3">
+            <!-- Navigation for selecting form -->
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link2 nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home"
+                   role="tab" aria-controls="v-pills-home" aria-selected="true">Thông tin cá nhân</a>
+                <a class="nav-link2 nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile"
+                   role="tab" aria-controls="v-pills-profile" aria-selected="false">Đổi mật khẩu</a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <!-- Form content -->
+            <div class="tab-content" id="v-pills-tabContent">
+                <!-- Personal Info -->
+                <div class="border p-4 tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                     aria-labelledby="v-pills-home-tab">
+                    <form th:action="@{/personal-information}" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <!-- Image preview container -->
+                            <div class="mb-2"><img id="imagePreview" th:src="${imageUrl}" alt="Ảnh đại diện"
+                                                   style=" width: 150px; height: 150px; border: 1px solid #ccc; border-radius: 140px">
+                            </div>
+                            <input type="file" id="imageUpload" name="imageUpload"
+                                   accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Họ và tên</label>
+                            <input type="text" class="form-control" id="fullname" name="fullname"
+                                   placeholder="Enter full name"
+                                   th:value="${user.name}" minlength="2" maxlength="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                                   th:value="${account.userName}" pattern="[A-Za-z0-9_]{5,20}"
+                                   title="Username must be between 5 and 20 characters and can only contain letters, numbers, and underscores.">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"
+                                   th:value="${account.email}">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                   placeholder="Enter phone number"
+                                   th:value="${account.phoneNumber}" pattern="^[0-9]{10}$"
+                                   title="Phone number must be 10 digits.">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Ngày sinh</label>
+                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth"
+                                   th:value="${user.dateOfBirth}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary p-2">Cập nhật</button>
+                    </form>
+                </div>
+                <!-- Change Password -->
+                <div class="border p-4 tab-pane fade" id="v-pills-profile" role="tabpanel"
+                     aria-labelledby="v-pills-profile-tab">
+                    <h4>Change Password</h4>
+                    <form th:action="@{/change-password}" method="post">
+                        <div class="form-group">
+                            <label for="oldPassword">Mật khẩu hiện tại</label>
+                            <input type="password" class="form-control" id="oldPassword" name="oldPassword"
+                                   placeholder="Enter old password">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Mật khẩu mới</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                   placeholder="Enter new password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Nhập lại mật khẩu</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                   placeholder="Confirm new password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart End -->
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+<input type="text" id="changePass" th:value="${changePass}" hidden="">
+<input type="text" id="changeInfo" th:value="${changeInfo}" hidden="">
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+</body>
+<script>
+    document.getElementById('imageUpload').addEventListener('change', function (event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]); // Convert image file to Base64 string
+    });
+</script>
+
+<script>
+    function getHiddenValues() {
+        var changePassValue = document.getElementById('changePass').value;
+        var changeInfoValue = document.getElementById('changeInfo').value;
+
+        if (changeInfoValue != null && changeInfoValue != "") {
+            if (changeInfoValue == "true") {
+                swal({
+                    icon: "success",
+                    text: "Cập nhật thông tin thành công.",
+                });
+            } else {
+                swal({
+                    icon: "error",
+                    text: "Cập nhật thông tin không thành công.",
+                });
+            }
+        }
+        if (changePassValue != null && changePassValue != "") {
+            if (changePassValue == "true") {
+                swal({
+                    icon: "success",
+                    text: "Cập nhật mật khẩu thành công.",
+                });
+            } else {
+                swal({
+                    icon: "error",
+                    text: "Cập nhật mật khẩu không thành công.",
+                });
+            }
+        }
+    }
+
+    getHiddenValues();
+</script>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Trang chủ</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Slide Show Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+            <div id="header-carousel" class="carousel slide carousel-fade mb-30 mb-lg-0" data-ride="carousel">
+
+                <div class="carousel-inner">
+                    <div class="carousel-item position-relative carousel-responsive active">
+                        <img class="position-absolute w-100 h-100" src="/img/slide_1.png" style="object-fit: cover;">
+                    </div>
+                    <div class="carousel-item position-relative carousel-responsive">
+                        <img class="position-absolute w-100 h-100" src="/img/slide_2.png" style="object-fit: cover;">
+                    </div>
+                    <div class="carousel-item position-relative carousel-responsive">
+                        <img class="position-absolute w-100 h-100" src="/img/slide_3.png" style="object-fit: cover;">
+                    </div>
+                </div>
+
+                <ol class="carousel-indicators carouselIndicators-responsive">
+                    <li data-target="#header-carousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#header-carousel" data-slide-to="1"></li>
+                    <li data-target="#header-carousel" data-slide-to="2"></li>
+                </ol>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Slide Show  End -->
+
+<!-- Featured Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5 pb-3 ch-responsive">
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="align-items-center bg-light mb-4 text" style="text-align: center;">
+                <h1 class="text-primary m-0 mr-3"><img src="/img/icon_tt.png" width="40px" height="40px"/></h1>
+                <h5 class="font-weight-semi-bold m-0 mt-2">Thanh toán khi nhận hàng</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="align-items-center bg-light mb-4 text" style="text-align: center;">
+                <h1 class="text-primary m-0 mr-3"><img src="/img/icon_vc.png" width="40px" height="40px"/></h1>
+                <h5 class="font-weight-semi-bold m-0 mt-2">Vận chuyển nhanh chóng</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="align-items-center bg-light mb-4 text" style="text-align: center;">
+                <h1 class="text-primary m-0 mr-3"><img src="/img/icon_dt.png" width="40px" height="40px"/></h1>
+                <h5 class="font-weight-semi-bold m-0 mt-2">Đổi trả hàng trong 7 ngày</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1 text">
+            <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                <h1 class="text-primary m-0 mr-3"><img src="/img/icon_khtt.png" width="40px" height="40px"/></h1>
+                <h5 class="font-weight-semi-bold m-0 mt-2">Ưu đãi cho KH thân thiết</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Featured End -->
+<!-- DM Start -->
+<div class="container-fluid pt-5 pb-3">
+    <div class="row">
+        <div class="col-lg-6 header-dm-res mb-5" style="position:initial;">
+            <h2 class="section-title text-uppercase mx-xl-5 mb-4"><span class="pr-3 header-dm-res-sp1"
+                                                                        style="border-bottom: 2px solid #F27927;color: #F27927;">Danh mục sản phẩm</span>
+            </h2>
+        </div>
+    </div>
+    <div class="row px-xl-5 dm-res">
+        <div th:if="${session.categoryParents != null && !session.categoryParents.isEmpty()}"
+             th:each="category : ${session.categoryParents}"
+             class="col-lg-2 col-md-3 col-sm-4 pb-1">
+            <div class="product-item bg-light mb-4">
+                <div class="product-img position-relative overflow-hidden d-flex justify-content-center">
+                    <a th:href="'/products/category/' + ${category.categoryId}">
+                        <img th:if="${session.imageMap.get(category.getCategoryId()) != null}"
+                             class="img-fluid mx-auto d-block"
+                             th:src="${session.imageMap.get(category.getCategoryId()).url}" alt="">
+                        <img th:unless="${session.imageMap.get(category.getCategoryId()) != null}"
+                             class="img-fluid mx-auto d-block" src="/img/dm_sp.png" alt="">
+                    </a>
+                </div>
+                <div class="text-center py-4">
+                    <a class="h6 text-decoration-none text-truncate"
+                       th:href="'/products/category/' + ${category.categoryId}"
+                       th:text="${category.categoryName}">Thức ăn</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Products End -->
+<!-- Products Start -->
+<div class="container-fluid pt-5 pb-3">
+    <div class="row">
+        <div class="col-lg-6 header-dm-res mb-5" style="position:initial;">
+            <h2 class="section-title text-uppercase mx-xl-5 mb-4"><span class="pr-3 header-dm-res-sp1"
+                                                                        style="border-bottom: 2px solid #F27927;color: #F27927;">Sản phẩm mới</span>
+            </h2>
+        </div>
+        <div class="col-lg-6 header-dm-res">
+            <a class="header-dm-res-sp2" href="/products/san-pham-moi">Xem tất cả >></a>
+        </div>
+    </div>
+    <div class="row px-xl-5 tc-pd-res">
+        <div th:if="${listNewProduct != null && !listNewProduct.isEmpty()}" th:each="product : ${listNewProduct}"
+             class="col-lg-2 col-md-3 col-sm-4 pb-1 ">
+            <div class="product-item bg-light mb-4">
+                <div class="product-img position-relative overflow-hidden d-flex justify-content-center">
+                    <a th:href="'/product-details/' + ${product.productId}">
+                        <img th:if="${newestProductImMap != null && !newestProductImMap.isEmpty() &&
+                    newestProductImMap.get(product.productId) != null}" class="img-fluid d-block"
+                             th:src="${newestProductImMap.get(product.productId).url}" alt="">
+                        <img th:unless="${newestProductImMap != null && !newestProductImMap.isEmpty() &&
+                    newestProductImMap.get(product.productId) != null}" class="img-fluid d-block" src="/img/KM_1.png"
+                             alt="">
+                    </a>
+                </div>
+                <div class="text-center py-4">
+                    <a class="h6 text-decoration-none text-truncate link-pd-res"
+                       th:if="${product.productTitle.length() > 50}"
+                       th:href="'/product-details/' + ${product.productId}"
+                       th:text="${#strings.substring(product.productTitle, 0, 50)} + (${product.productTitle.length() > 50 ? '...' : ''})"></a>
+                    <a class="h6 text-decoration-none text-truncate link-pd-res"
+                       th:unless="${product.productTitle.length() > 50}"
+                       th:href="'/product-details/' + ${product.productId}"
+                       th:text="${product.productTitle}"></a>
+                    <div class="d-flex align-items-center justify-content-center mt-2 text-res">
+                        <h6 class="text-muted">
+                            <del th:text="${#numbers.formatDecimal(product.productDiscountPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></del>
+                        </h6>
+                        <h5 class="ml-2" style="color:#F27927"
+                            th:text="${#numbers.formatDecimal(product.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></h5>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center mb-1">
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                    </div>
+                    <div class="mb-1 mt-2">
+                        <a class="btn btn-buy p-1"
+                           style="color: white; background-color: #F27927; border-radius: 132px"
+                           th:href="'/product-details/' + ${product.productId}">Xem sản phẩm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Products End -->
+<!--Image shop start-->
+<div class="container-fluid pt-5 pt-5r pb-3">
+    <div class="row px-xl-5">
+        <div class="col-md-12">
+            <div class="product-offer">
+                <img class="img-fluid product-offers-img" src="/img/img_102.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+<!--Image shop end-->
+
+<!-- Offer Start -->
+<div class="container-fluid pt-5 pb-3">
+    <div class="row">
+        <div class="col-lg-6 header-dm-res mb-5" style="position:initial;">
+            <h2 class="section-title text-uppercase mx-xl-5 mb-4"><span class="pr-3 header-dm-res-sp1"
+                                                                        style="border-bottom: 2px solid #F27927;color: #F27927;">Bán chạy</span>
+            </h2>
+        </div>
+        <div class="col-lg-6 header-dm-res">
+            <a class="header-dm-res-sp2" href="/products/san-pham-ban-chay">Xem tất cả >></a>
+        </div>
+    </div>
+    <div class="row px-xl-5 tc-pd-res">
+        <div class="col-lg-2 col-md-3 col-sm-4 pb-1"
+             th:if="${listTopSelling != null && !listTopSelling.isEmpty()}" th:each="product : ${listTopSelling}">
+            <div class="product-item bg-light mb-4">
+                <div class="product-img position-relative overflow-hidden d-flex justify-content-center">
+                    <a th:href="'/product-details/' + ${product.productId}">
+                        <img th:if="${topSellingMap != null && !topSellingMap.isEmpty() &&
+                    topSellingMap.get(product.productId) != null}" class="img-fluid d-block"
+                             th:src="${topSellingMap.get(product.productId).url}" alt="">
+                        <img th:unless="${topSellingMap != null && !topSellingMap.isEmpty() &&
+                    topSellingMap.get(product.productId) != null}" class="img-fluid d-block" src="/img/KM_1.png" alt="">
+                    </a>
+                </div>
+                <div class="text-center py-4">
+                    <a class="h6 text-decoration-none text-truncate link-pd-res"
+                       th:if="${product.productTitle.length() > 50}"
+                       th:href="'/product-details/' + ${product.productId}"
+                       th:text="${#strings.substring(product.productTitle, 0, 50)} + (${product.productTitle.length() > 50 ? '...' : ''})"></a>
+                    <a class="h6 text-decoration-none text-truncate link-pd-res"
+                       th:unless="${product.productTitle.length() > 50}"
+                       th:href="'/product-details/' + ${product.productId}"
+                       th:text="${product.productTitle}"></a>
+                    <div class="d-flex align-items-center justify-content-center mt-2 text-res">
+                        <h6 class="text-muted">
+                            <del th:text="${#numbers.formatDecimal(product.productDiscountPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></del>
+                        </h6>
+                        <h5 class="ml-2" style="color:#F27927"
+                            th:text="${#numbers.formatDecimal(product.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                        </h5>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center mb-1">
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                    </div>
+                    <div class="mb-1 mt-2">
+                        <a class="btn btn-buy p-1"
+                           style="color: white; background-color: #F27927; border-radius: 132px"
+                           th:href="'/product-details/' + ${product.productId}">Xem sản phẩm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Offer End -->
+
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+</body>
+
+</html>

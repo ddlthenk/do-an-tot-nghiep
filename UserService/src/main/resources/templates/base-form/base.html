@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Đăng nhập</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</head>
+
+<body>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5 cus-w-150">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="Index.html">Trang chủ</a>
+                <span class="breadcrumb-item active">Đăng nhập</span>
+            </nav>
+        </div>
+    </div>
+    <div class="row px-xl-5 cus-500">
+        <div class="col-12" style="font-size: 12px;">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="Index.html">Trang chủ</a>
+                <span class="breadcrumb-item active">Đăng nhập</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+
+<!-- Cart Start -->
+<form th:action="@{/login}" method="post" class="container-fluid cus-w-150">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+            <p class="text-center text-uppercase" style="color: #F27927;">Đăng nhập</p>
+        </div>
+    </div>
+    <div style="text-align: center;">
+        <label style="margin-right: 18rem;">Email/Số điện thoại:</label>
+        <input type="text" name="username" class="form-pay-no-acc-lg"/>
+        <label style="margin-right: 22rem;margin-top: 20px">Mật khẩu:</label>
+        <input type="password" name="password" class="form-pay-no-acc-lg"/>
+    </div>
+    <div style="text-align: center; margin-top: 35px;">
+        <button class="btn btn-buy" type="submit">Đăng nhập</button>
+    </div>
+    <div style="text-align: center;margin-top: 14px;">
+        <a href="/forgot-password" class="text-center" style="text-decoration: underline; color: #000;">Quên mật
+            khẩu</a>
+    </div>
+</form>
+<form th:action="@{/login}" method="post" class="container-fluid cus-500">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+            <p class="text-center text-uppercase" style="color: #F27927;">Đăng nhập</p>
+        </div>
+    </div>
+    <div style="text-align: center; font-size: 12px;">
+        <label style="margin-right: 18rem;">Email/Số điện thoại:</label>
+        <input type="text" name="username" class="form-pay-no-acc-lg"/>
+        <label style="margin-right: 22rem;margin-top: 20px">Mật khẩu:</label>
+        <input type="password" name="password" class="form-pay-no-acc-lg"/>
+    </div>
+    <div style="text-align: center; margin-top: 35px;">
+        <button class="btn btn-login">Đăng nhập</button>
+    </div>
+    <div style="text-align: center;margin-top: 14px; font-size: 12px;">
+        <a href="/forgot-password" class="text-center" style="text-decoration: underline; color: #000;">Quên mật
+            khẩu</a>
+    </div>
+</form>
+<!-- Cart End -->
+
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+</body>
+
+</html>

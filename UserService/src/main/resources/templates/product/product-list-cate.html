@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Danh sách sản phẩm</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/home">Trang chủ</a>
+                <a class="breadcrumb-item text-dark"
+                   th:href="'/products/category/' + ${category.categoryId}"
+                   th:text="${category.categoryName}"
+                ></a>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Products Start -->
+<div class="row px-xl-5 cus-res-12">
+    <div class="col-lg-12">
+        <div class="container-fluid pt-5 pb-3">
+            <div class="row">
+                <div class="col-lg-6 header-dm-res">
+                    <h2 class="section-title text-uppercase mx-xl-5 mb-4">
+                        <span class="pr-3 header-dm-res-sp1" style="border-bottom: 2px solid #F27927;color: #F27927;"
+                              th:text="${category.categoryName}"></span>
+                    </h2>
+                </div>
+                <div class="col-lg-6 header-dm-res">
+                    <img src="/img/icon-filter.png" style="float: right; margin-right: 10px;" height="15px" width="15px"
+                         alt="">
+                </div>
+            </div>
+            <div class="row px-xl-5 dm-res">
+                <div th:if="${pageProductByCategory.getContent() != null && !pageProductByCategory.isEmpty()}"
+                     th:each="product : ${pageProductByCategory.getContent()}"
+                     class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden text-center">
+                            <img th:if="${productImageMap != null && !productImageMap.isEmpty() &&
+                    productImageMap.get(product.productId) != null}" class="img-fluid d-block"
+                                 th:src="${productImageMap.get(product.productId).url}" alt="">
+                            <img th:unless="${productImageMap != null && !productImageMap.isEmpty() &&
+                    productImageMap.get(product.productId) != null}" class="img-fluid d-block" src="/img/KM_1.png">
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate link-pd-res"
+                               th:if="${product.productTitle.length() > 50}"
+                               th:href="'/product-details/' + ${product.productId}"
+                               th:text="${#strings.substring(product.productTitle, 0, 50)} + (${product.productTitle.length() > 50 ? '...' : ''})"></a>
+                            <a class="h6 text-decoration-none text-truncate link-pd-res"
+                               th:unless="${product.productTitle.length() > 50}"
+                               th:href="'/product-details/' + ${product.productId}"
+                               th:text="${product.productTitle}"></a>
+                            <div class="d-flex align-items-center justify-content-center mt-2 text-res">
+                                <h6 class="text-muted">
+                                    <del th:text="${#numbers.formatDecimal(product.productDiscountPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></del>
+                                </h6>
+                                <h5 class="ml-2" style="color:#F27927"
+                                    th:text="${#numbers.formatDecimal(product.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                </h5>
+                            </div>
+                            <div th:if="${product.productRating > 4.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 4.5 && product.productRating > 3.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 3.5 && product.productRating > 2.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 2.5 && product.productRating > 1.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:unless="${product.productRating > 1.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="mb-1 mt-2">
+                                <a class="btn btn-buy p-1"
+                                   style="color: white; background-color: #F27927; border-radius: 132px"
+                                   th:href="'/product-details/' + ${product.productId}">Xem sản phẩm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row px-xl-5 cus-res-9">
+    <div class="col-lg-9">
+        <div class="container-fluid pt-5 pb-3">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="section-title text-uppercase mx-xl-5 mb-4">
+                        <span class="pr-3" style="border-bottom: 2px solid #F27927;color: #F27927;"
+                              th:text="${category.categoryName}"></span>
+                    </h2>
+                </div>
+            </div>
+            <div class="row px-xl-5">
+                <div th:if="${pageProductByCategory.getContent() != null && !pageProductByCategory.getContent().isEmpty()}"
+                     th:each="product : ${pageProductByCategory.getContent()}"
+                     class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden d-flex justify-content-center">
+                            <a th:href="'/product-details/' + ${product.productId}">
+                                <img th:if="${productImageMap != null && !productImageMap.isEmpty() &&
+                    productImageMap.get(product.productId) != null}" class="img-fluid product_img d-block"
+                                     th:src="${productImageMap.get(product.productId).url}" alt="">
+                                <img th:unless="${productImageMap != null && !productImageMap.isEmpty() &&
+                    productImageMap.get(product.productId) != null}" class="img-fluid product_img d-block"
+                                     src="/img/KM_1.png">
+                            </a>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate link-pd-res"
+                               th:if="${product.productTitle.length() > 50}"
+                               th:href="'/product-details/' + ${product.productId}"
+                               th:text="${#strings.substring(product.productTitle, 0, 50)} + (${product.productTitle.length() > 50 ? '...' : ''})"></a>
+                            <a class="h6 text-decoration-none text-truncate link-pd-res"
+                               th:unless="${product.productTitle.length() > 50}"
+                               th:href="'/product-details/' + ${product.productId}"
+                               th:text="${product.productTitle}"></a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h6 class="text-muted">
+                                    <del th:text="${#numbers.formatDecimal(product.productDiscountPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                    </del>
+                                </h6>
+                                <h5 class="ml-2" style="color:#F27927"
+                                    th:text="${#numbers.formatDecimal(product.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                                </h5>
+                            </div>
+                            <div th:if="${product.productRating > 4.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 4.5 && product.productRating > 3.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 3.5 && product.productRating > 2.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:if="${product.productRating <= 2.5 && product.productRating > 1.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div th:unless="${product.productRating > 1.5}"
+                                 class="text-primary d-flex align-items-center justify-content-center mb-1">
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="mb-1 mt-2">
+                                <a class="btn btn-buy p-1"
+                                   style="color: white; background-color: #F27927; border-radius: 132px"
+                                   th:href="'/product-details/' + ${product.productId}">Xem sản phẩm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div th:if="${!pageProductByCategory.isEmpty()}" class="pagination2 d-flex justify-content-center">
+            <ul style="float: none;">
+                <li th:classappend="${pageProductByCategory.number == 0} ? 'disabled' : ''" class="pagination__button">
+                    <a name="page-link"
+                       th:href="${pageProductByCategory.number > 0} ? '/products/category/' + ${category.categoryId} + '?page=1' : '#'">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
+                <li th:classappend="${pageProductByCategory.number == 0} ? 'disabled' : ''" class="pagination__button">
+                    <a name="page-link"
+                       th:href="${pageProductByCategory.number > 0} ? '/products/category/' + ${category.categoryId} + '?page=' + (${pageProductByCategory.number}) : '#'">
+                        <i class="fas fa-angle-left"></i>
+                    </a>
+                </li>
+                <li th:if="${pageProductByCategory.number > 1}">
+                    <a name="page-link"
+                       th:href="'/products/category/' + ${category.categoryId} + '?page=' + (${pageProductByCategory.number} - 1)">
+                        <span th:text="${pageProductByCategory.number - 1}"></span>
+                    </a>
+                </li>
+                <li th:if="${pageProductByCategory.number > 0}">
+                    <a name="page-link"
+                       th:href="'/products/category/' + ${category.categoryId} + '?page=' + ${pageProductByCategory.number}">
+                        <span th:text="${pageProductByCategory.number}"></span>
+                    </a>
+                </li>
+                <li>
+                    <a name="page-link" href="#" class="active" th:text="${pageProductByCategory.number + 1}"></a>
+                </li>
+                <li th:if="${pageProductByCategory.totalPages > pageProductByCategory.number + 1}">
+                    <a name="page-link"
+                       th:href="'/products/category/' + ${category.categoryId} + '?page=' + (${pageProductByCategory.number} + 2)">
+                        <span th:text="${pageProductByCategory.number + 2}"></span>
+                    </a>
+                </li>
+                <li th:if="${pageProductByCategory.totalPages > pageProductByCategory.number + 2}">
+                    <a name="page-link"
+                       th:href="'/products/category/' + ${category.categoryId} + '?page=' + (${pageProductByCategory.number} + 3)">
+                        <span th:text="${pageProductByCategory.number + 3}"></span>
+                    </a>
+                </li>
+                <li th:classappend="${pageProductByCategory.number >= pageProductByCategory.totalPages - 1} ? 'disabled' : ''"
+                    class="pagination__button">
+                    <a name="page-link"
+                       th:href="${pageProductByCategory.totalPages > pageProductByCategory.number + 1} ? '/products/category/' + ${category.categoryId} + '?page=' + (${pageProductByCategory.number} + 2) : '#'">
+                        <i class="fas fa-angle-right"></i>
+                    </a>
+                </li>
+                <li th:classappend="${pageProductByCategory.number >= pageProductByCategory.totalPages} ? 'disabled' : ''"
+                    class="pagination__button">
+                    <a name="page-link"
+                       th:href="${pageProductByCategory.totalPages > pageProductByCategory.number} ? '/products/category/' + ${category.categoryId} + '?page=' + (${pageProductByCategory.totalPages}) : '#'">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <style>
+        .filter-form {
+            padding: 50px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #e4e8ed;
+            width: 90%;
+            height: 400px;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-header img {
+            height: 30px;
+            width: 30px;
+        }
+
+        h4, strong {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        input[type="radio"] {
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        .input-group input:last-child {
+            margin-right: 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #f00;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #c00;
+        }
+    </style>
+    <div th:if="${pageProductByCategory.getContent() != null && !pageProductByCategory.getContent().isEmpty()}"
+         class=" col-3 filter-form">
+        <div class="filter-header">
+            <h4>BỘ LỌC</h4>
+            <img src="/img/icon-filter.png" alt="Filter Icon">
+        </div>
+        <div>
+            <h5>Sắp xếp</h5>
+            <input type="text" name="sortBy" id="sortBy" hidden="">
+            <input type="radio" id="hangmoive" name="sort" value="hangmoive">
+            <label for="hangmoive">Hàng mới về</label><br>
+            <input type="radio" id="giatangdan" name="sort" value="giatangdan">
+            <label for="giatangdan">Giá tăng dần</label><br>
+            <input type="radio" id="giagiamdan" name="sort" value="giagiamdan">
+            <label for="giagiamdan">Giá giảm dần</label>
+        </div>
+
+        <div>
+            <h5>Khoảng Giá</h5>
+            <div class="input-group">
+                <input type="number" name="from" id="from" placeholder="đ TỪ" aria-label="Minimum price"
+                       onchange="updateUrlParameter('from', this.value)">
+                <input type="number" name="to" id="to" placeholder="đ ĐẾN" aria-label="Maximum price"
+                       onchange="updateUrlParameter('to', this.value)">
+            </div>
+            <a id="applyButton" type="button">ÁP DỤNG</a>
+        </div>
+    </div>
+</div>
+<div class="row"
+     th:unless="${pageProductByCategory.getContent() != null && !pageProductByCategory.getContent().isEmpty()}">
+    <div class="container text-center">
+        <div class="alert alert-danger" role="alert">
+            Không có sản phẩm nào, trở về <a href="/home" style="color: #fd7e14"> trang chủ</a>
+        </div>
+    </div>
+</div>
+<!-- Products End -->
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fromInput = document.getElementById('from');
+        const toInput = document.getElementById('to');
+        const radioButtons = document.querySelectorAll('input[name="sort"]');
+        const applyButton = document.getElementById('applyButton');
+        const paginationLinks = document.querySelectorAll('a[name="page-link"]');
+
+        let gotParams = new URLSearchParams(window.location.search);
+        radioButtons.forEach(radio => {
+            if (gotParams.get("sort") && radio.value == gotParams.get("sort")) {
+                radio.checked = true;
+            }
+        });
+        if (gotParams.get("from") != null) {
+            fromInput.value = gotParams.get("from");
+        }
+        if (gotParams.get("to") != null) {
+            fromInput.value = gotParams.get("to");
+        }
+        paginationLinks.forEach(link => {
+            let originHref = link.href;
+            if (!originHref.endsWith("#")) {
+                const url = new URL(link.href);
+                let orParams = new URLSearchParams(url.search);
+                orParams.set("sort", gotParams.get("sort"));
+                if (gotParams.get("from") != null) {
+                    orParams.set("from", gotParams.get("from"));
+                }
+                if (gotParams.get("to") != null) {
+                    orParams.set("to", gotParams.get("to"));
+                }
+                url.search = orParams.toString();
+                link.href = url.toString();
+            }
+        });
+
+        function updateAllLinks() {
+            let params = new URLSearchParams(window.location.search);
+
+            // Cập nhật tham số 'from', chỉ khi có giá trị
+            if (fromInput.value) {
+                params.set('from', fromInput.value);
+            } else {
+                params.delete('from');
+            }
+
+            // Cập nhật tham số 'to', chỉ khi có giá trị
+            if (toInput.value) {
+                params.set('to', toInput.value);
+            } else {
+                params.delete('to');
+            }
+
+            // Kiểm tra và cập nhật tham số 'sort' từ radio button
+            let hasChecked = false;
+            radioButtons.forEach(radio => {
+                if (radio.checked) {
+                    params.set('sort', radio.value);
+                    hasChecked = true;
+                }
+            });
+            if (!hasChecked) {
+                params.delete('sort');
+            }
+            // Cập nhật href cho nút áp dụng và tất cả các liên kết phân trang
+            const newQueryString = params.toString();
+            applyButton.href = window.location.pathname + '?' + newQueryString;
+            paginationLinks.forEach(link => {
+                let originHref = link.href;
+                if (!originHref.endsWith("#")) {
+                    const url = new URL(link.href);
+                    let orParams = new URLSearchParams(url.search);
+                    orParams.set("sort", params.get("sort"));
+                    if (params.get("from") != null) {
+                        orParams.set("from", params.get("from"));
+                    }
+                    if (params.get("to") != null) {
+                        orParams.set("to", params.get("to"));
+                    }
+                    url.search = orParams.toString();
+                    link.href = url.toString();
+                }
+            });
+        }
+
+        // Gán sự kiện thay đổi cho các input và radio button
+        fromInput.addEventListener('change', updateAllLinks);
+        toInput.addEventListener('change', updateAllLinks);
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', updateAllLinks);
+        });
+    });
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const radioButtons = document.querySelectorAll('input[name="sort"]');
+    //     const applyButton = document.getElementById('applyButton');
+    //
+    //     radioButtons.forEach(radio => {
+    //         radio.addEventListener('change', function () {
+    //             const currentUrl = window.location.href;
+    //             const baseUrl = currentUrl.includes('?') ? currentUrl.split('?')[0] : currentUrl;
+    //             applyButton.href = baseUrl + '?sortBy=' + this.value;
+    //         });
+    //     });
+    // });
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const fromInput = document.getElementById('from');
+    //     const toInput = document.getElementById('to');
+    //     const applyButton = document.getElementById('applyButton');
+    //
+    //     function updateHref() {
+    //         let searchParams = new URLSearchParams(window.location.search);
+    //
+    //         // Update or add 'from' parameter
+    //         if (fromInput.value) {
+    //             searchParams.set('from', fromInput.value);
+    //         } else {
+    //             searchParams.delete('from');
+    //         }
+    //
+    //         // Update or add 'to' parameter
+    //         if (toInput.value) {
+    //             searchParams.set('to', toInput.value);
+    //         } else {
+    //             searchParams.delete('to');
+    //         }
+    //
+    //         applyButton.href = '?' + searchParams.toString();
+    //     }
+    //
+    //     // Attach event listeners
+    //     fromInput.addEventListener('change', updateHref);
+    //     toInput.addEventListener('change', updateHref);
+    // });
+    //
+    // function updateUrlParameter(param, value) {
+    //     let baseUrl = window.location.href.split('?')[0];
+    //     console.log(baseUrl);
+    //     let url = new URL(window.location);
+    //     console.log(url);
+    //     let searchParams = new URLSearchParams(url.search);
+    //
+    //     // Check if the URL already has the parameter
+    //     console.log(searchParams.has(param));
+    //     if (searchParams.has(param)) {
+    //         searchParams.set(param, value); // Set to the new value if exists
+    //     } else {
+    //         searchParams.append(param, value); // Add the parameter if it doesn't exist
+    //     }
+    //
+    //     // Construct the new URL and set it
+    //     window.history.replaceState(null, null, baseUrl + '?' + searchParams.toString());
+    // }
+</script>
+</html>

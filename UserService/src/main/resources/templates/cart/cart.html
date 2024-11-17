@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Giỏ hàng</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="#">Trang chủ</a>
+                <span class="breadcrumb-item active">Giỏ hàng</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Cart Start -->
+<div th:if="${cartForm.getCarts() == null || cartForm.getCarts().isEmpty()}" class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+            <p class="text-center" style="color: #A0A0A0;">Không có sản phẩm nào trong giỏ hàng</p>
+        </div>
+    </div>
+    <div style="text-align: center;">
+        <a href="/home" class="btn btn-buy" style="color: #fff;
+                    background: #F27927 !important; padding: 5px;
+                    border-radius: 132px;">TIẾP TỤC MUA SẮM</a>
+    </div>
+</div>
+<!-- Cart End -->
+<!-- Cart Start -->
+<div class="container-fluid" th:unless="${cartForm.getCarts() == null || cartForm.getCarts().isEmpty()}">
+    <div class="row px-xl-5">
+        <form th:action="@{/update-cart}" method="post" th:object="${cartForm}" class="col-lg-11 table-responsive mb-5">
+            <table class="text-center mb-0">
+                <thead style="font-weight: 700;">
+                <tr>
+                    <th>Chọn</th>
+                    <th>SẢN PHẨM</th>
+                    <th class="text-center">LOẠI</th>
+                    <th class="text-center">ĐƠN GIÁ</th>
+                    <th class="text-center">SỐ LƯỢNG</th>
+                    <th class="text-center">SỐ TIỀN</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody class="align-middle">
+                <tr class="ml-4" th:each="cart, iterStat : *{carts}">
+                    <td><input type="checkbox" name="selectCart" th:value="${cart.cartId}"
+                    ></td>
+                    <td class="align-middle">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <img th:if="${imageMap.get(cart.productId) != null && imageMap.get(cart.productId).url != null}"
+                                     th:src="${imageMap.get(cart.productId).url}" alt=""
+                                     style="width: 100%;">
+                                <img th:unless="${imageMap.get(cart.productId) != null && imageMap.get(cart.productId).url != null}"
+                                     src="/img/KM_1.png" alt=""
+                                     style="width: 100%;">
+                            </div>
+                            <div class="col-lg-9">
+                                <p style="margin-top: 22px;"
+                                   th:text="${productMap.get(cart.productId).productTitle}">
+                                </p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="align-middle" th:text="${detailsMap.get(cart.detailsId).optionValue}"></td>
+                    <td class="align-middle text-center"
+                        th:text="${#numbers.formatDecimal(detailsMap.get(cart.detailsId).price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                        35.000
+                    </td>
+                    <input type="text" name="hehe" th:field="*{carts[__${iterStat.index}__].cartId}" hidden="">
+                    <td class="align-middle">
+                        <div class="input-group quantity"
+                             style="width: 100px; border: 2px solid #F5F5F5;margin-left: 74px;">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn-minus"
+                                        style="border: none;background-color: #fff; margin-top: 7px;">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control border-0 text-center"
+                                   th:field="*{carts[__${iterStat.index}__].quantity}" min="0"
+                                   th:max="${detailsMap.get(cart.detailsId).total}">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn-plus"
+                                        style="border: none;background-color: #fff;margin-top: 7px;">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="align-middle text-center"
+                        th:text="${#numbers.formatDecimal(detailsMap.get(cart.detailsId).price * cart.quantity, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                    </td>
+                    <input name="cart-price"
+                           th:value="${detailsMap.get(cart.detailsId).price * cart.quantity}"
+                           hidden="">
+                    <td class="align-middle">
+                        <a th:onclick="'javascript:confirmDelete(' + ${cart.cartId} + ');'">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div style="text-align: center;">
+                <button href="/home" class="btn btn-buy">Cập nhật giỏ hàng</button>
+            </div>
+        </form>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col-lg-7"></div>
+        <div class="col-lg-4" style="border-top: 4px solid #F5F5F5;padding-left: 0px; padding-right: 0px;">
+            <div class="mt-3 d-flex">
+                <h4 style="font-weight: 700;">TỔNG TIỀN:</h4>
+                <h4 style="font-weight: 700;margin-left:116px" id="total"></h4>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-7"><label class="label-se-bg" style="color: #F27927;margin-left: 107px;font-size: 30px;">
+            <i class="fa fa-phone icon-se-bg" style="color: #F27927;">
+            </i>
+            1800.270.27
+        </label></div>
+        <div class="col-lg-3" style="padding-left: 0px; padding-right: 0px; font-weight: 700;">
+            <div class="mt-3 d-flex">
+                <button class="btn btn-buy" id="paymentButton" style="width: 356px;"><a>TIẾN
+                    HÀNH THANH
+                    TOÁN </a></button>
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+<!-- Cart End -->
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+<script>
+    function confirmDelete(cartId) {
+        swal({
+            title: "Bạn chắc chắn xóa sản phẩm này?",
+            icon: "success",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = '/cart/delete/' + cartId;
+                }
+            });
+    }
+</script>
+
+</body>
+
+</html>
+<script>
+    document.getElementById('paymentButton').addEventListener('click', function (event) {
+        event.preventDefault();
+        const checkboxes = document.querySelectorAll('input[name="selectCart"]:checked');
+        const cartValues = Array.from(checkboxes).map(checkbox => checkbox.value);
+        var href = '?cart=';
+        href += cartValues.join(',');
+        console.log(href);
+        if (checkboxes.length <= 0) {
+            swal({
+                title: "Chọn sản phẩm trước khi thanh toán?",
+                icon: "error",
+            });
+            return;
+        }
+        swal({
+            title: "Chuyển hướng đến trang thanh toán?",
+            icon: "success",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    console.log("hehe");
+                    window.location.href = "/discharge-cart" + href;
+                }
+            });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.getElementsByName('cart-price');
+        let total = 0;
+
+        for (let i = 0; i < inputs.length; i++) {
+            const value = parseFloat(inputs[i].value);
+            if (!isNaN(value)) {
+                total += value;
+            }
+        }
+
+        document.getElementById("total").innerText = total.toLocaleString('vi-VN', {
+            style: 'currency',
+            currency: 'VND'
+        });
+    });
+</script>

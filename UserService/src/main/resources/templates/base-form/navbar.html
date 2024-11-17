@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Navbar Start -->
+<div class="container-fluid bg-dark mb-30" id="navbar">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a href="/Index.html" class="text-decoration-none d-block d-lg-none">
+                    <img src="/img/logo.jpg" style="width: 158px; height: 79.81px;"/>
+                </a>
+                <label class="label-cart-bg display-cart" style="margin-left: 42px; margin-top: 9px;font-weight: 600;">
+                    <a href="/cart"><img src="/img/cart.png" width="28px" height="28px"
+                                         style="margin-right: 10px;"/></a>
+                </label>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav mr-auto py-0">
+                        <a href="/products/san-pham-ban-chay" class="nav-item nav-link">SẢN PHẨM BÁN CHẠY</a>
+                        <a href="/products/san-pham-moi" class="nav-item nav-link">SẢN PHẨM MỚI</a>
+                        <div class="nav-item dropdown">
+                            <a href="/Products.html" class="nav-link dropdown-toggle" data-toggle="dropdown">SẢN PHẨM <i
+                                    class="fa fa-angle-down mt-1"></i></a>
+                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                                <a th:if="${session.categoryParents != null}"
+                                   th:each="category : ${session.categoryParents}"
+                                   th:href="@{|/products/category/${category.categoryId}|}"
+                                   th:text="${category.categoryName}"
+                                   class="dropdown-item">
+                                </a>
+                            </div>
+                        </div>
+                        <a href="/about" class="nav-item nav-link">GIỚI THIỆU</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row px-xl-5 search-res">
+        <div class="input-group">
+            <input type="text" class="form-control ip-search-text" placeholder="Tìm kiếm sản phẩm...">
+            <div class="input-group-append span-search-ic">
+                <span class="input-group-text bg-transparent text-white">
+                    <i class="fa fa-search"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Navbar End -->
+</body>
+</html>

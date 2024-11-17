@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title>Chi tiết đơn hàng</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+</head>
+<style>
+    .star-rating {
+        line-height:32px;
+        font-size:1.25em;
+        direction: rtl;
+    }
+
+    .star-rating input {
+        display: none;
+    }
+
+    .star-rating label {
+        color: grey;
+    }
+
+    .star-rating :checked ~ label {
+        color: orange;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: orange;
+    }
+    .status-paid {
+        color: green;
+        background-color: #eaffea;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-canceled {
+        color: red;
+        background-color: #ffebeb;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-approved {
+        color: blue;
+        background-color: #e0f0ff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-waiting {
+        color: orange;
+        background-color: #fff4e0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-shipped {
+        color: darkblue;
+        background-color: #e0e5ff;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-done {
+        color: darkgreen;
+        background-color: #f0fff0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+
+    .status-refund {
+        color: aliceblue;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        background-color: darkseagreen;
+    }
+
+    .btn-approve {
+        color: #019706;
+        background-color: #aeedb3;
+        /*border-color: #f2be00;*/
+    }
+
+    .btn-cancel {
+        color: #ffffff;
+        background-color: #e8332f;
+    }
+</style>
+<body>
+<div th:if="${cancelError}" th:data-error="${cancelError}" id="cancelError"></div>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5 cus-w-150">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/home">Trang chủ</a>
+                <span class="breadcrumb-item active">Chi tiết đơn hàng</span>
+            </nav>
+        </div>
+    </div>
+    <div class="row px-xl-5 cus-500">
+        <div class="col-12" style="font-size: 12px;">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/home">Trang chủ</a>
+                <span class="breadcrumb-item active">Chi tiết đơn hàng</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<div class="container-fluid mt-5 p-5" style="width: 90% !important; border: 2px solid #ccc">
+    <h2 class="mb-5 p-2" style="text-align: center; background: #fd7e14;
+    color: white;"> Chi tiết đơn hàng</h2>
+    <div class="row">
+        <div class="col-4">
+            <h2 class="mb-3" style="text-align: center;background: #fd7e14; color: white">Giao hàng nhanh</h2>
+            <iframe class="p-1" id="ghn-iframe"
+                    th:src="'https://tracking.ghn.dev/?order_code=' + ${order.getOrderCode()}" width="100%"
+                    height="700px"></iframe>
+        </div>
+        <div class="col-8">
+            <div class="row mb-2" style="width: auto">
+                <div class="col-4">
+                    <span th:if="${order.orderStatus == 1}" class="status-paid">Đã thanh toán</span>
+                    <span th:if="${order.orderStatus == 2}" class="status-canceled">Đã hủy</span>
+                    <span th:if="${order.orderStatus == 3}" class="status-approved">Đã xác nhận đơn hàng</span>
+                    <span th:if="${order.orderStatus == 4}" class="status-waiting">Đang chờ thanh toán</span>
+                    <span th:if="${order.orderStatus == 5}" class="status-shipped">Đã giao hàng</span>
+                    <span th:if="${order.orderStatus == 6}" class="status-done">Đã giao hàng thành công</span>
+                    <span th:if="${order.orderStatus == 7}" class="status-refund">Chờ hoàn tiền</span>
+                </div>
+            </div>
+            <div class="mb-2" style="width: 100%">
+                <div class="m-1" style="border: 2px solid #E2E7F1; padding: 0; border-radius: 4px 4px 0 0; width: 100%">
+                    <h4 class=""
+                        style="text-align:center; background: #E2E7F1; padding: 20px 30px; border-radius: 4px 4px 0 0;">
+                        Địa chỉ nhận hàng</h4>
+                    <div class="row p-3">
+                        <div class="col-6">
+                            <h4 class="mb-3 mt-2" style="font-size: 22px; width: auto">Tên người nhận: <span
+                                    th:text="${order.getCustomerName()}"></span></h4>
+                            <ul class="" style="list-style-type: none; padding: 0">
+                                <li><i class="fas fa-phone"></i> Số điện thoại: <a
+                                        th:href="'tel:' + ${order.getCustomerPhone()}"
+                                        style="fill: #6176FE !important; color: #6176FE">
+                                    <span th:text="${order.getCustomerPhone()}"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h4 class="mb-3 mt-2" style="font-size: 22px; width: 100%">Địa chỉ giao hàng: </h4>
+                            <span th:text="${order.getSpecificAddress()} + ', ' + ${order.getWardName()} + ', ' + ${order.getDistrictName()}+ ', ' + ${order.getProvinceName()}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table" style="border: 2px solid #ccc">
+                <thead class="thead-light">
+                <tr style="background: #ccc">
+                    <th style="border: 2px solid #ccc">Sản phẩm</th>
+                    <th style="border: 2px solid #ccc">Số lượng</th>
+                    <th style="border: 2px solid #ccc">Giá tiền</th>
+                    <th style="border: 2px solid #ccc">Tổng tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${cartList != null && !cartList.isEmpty()}" th:each="cart : ${cartList}">
+                    <td th:if="${productMap.get(cart.productId).getProductTitle().length() > 60}"
+                        th:text="${#strings.substring(productMap.get(cart.productId).getProductTitle(), 0, 60)} + (${productMap.get(cart.productId).getProductTitle().length() > 60 ? '...' : ''})"></td>
+                    <td th:unless="${productMap.get(cart.productId).getProductTitle().length() > 60}"
+                        th:text="${productMap.get(cart.productId).getProductTitle()}"></td>
+                    <td th:text="${cart.quantity}"></td>
+                    <td th:text="${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+                </tr>
+                </tbody>
+                <tfoot style="margin-top: 50px; border-top: 2px solid">
+                <tr>
+                    <th colspan="3">Giá sản phẩm</th>
+                    <td th:text="${#numbers.formatDecimal(order.getSubTotal(), 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+                </tr>
+                <tr>
+                    <th colspan="3">Giảm giá</th>
+                    <td th:text="${#numbers.formatDecimal(order.getTotal() - (order.getSubTotal() + order.getDeliveryCharges()), 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+                </tr>
+                <tr>
+                    <th colspan="3">Phí giao hàng</th>
+                    <td th:text="${#numbers.formatDecimal(order.getDeliveryCharges(), 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+                </tr>
+                <tr class="table-success">
+                    <th colspan="3">Tổng</th>
+                    <td th:text="${#numbers.formatDecimal(order.getTotal(), 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="row d-flex justify-content-end">
+                <a th:if="${order.orderStatus == 3 || order.orderStatus == 4}"
+                   class="btn btn-cancel p-1 mr-5 mt-3" th:order-id="${order.orderId}"
+                   style="border-radius: 5px"><i class="fas fa-times"> Hủy đơn hàng</i></a>
+            </div>
+            <form id="comment-form" th:if="${order.orderStatus == 6 && order.commented == false}" th:action="'/add-comment/' + ${orderId}" method="post" class="border p-4 mt-3" style="border-radius: 10px">
+                <h4 class="text-center">ĐÁNH GIÁ SẢN PHẨM</h4>
+                <div>
+                    <label for="summary">Nhận xét:</label>
+                    <input id="summary" name="summary" type="text" style="width:50%"></input>
+                </div>
+                <div class="d-flex">
+                    <span class="pt-1 mr-2">Mức độ hài lòng: </span>
+                    <div class="star-rating">
+                        <input type="text" id="star" name="star" hidden="">
+                        <input type="radio" id="star1" name="rating" value="5"><label for="star1" title="1 star">★</label>
+                        <input type="radio" id="star2" name="rating" value="4"><label for="star2" title="2 stars">★</label>
+                        <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars">★</label>
+                        <input type="radio" id="star4" name="rating" value="2"><label for="star4" title="4 stars">★</label>
+                        <input type="radio" id="star5" name="rating" value="1"><label for="star5" title="5 stars">★</label>
+                    </div>
+                </div>
+                <div>
+                    <label for="comment">Nhận xét:</label>
+                    <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
+                </div>
+                <button class="btn btn-approve p-1 mr-5 mt-3 mx-auto" id="approve" style="border-radius: 10px">Gửi nhận xét</i></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var errorElement2 = document.getElementById('cancelError');
+        if (errorElement2 != null) {
+            var hasError2 = errorElement2.getAttribute('data-error');
+            if (hasError2 === 'true') {
+                swal({
+                    title: "Lỗi không thể hủy đơn hàng, vui lòng thử lại sau!",
+                    icon: "error",
+                });
+            }
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#comment-form').submit(function(event) {
+            event.preventDefault(); // Prevent the form from submitting via the browser.
+            swal({
+                title: "Xác nhận gửi nhận xét!!!",
+                icon: "success",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        document.getElementById('comment-form').submit();
+                    }
+                });
+        });
+        $('input[type="radio"][name="rating"]').change(function() {
+            var selectedValue = $(this).val();
+            $('#star').val(selectedValue);
+            console.log('Selected star rating:', selectedValue);
+        });
+        $('.btn-cancel').on('click', function () {
+            swal({
+                title: "Xác nhận hủy đơn hàng!!!",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        const toStatus = $(this).attr("order-id");
+                        console.log(toStatus);
+                        var url = '/handle-status/' + toStatus + '?to=2';
+                        console.log(url);
+                        window.location.replace(url);
+                    }
+                });
+            return;
+        });
+    });
+</script>
+</html>

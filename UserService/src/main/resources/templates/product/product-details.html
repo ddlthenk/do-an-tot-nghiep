@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+
+<head>
+    <meta charset="utf-8">
+    <title th:text="${product.productTitle}"></title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="/img/logo.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">-->
+    <link href="/ajax/all.min.css" rel="stylesheet">
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+<!-- topbar start -->
+<div th:replace="~{base-form/topbar :: #topbar}"></div>
+<!-- topbar end -->
+
+<!-- navbar start -->
+<div th:replace="~{base-form/navbar :: #navbar}"></div>
+<!-- navbar end -->
+
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5 cus-title-res-12">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark">Trang chủ</a>
+                <a class="breadcrumb-item text-dark">Sản phẩm</a>
+                <span class="breadcrumb-item active"
+                      th:if="${product.productTitle.length() > 50}"
+                      th:text="${#strings.length(product.productTitle) > 50 ? #strings.substring(product.productTitle, 0, 50) + '...' : product.productTitle}"></span>
+                <span class="breadcrumb-item active"
+                      th:unless="${product.productTitle.length() > 50}"
+                      th:text="${product.productTitle}"></span>
+            </nav>
+        </div>
+    </div>
+    <div class="row px-xl-5 cus-title-res">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark">Trang chủ</a>
+                <a class="breadcrumb-item text-dark">Sản phẩm</a>
+                <span class="breadcrumb-item active"
+                      th:if="${product.productTitle.length() > 50}"
+                      th:text="${#strings.length(product.productTitle) > 50 ? #strings.substring(product.productTitle, 0, 50) + '...' : product.productTitle}"></span>
+                <span class="breadcrumb-item active"
+                      th:unless="${product.productTitle.length() > 50}"
+                      th:text="${product.productTitle}"></span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shop Detail Start -->
+<div class="container-fluid pb-5">
+    <div class="row px-xl-5 cus-w-100 m-auto" style="width: 90%">
+        <div class="col-lg-4 mb-30 p-30">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div th:if="${imageList != null && !imageList.isEmpty()}" th:each="image, iterStat : ${imageList}"
+                         th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                        <img class="d-block w-100" th:src="${image.url}" alt="">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
+                    </li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <form th:action="@{|/add-cart/${product.productId}|}" id="myForm" method="post"
+                  class="h-auto mb-30"
+                  th:buy-now="'/buy-now/' + ${product.productId}" th:add-cart="'/add-cart/' + ${product.productId}">
+                <div class="h-100 bg-light p-30">
+                    <h3 style="color:#F27927" th:text="${product.productTitle}"></h3>
+                    <strong style="margin-top: 14px;" th:text="'SKU code: ' + ${product.skuCode}"></strong><br>
+                    <div class="d-flex mb-3" style="margin-bottom: 27px;">
+                        <div th:if="${product.productRating > 4.5}" class="text-primary mr-2">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div th:if="${product.productRating <= 4.5 && product.productRating > 3.5}"
+                             class="text-primary mr-2">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div th:if="${product.productRating <= 3.5 && product.productRating > 2.5}"
+                             class="text-primary mr-2">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div th:if="${product.productRating <= 2.5 && product.productRating > 1.5}"
+                             class="text-primary mr-2">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div th:unless="${product.productRating > 1.5}"
+                             class="text-primary mr-2">
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <small class="pt-1" th:text="${product.productSold} + ' đã bán'"></small>
+                    </div>
+                    <div class="d-flex mt-2" style="margin-bottom: 15px;">
+                        <h5 class="ml-2" style="color:#F27927"
+                            th:text="${#numbers.formatDecimal(product.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">
+                            >120.000</h5>
+                        <h6 class="ml-4 text-muted" style="margin-top: 3px;">
+                            <del th:text="${#numbers.formatDecimal(product.productDiscountPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></del>
+                        </h6>
+                    </div>
+                    <div th:if="${product.productTotal - product.productSold > 0}" class="row"
+                         style="margin-bottom: 25px;">
+                        <input type="hidden" name="detailsId" id="detailsId" value="">
+                        <div class="col-lg-2">
+                            <p>Phân loại:</p>
+                        </div>
+                        <div class="col-lg-8 d-flex btn-group btn-group-toggle" data-toggle="buttons">
+                            <label th:if="${product.getProductDetailsList() != null && !product.getProductDetailsList().isEmpty()}"
+                                   th:each="productDetails : ${product.getProductDetailsList()}"
+                                   class="btn btn-outline-secondary">
+                                <input type="radio" name="options" th:details-id="${productDetails.detailId}"
+                                       th:id="'option' + ${productDetails.detailId}"
+                                       th:left="${productDetails.leftQuantity}"
+                                       autocomplete="off">
+                                <span th:text="${productDetails.optionValue}"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <span style="margin-top: 14px;margin-bottom: 24px;">Số lượng còn:</span>
+                    <span id="left-value" th:text="${product.productTotal - product.productSold}"></span>
+                    <div th:if="${product.productTotal - product.productSold > 0}" class="row mt-3">
+                        <div class="col-lg-2">
+                            <p style="margin-top: 7px;">Số lượng:</p>
+                        </div>
+                        <div class="col-lg-3 d-flex">
+                            <div class="input-group quantity" style="width: 100px; border: 2px solid #F5F5F5;">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn-minus"
+                                            style="border: none;background-color: #fff; margin-top: 7px;">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control border-0 text-center" value="1" name="quantity"
+                                       style="padding: 0"
+                                       th:max="${product.productTotal - product.productSold}" id="myInput1">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn-plus"
+                                            style="border: none;background-color: #fff;margin-top: 7px;">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:unless="${product.productTotal - product.productSold > 0}" class="row mt-3 ml-5">
+                        <h2 class="p-3" style="color: white; background-color: #F27927">Đã hết hàng</h2>
+                    </div>
+                    <div class="d-flex pt-2" style="margin-bottom: 32px;">
+                        <div class="mb-1 mt-2">
+                            <button th:if="${product.productTotal - product.productSold > 0}" class="btn btn-buy"
+                                    id="buy-now" type="button" style="width: 214px; height: 46px;">
+                                Mua
+                                Ngay
+                            </button>
+                            <button th:unless="${product.productTotal - product.productSold > 0}" class="btn btn-buy"
+                                    id="buy-now" type="button" style="width: 214px; height: 46px;" disabled>
+                                Mua
+                                Ngay
+                            </button>
+                            <button th:if="${product.productTotal - product.productSold > 0}" class="btn btn-cart"
+                                    style="margin-left: 22px;width: 150px; height: 46px;">Thêm giỏ
+                                hàng
+                            </button>
+                            <button th:unless="${product.productTotal - product.productSold > 0}" class="btn btn-cart"
+                                    style="margin-left: 22px;width: 150px; height: 46px;" disabled>Thêm giỏ
+                                hàng
+                            </button>
+                            <label class="label-se-bg" style="color: #F27927;margin-left: 107px;font-size: 30px;">
+                                <i class="fa fa-phone icon-se-bg" style="color: #F27927;">
+                                </i>
+                                1800.270.27
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                                <h1 class="text-primary m-0 mr-3"><img src="/img/icon_tt.png" width="50px"
+                                                                       height="50px"/>
+                                </h1>
+                                <h5 style="font-size: 14px;" class="font-weight-semi-bold m-0 mt-2">Thanh toán khi nhận
+                                    hàng</h5>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                                <h1 class="text-primary m-0 mr-3"><img src="/img/icon_vc.png" width="80px"
+                                                                       height="48px"/>
+                                </h1>
+                                <h5 style="font-size: 14px;" class="font-weight-semi-bold m-0 mt-2">Vận chuyển nhanh
+                                    chóng</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                                <h1 class="text-primary m-0 mr-3"><img src="/img/icon_dt.png" width="50px"
+                                                                       height="50px"/>
+                                </h1>
+                                <h5 style="font-size: 14px;" class="font-weight-semi-bold m-0 mt-2">Đổi trả hàng trong 7
+                                    ngày</h5>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                                <h1 class="text-primary m-0 mr-3"><img src="/img/icon_khtt.png" width="43px"
+                                                                       height="50px"/>
+                                </h1>
+                                <h5 style="font-size: 14px;" class="font-weight-semi-bold m-0 mt-2">Ưu đãi cho KH thân
+                                    thiết</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div class="row d-flex justify-content-center ">
+        <div class="col-7 d-block" style="border: 2px solid #ccc">
+            <div class="bg-light" style="padding-top: 30px;padding-left: 30px;padding-right: 30px;">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active">
+                        <h4 class="mb-3">CHI TIẾT SẢN PHẨM</h4>
+                        <div th:utext="${product.productDescription}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container row">
+        <div class="col">
+            <div class="bg-light p-30">
+                <div class="tab-content">
+                    <div class="col-md-12">
+                        <h4 class="mb-3">ĐÁNH GIÁ SẢN PHẨM</h4>
+                        <div th:if="${commentList != null && !commentList.isEmpty()}" th:each="comment : ${commentList}"
+                             class="media mb-4">
+                            <img src="/img/icon_avtar_comments.png" alt="Image" class="mr-3 mt-1"
+                                 style="width: 45px;">
+                            <div class="media-body">
+                                <div class="d-flex">
+                                    <h6 style="margin-top: 3px;" th:text="${userMap.get(comment.userId).name}"></h6>
+                                    <div th:if="${comment.rating == 5}" class="text-primary ml-2 mb-2">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div th:if="${comment.rating == 4}" class="text-primary ml-2 mb-2">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div th:if="${comment.rating == 3}" class="text-primary ml-2 mb-2">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div th:if="${comment.rating == 2}" class="text-primary ml-2 mb-2">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <div th:if="${comment.rating == 1}" class="text-primary ml-2 mb-2">
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                </div>
+                                <small th:text="${#dates.format(new java.util.Date(comment.date), 'dd/MM/yyyy')}"></small>
+                                <p th:text="${comment.summary}">Thành Phần và Công Năng Tác Dụng:</p>
+                                <p th:text="${comment.comments}">- Taurine: Axit amin thiết yếu cho hoạt động của mắt và
+                                    cải thiện thị lực
+                                    của
+                                    mèo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form th:action="@{|/add-cart/${product.productId}|}" id="myForm2" method="post" class="row px-xl-5 cus-w-5"
+          th:buy-now="'/buy-now/' + ${product.productId}" th:add-cart="'/add-cart/' + ${product.productId}">
+        <h3 style="color:#F27927;padding-left: 15px;">Thức ăn cho mèo trưởng thành ROYAL CANIN Indoor 27</h3>
+        <strong style="margin-top: 14px;padding-left: 15px">Mã SP: PETPF45</strong>
+        <div style="text-align: center;">
+            <img width="341px" height="360px" src="/img/food_1.png" alt="Image">
+        </div>
+        <div class="row cus-pro-in">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-3">
+                <img width="74px" height="76px" src="/img/food_1.png" alt="Image">
+            </div>
+            <div class="col-lg-3">
+                <img width="74px" height="76px" aria-disabled="true" style="opacity: 0.3;" src="/img/food_1.png"
+                     alt="Image">
+            </div>
+            <div class="col-lg-3">
+                <img width="74px" height="76px" aria-disabled="true" style="opacity: 0.3;" src="/img/food_1_3.png"
+                     alt="Image">
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+        <div class="d-flex" style="padding-top:20px;padding-left: 15px;">
+            <h5 class="text-size" style="color:#F27927">120.000</h5>
+            <h6 class="ml-4 text-black-0" style="margin-top: 5px;">
+                <del>150.000</del>
+            </h6>
+        </div>
+        <div class="d-flex mb-3" style="margin-bottom: 27px;font-size: 20px;">
+            <div class="text-primary mr-2" style="color:#F27927">
+                <small class="fa fa-star" style="color: #F27927;padding-left: 15px;"></small>
+                <small class="fa fa-star" style="color: #F27927;"></small>
+                <small class="fa fa-star" style="color: #F27927;"></small>
+                <small class="fa fa-star" style="color: #F27927;"></small>
+                <small class="fa fa-star" style="color: #F27927;"></small>
+            </div>
+            <small class="pt-1" style="padding-top:0.75rem !important;">100+ đã bán</small>
+        </div>
+        <div class="row d-flex type-res">
+            <div class="col-lg-2">
+                <p>Phân loại:</p>
+            </div>
+            <input type="hidden" name="detailsId" id="detailsId2" value="">
+            <div class="col-lg-4 d-flex">
+                <label th:if="${product.getProductDetailsList() != null && !product.getProductDetailsList().isEmpty()}"
+                       th:each="productDetails : ${product.getProductDetailsList()}"
+                       class="btn btn-outline-secondary">
+
+                    <input type="radio" name="options2" th:details-id="${productDetails.detailId}"
+                           th:id="'option' + ${productDetails.detailId}"
+                           autocomplete="off">
+                    <span th:text="${productDetails.optionValue}"></span>
+                </label>
+            </div>
+        </div>
+        <div class="row d-flex number-res">
+            <div class="col-lg-2">
+                <p style="margin-top: 7px;">Số lượng:</p>
+            </div>
+            <div class="col-lg-3 d-flex">
+                <div class="input-group quantity" style="width: 100px; border: 2px solid #F5F5F5;">
+                    <div class="input-group-btn">
+                        <button class="btn-minus" style="border: none;background-color: #fff; margin-top: 7px;">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <input type="text" class="form-control border-0 text-center" value="1" name="quantity"
+                           th:max="${product.productTotal - product.productSold}" id="myInput2">
+                    <div class="input-group-btn">
+                        <button class="btn-plus" style="border: none;background-color: #fff;margin-top: 7px;">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex pt-2 button-res">
+            <div class="mb-1 mt-2" style="width: 100%;">
+                <button type="button" id="buy-now2" class="btn btn-buy">Mua Ngay</button>
+                <button class="btn btn-cart">Giỏ hàng</button>
+            </div>
+        </div>
+        <label class="label-se-bg" style="color: #F27927;margin-left: 145px;font-size: 20px;font-weight: 700;">
+            <i class="fa fa-phone icon-se-bg" style="color: #F27927;">
+            </i>
+            1800.270.27
+        </label>
+        <div class="row nav-res-onner">
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                    <h1 class="text-primary m-0 mr-3"><img src="/img/icon_tt.png" width="40px" height="40px"/></h1>
+                    <h5 style="font-size: 12px;" class="font-weight-semi-bold m-0 mt-2">Thanh toán khi nhận hàng</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                    <h1 class="text-primary m-0 mr-3"><img src="/img/icon_vc.png" width="40px" height="40px"/></h1>
+                    <h5 style="font-size: 12px;" class="font-weight-semi-bold m-0 mt-2">Vận chuyển nhanh chóng</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                    <h1 class="text-primary m-0 mr-3"><img src="/img/icon_dt.png" width="40px" height="40px"/></h1>
+                    <h5 style="font-size: 12px;" class="font-weight-semi-bold m-0 mt-2">Đổi trả hàng trong 7 ngày</h5>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="align-items-center bg-light mb-4" style="text-align: center;">
+                    <h1 class="text-primary m-0 mr-3"><img src="/img/icon_khtt.png" width="40px" height="40px"/></h1>
+                    <h5 style="font-size: 12px;" class="font-weight-semi-bold m-0 mt-2">Ưu đãi cho KH thân thiết</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="bg-light" style="padding-top: 30px;padding-left: 15px;padding-right: 15px; color: #000;">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active">
+                            <strong class="mb-3" style="font-size: 14px;">CHI TIẾT SẢN PHẨM</strong>
+                            <div th:utext="${product.productDescription}">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="bg-light">
+                    <div class="tab-content">
+                        <div class="col-md-12">
+                            <strong style="font-size: 14px;">ĐÁNH GIÁ SẢN PHẨM</strong>
+                            <div class="media mb-4">
+                                <img src="/img/avatar_NH.png" alt="Image" class="mr-3 mt-1"
+                                     style="width: 30px; height: 28px;">
+                                <div class="media-body">
+                                    <div class="d-flex">
+                                        <h6 style="margin-top: 3px;font-size: 12px;">Ngọc Huyền</h6>
+                                        <div class="text-primary ml-2 mb-2" style="font-size: 12px;">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p style="font-size: 8px;color: #CACACA;margin-top: -6px;margin-bottom: 2px;">
+                                        01-05-2022 | Phân loại: 1kg</p>
+                                    <p style="font-size: 12px;margin-bottom: 0px;">Tác Dụng: Taurine: Axit amin thiết
+                                        yếu cho hoạt động của mắt </p>
+                                    <p style="font-size: 12px;margin-bottom: 0px;">và cải thiện thị lực của mèo</p>
+                                </div>
+                            </div>
+                            <div class="media mb-4">
+                                <img src="/img/avatar_QH.png" alt="Image" class="mr-3 mt-1"
+                                     style="width: 30px; height: 28px;">
+                                <div class="media-body">
+                                    <div class="d-flex">
+                                        <h6 style="margin-top: 3px;font-size: 12px;">Ngọc Huy</h6>
+                                        <div class="text-primary ml-2 mb-2" style="font-size: 12px;">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <p style="font-size: 8px;color: #CACACA;margin-top: -6px;margin-bottom: 2px;">
+                                        03-06-2022 | Phân loại: 2kg</p>
+                                    <p style="font-size: 12px;">Sản phẩm chất lượng tốt, giá cả hợp lý</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Shop Detail End -->
+
+<!-- footer start -->
+<div th:replace="~{base-form/footer :: #footer}"></div>
+<!-- footer end -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i
+        class="fa fa-angle-double-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<!--<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+<script src="/js/jquery-3.4.1.min.js"></script>
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>-->
+<script src="/bootstrap-4.4.1/bootstrap.bundle.min.js"></script>
+<script src="/lib/easing/easing.min.js"></script>
+<script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="/mail/jqBootstrapValidation.min.js"></script>
+<script src="/mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/js/main.js"></script>
+</body>
+<script>
+    document.getElementById('myInput1').addEventListener('onchange', function (e) {
+        var maxValue = parseInt(e.target.getAttribute('max'), 10);
+        console.log(maxValue);
+        if (+e.target.value > maxValue) {
+            e.target.value = maxValue;
+        }
+    });
+    document.getElementById('myInput2').addEventListener('onchange', function (e) {
+        var maxValue = parseInt(e.target.getAttribute('max'), 10);
+        console.log(maxValue);
+        if (+e.target.value > maxValue) {
+            e.target.value = maxValue;
+        }
+    });
+    document.getElementById('myInput1').addEventListener('input', function (e) {
+        var maxValue = parseInt(e.target.getAttribute('max'), 10);
+        console.log(maxValue);
+        if (+e.target.value > maxValue) {
+            e.target.value = maxValue;
+        }
+    });
+    document.getElementById('myInput2').addEventListener('input', function (e) {
+        var maxValue = parseInt(e.target.getAttribute('max'), 10);
+        console.log(maxValue);
+        if (+e.target.value > maxValue) {
+            e.target.value = maxValue;
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.btn-group-toggle .btn').on('click', function () {
+            var selectedOption = document.querySelector('input[name="options"]:checked');
+            var left = selectedOption.getAttribute('left');
+            $('#left-value').text(left)
+            $('#myInput1').attr('max', left)
+
+        });
+    });
+
+</script>
+<script>
+    // document.getElementById('myForm').addEventListener('submit', function (event) {
+    //     event.preventDefault();
+    //     var selectedValue = document.querySelector('input[name="options"]:checked').attr("detailsId");
+    //     console.log('Selected value:', selectedValue);
+    // });
+</script>
+<script>
+    $(document).ready(function () {
+
+        $('#buy-now').on('click', function () {
+            var selectedOption = document.querySelector('input[name="options"]:checked');
+            if (selectedOption) {
+                document.getElementById('detailsId').value = selectedOption.getAttribute('details-id');
+            }
+            if (selectedOption == null) {
+                swal({
+                    title: "Chọn phân loại!!!",
+                    icon: "error"
+                });
+                return;
+            }
+            var isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
+            if (isAuthenticated) {
+                console.log("Người dùng đã đăng nhập.");
+            } else {
+                swal({
+                    title: "Bạn chưa đăng nhập, chuyển hướng đến trang đăng nhập!!!",
+                    icon: "info",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            window.location.replace('/login');
+                        }
+                    });
+                return;
+            }
+            swal({
+                title: "Xác nhận mua?",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        const buyUrl = $('#myForm').attr("buy-now");
+                        $('#myForm').attr("action", buyUrl);
+                        $('#myForm').submit();
+                    }
+                });
+        });
+        $('#buy-now2').on('click', function () {
+            var selectedOption = document.querySelector('input[name="options"]:checked');
+            if (selectedOption) {
+                document.getElementById('detailsId').value = selectedOption.getAttribute('details-id');
+            }
+            if (selectedOption == null) {
+                swal({
+                    title: "Chọn phân loại!!!",
+                    icon: "error"
+                });
+                return;
+            }
+            var isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
+            if (isAuthenticated) {
+                console.log("Người dùng đã đăng nhập.");
+            } else {
+                swal({
+                    title: "Bạn chưa đăng nhập, chuyển hướng đến trang đăng nhập!!!",
+                    icon: "info",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            window.location.replace('/login');
+                        }
+                    });
+                return;
+            }
+            swal({
+                title: "Xác nhận mua?",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        const buyUrl = $('#myForm2').attr("buy-now");
+                        $('#myForm2').attr("action", buyUrl);
+                        $('#myForm2').submit();
+                    }
+                });
+        });
+    });
+    document.getElementById('myForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var selectedOption = document.querySelector('input[name="options"]:checked');
+        if (selectedOption) {
+            document.getElementById('detailsId').value = selectedOption.getAttribute('details-id');
+        }
+        if (selectedOption == null) {
+            swal({
+                title: "Chọn phân loại!!!",
+                icon: "error"
+            });
+            return;
+        }
+        var isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
+        if (isAuthenticated) {
+            console.log("Người dùng đã đăng nhập.");
+        } else {
+            swal({
+                title: "Bạn chưa đăng nhập, chuyển hướng đến trang đăng nhập!!!",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        window.location.replace('/login');
+                    }
+                });
+            return;
+        }
+        swal({
+            title: "Thêm vào giỏ hàng?",
+            icon: "info",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    const buyUrl = $('#myForm').attr("action");
+                    $('#myForm').attr("buy-now", buyUrl);
+                    $('#myForm').submit();
+                    // this.submit();
+                }
+            });
+    });
+    document.getElementById('myForm2').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var selectedOption = document.querySelector('input[name="options2"]:checked');
+        if (selectedOption) {
+            document.getElementById('detailsId2').value = selectedOption.getAttribute('details-id');
+        }
+        if (selectedOption == null) {
+            swal({
+                title: "Chọn phân loại!!!",
+                icon: "error"
+            });
+            return;
+        }
+        var isAuthenticated = [[${#authorization.expression('isAuthenticated()')}]];
+        if (isAuthenticated) {
+            console.log("Người dùng đã đăng nhập.");
+        } else {
+            swal({
+                title: "Bạn chưa đăng nhập, chuyển hướng đến trang đăng nhập!!!",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        window.location.replace('/login');
+                    }
+                });
+            return;
+        }
+        swal({
+            title: "Thêm vào giỏ hàng?",
+            icon: "info",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    const buyUrl = $('#myForm2').attr("action");
+                    $('#myForm2').attr("buy-now", buyUrl);
+                    $('#myForm2').submit();
+                }
+            });
+        console.log(selectedOption);
+    });
+</script>
+</html>
