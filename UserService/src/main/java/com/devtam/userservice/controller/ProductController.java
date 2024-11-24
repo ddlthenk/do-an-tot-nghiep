@@ -144,7 +144,6 @@ public class ProductController {
         List<Comment> commentList = commentService.getCommentsOfProduct(productId, 0, 8);
         List<Long> userIds = commentList.stream().map(Comment::getUserId).collect(Collectors.toList());
         Map<Long, User> userMap = userService.getMapUsers(userIds);
-
         model.addAttribute("commentList", commentList);
         model.addAttribute("userMap", userMap);
         model.addAttribute("product", product);

@@ -26,4 +26,6 @@ public interface AccountService {
     public Long countAlluser();
 
     public Long countActiveUser();
+
+    public boolean deleteAccount(long accountId);
 }

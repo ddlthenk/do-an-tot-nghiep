@@ -38,6 +38,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
     CommandLineRunner addNewAccount() {
         return args -> {
             Account account = Account.builder()
+                    .accountId(1L)
                     .email("nguyentrongtam2x2@gmail.com")
                     .role(RoleConstant.ROOT.getValue())
                     .phoneNumber("0328419491")
@@ -45,65 +46,48 @@ public class ApplicationConfig implements WebMvcConfigurer {
                     .password(PasswordHandler.hashPassword("123456"))
                     .build();
             Account account2 = Account.builder()
+                    .accountId(2L)
                     .email("nam@com.vn")
                     .userName("admin2")
                     .role(RoleConstant.ADMIN.getValue())
                     .password(PasswordHandler.hashPassword("123456"))
                     .build();
             Account account3 = Account.builder()
+                    .accountId(3L)
                     .userName("admin")
                     .email("testAdmin@cas.vn")
                     .role(RoleConstant.ADMIN.getValue())
                     .password(PasswordHandler.hashPassword("123456"))
                     .build();
             if (!accountRepository.existsAccountByEmail((account.getEmail()))) {
-                accountRepository.save(account);
+                account = accountRepository.save(account);
             } else {
                 System.out.println("Account with email " + account.getEmail() + " exist");
             }
-            for (int i = 40; i <= 55; i++) {
-                Account testAcc = Account.builder()
-                        .accountId((long) i)
-                        .userName("AdmintestAcc" + i)
-                        .email("AdmintestAcc" + i + "@cas.vn")
-                        .role(RoleConstant.USER.getValue())
-                        .password(PasswordHandler.hashPassword("123456"))
-                        .build();
-                if (!accountRepository.existsAccountByEmail((testAcc.getEmail()))) {
-                    accountRepository.save(testAcc);
-                }
-            }
-
             if (!accountRepository.existsAccountByEmail((account2.getEmail()))) {
-                accountRepository.save(account2);
+                account2 = accountRepository.save(account2);
             } else {
                 System.out.println("Account with email " + account2.getEmail() + " exist");
             }
-
             if (!accountRepository.existsAccountByEmail((account3.getEmail()))) {
-                accountRepository.save(account3);
+                account3 = accountRepository.save(account3);
             } else {
                 System.out.println("Account with email " + account3.getEmail() + " exist");
             }
-        };
-    }
 
-    @Bean
-    CommandLineRunner addNewUser() {
-        return args -> {
             User new1 = User.builder()
-                    .userId(1L)
+                    .userId(account.getAccountId())
                     .name("Nguyen Trong Tu Tam")
                     .dateOfBirth(Date.valueOf("2023-12-23"))
                     .language("vi")
                     .build();
             User new2 = User.builder()
-                    .userId(2L)
+                    .userId(account2.getAccountId())
                     .name("Hoang Duc Nam")
                     .language("en")
                     .build();
             User new3 = User.builder()
-                    .userId(3L)
+                    .userId(account3.getAccountId())
                     .name("test")
                     .language("en")
                     .build();
@@ -112,17 +96,9 @@ public class ApplicationConfig implements WebMvcConfigurer {
             saveUser(new2);
             saveUser(new3);
 
-            for (int i = 40; i <= 55; i++) {
-                User userN = User.builder()
-                        .userId((long) i)
-                        .name("Admin test " + i)
-                        .dateOfBirth(Date.valueOf("2002-06-" + (i % 27 + 1)))
-                        .language("vi")
-                        .build();
-                saveUser(userN);
-            }
         };
     }
+
 
     private boolean saveUser(User user) {
         if (userRepository.save(user) != null) {

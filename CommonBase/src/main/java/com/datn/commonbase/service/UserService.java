@@ -26,4 +26,6 @@ public interface UserService {
 
     public List<UserDto> getUsersDtoByListIds(List<Long> accountIds);
 
+    public boolean deleteUser(long userId);
+
 }

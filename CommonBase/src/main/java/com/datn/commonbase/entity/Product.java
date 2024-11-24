@@ -89,6 +89,10 @@ public class Product implements Serializable {
         this.productRating = 5;
         this.productRatingCount = 1;
         this.countOption = 1;
+        countProductTotal();
+    }
+
+    public void countProductTotal() {
         if (this.productDetailsList != null && !this.productDetailsList.isEmpty()) {
             int totalQuantity = 0;
             int minPrice = this.productDetailsList.get(0).getPrice();

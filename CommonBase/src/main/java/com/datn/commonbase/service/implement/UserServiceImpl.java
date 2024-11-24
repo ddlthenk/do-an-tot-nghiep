@@ -154,4 +154,15 @@ public class UserServiceImpl implements UserService {
     public User saveUser(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public boolean deleteUser(long userId) {
+        try {
+            userRepository.deleteById(userId);
+            return true;
+        } catch (Exception e) {
+            _log.error(e.getMessage());
+            return false;
+        }
+    }
 }

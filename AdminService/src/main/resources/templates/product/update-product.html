@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Site Title -->
-    <title>Sherah - HTML eCommerce Dashboard Template</title>
+    <title>Catto shop</title>
     <script src="/CkEditor5/ckeditor.js"></script>
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap"
@@ -89,6 +89,21 @@
                                       id="addProductForm"
                                       th:object="${product}">
                                     <input th:field="${product.productId}" hidden="">
+                                    <input th:field="${product.productStatus}" hidden="">
+                                    <input th:field="${product.categoryParentId}" hidden="">
+                                    <input th:field="${product.countOption}" hidden="">
+                                    <input th:field="${product.productDeleted}" hidden="">
+                                    <input th:field="${product.productCreated}" hidden="">
+                                    <input th:field="${product.productPrice}" hidden="">
+                                    <input th:field="${product.productRating}" hidden="">
+                                    <input th:field="${product.productRatingCount}" hidden="">
+                                    <input th:field="${product.productSold}" hidden="">
+                                    <input th:field="${product.productTotal}" hidden="">
+                                    <input th:field="${product.productUpdated}" hidden="">
+                                    <input th:field="${product.productSold}" hidden="">
+                                    <input th:field="${product.productTotal}" hidden="">
+
+
                                     <div class="product-form-box2 sherah-border mg-top-30">
                                         <div class="form-group">
                                             <div class="image-upload-group" id="image-upload-group"
@@ -159,6 +174,7 @@
                                                             <div class="form-group__input">
                                                                 <input class="sherah-wc__form-input"
                                                                        placeholder="Type here" type="number"
+                                                                       th:field="*{productDiscountPrice}"
                                                                        name="p_title">
                                                             </div>
                                                         </div>
@@ -263,6 +279,8 @@
                                                      th:each="productD, iterStat : ${product.productDetailsList}">
                                                     <div class="form-group sherah-border p-3"
                                                          id="product-details-item">
+                                                        <input type="hidden"
+                                                               th:field="*{productDetailsList[__${iterStat.index}__].leftQuantity}">
                                                         <input type="number"
                                                                th:field="*{productDetailsList[__${iterStat.index}__].detailId}"
                                                                hidden="">

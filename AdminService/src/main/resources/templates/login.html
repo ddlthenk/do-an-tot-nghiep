@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th=http://www.thymeleaf.org
+	  xmlns:sec=http://www.thymeleaf.org/extras/spring-security
+	  xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+	<head>
+		<!-- Meta Tags -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="keywords" content="Site keywords here">
+		<meta name="description" content="#">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Site Title -->
+		<title>Catto shop</title>
+
+		<!-- Font -->
+		<link th:href="@{https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap}" rel="stylesheet">
+
+		<!-- Fav Icon -->
+		<link rel="icon" th:href="@{/img/favicon.png}">
+
+		<!-- sherah Stylesheet -->
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+		<link rel="stylesheet" th:href="@{/css/font-awesome-all.min.css}">
+		<link rel="stylesheet" th:href="@{/css/charts.min.css}">
+		<link rel="stylesheet" th:href="@{/css/datatables.min.css}">
+		<link rel="stylesheet" th:href="@{/css/jvector-map.css}">
+		<link rel="stylesheet" th:href="@{/css/slickslider.min.css}">
+		<link rel="stylesheet" th:href="@{/css/jquery-ui.css}">
+		<link rel="stylesheet" th:href="@{/css/reset.css}">
+		<link rel="stylesheet" th:href="@{/css/style.css}">
+		<script th:src="@{/js/sweetalert.min.js}"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const errorValue = urlParams.get('error');
+
+				if (errorValue === 'true') {
+					swal({
+						title: "Login failed !",
+						text: "Enter true information!",
+						icon: "error",
+					});
+				}
+			});
+		</script>
+	</head>
+	<body id="sherah-dark-light">
+	<div th:if="${error != null}" th:data-error="${error}" id="error"></div>
+			<section class="sherah-wc sherah-wc__full sherah-bg-cover" style="background-image: url('/img/credential-bg.svg');">
+				<div class="container-fluid p-0">
+					<div class="row g-0">
+						<div class="col-lg-6 col-md-6 col-12 sherah-wc-col-one">
+							<div class="sherah-wc__inner" style="background-image: url('/img/welcome-bg.png');">
+								<!-- Logo -->
+								<div class="sherah-wc__logo">
+									<a th:href='@{/}'><img th:src="@{/img/logo.jpg}" alt="#"></a>
+								</div>
+								<!-- Middle Image -->
+								<div class="sherah-wc__middle">
+									<a th:href='@{/}'><img th:src="@{/img/welcome-vector.png}" alt="#"></a>
+								</div>
+								<!-- Welcome Heading -->
+								<h2 class="sherah-wc__title">Chào mừng đến với Thương mại điện tử Catto</h2>
+							</div>
+						</div>
+						<div class="col-lg-6 col-md-6 col-12 sherah-wc-col-two">
+							<div class="sherah-wc__form">
+								<div class="sherah-wc__form-inner">
+									<h3 class="sherah-wc__form-title sherah-wc__form-title__one">Đăng nhập <span>Vui lòng nhập email và mật khẩu để tiếp tục</span></h3>
+									<!-- Sign in Form -->
+									<form class="sherah-wc__form-main p-0" method="post" th:action="@{/admin/login}">
+										<div class="form-group">
+											<label class="sherah-wc__form-label">Email</label>
+											<div class="form-group__input">
+												<input class="sherah-wc__form-input" type="text" name="username" placeholder="demo3243@gmail.com" required="required">
+											</div>
+										</div>
+										<!-- Form Group -->
+										<div class="form-group">
+											<label class="sherah-wc__form-label">Mật khẩu</label>
+											<div class="form-group__input">
+												<input class="sherah-wc__form-input" id="password-field" type="password" name="password" placeholder="" maxlength="8" required="required">
+											</div>
+										</div>
+										<!-- Form Group -->
+										<div class="form-group">
+											<div class="sherah-wc__check-inline">
+												<div class="sherah-wc__checkbox">
+													<input class="sherah-wc__form-check" id="remember-me" name="remember-me" type="checkbox">
+													<label for="remember-me">Remember me later</label>
+												</div>
+												<div class="sherah-wc__forgot">
+													<a th:href="@{forgot-password.html}" class="forgot-pass">Forget Password?</a>
+												</div>
+											</div>
+										</div>
+										<!-- Form Group -->
+										<div class="form-group form-mg-top25">
+											<div class="sherah-wc__button sherah-wc__button--bottom">
+												<button class="ntfmax-wc__btn" type="submit">Login</button>
+											</div>
+										</div>
+									</form>
+									<!-- End Sign in Form -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<!-- sherah Scripts -->
+		<script th:src="@{/js/jquery.min.js}"></script>
+		<script th:src="@{/js/jquery-migrate.js}"></script>
+		<script th:src="@{/js/popper.min.js}"></script>
+		<script th:src="@{/js/jquery-ui.min.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/charts.js}"></script>
+		<script th:src="@{/js/final-countdown.min.js}"></script>
+		<script th:src="@{/js/fancy-box.min.js}"></script>
+		<script th:src="@{/js/fullcalendar.min.js}"></script>
+		<script th:src="@{/js/datatables.min.js}"></script>
+		<script th:src="@{/js/circle-progress.min.js}"></script>
+		<script th:src="@{/js/jquery-jvectormap.js}"></script>
+		<script th:src="@{/js/jvector-map.js}"></script>
+		<script th:src="@{/js/main.js}"></script>
+	</body>
+<script>
+	var errorElement = document.getElementById('error');
+	if (errorElement != null) {
+		var hasError = errorElement.getAttribute('data-error');
+		if (hasError === 'true') {
+			swal({
+				title: "Wrong username or password!",
+				icon: "error",
+			});
+		}
+	}
+</script>
+</html>

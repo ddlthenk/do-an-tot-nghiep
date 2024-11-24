@@ -33,6 +33,8 @@ public class ProductController {
     ImageService imageService;
     @Autowired
     ProductService productService;
+    @Autowired
+    ProductDetailsService productDetailsService;
     CloudinaryService cloudinaryService = new CloudinaryService();
     private final Logger _log = LogManager.getLogger(ProductController.class);
 
@@ -173,7 +175,17 @@ public class ProductController {
                 imageService.deleteImage(imageDele);
             }
         }
+        product.setProductUpdated(System.currentTimeMillis());
+        for (ProductDetails productDetails : product.getProductDetailsList()) {
+            ProductDetails oldPd = productDetailsService.getProductDetails(productDetails.getDetailId());
+            if (productDetails.getTotal() != oldPd.getTotal()) {
+                int sold = oldPd.getTotal() - oldPd.getLeftQuantity();
+                productDetails.setLeftQuantity(productDetails.getTotal() - sold);
+            }
+        }
+        product.countProductTotal();
         Product saved = productService.saveProduct(product);
+
         if (multipartFile != null && multipartFile.length > 0 && !Objects.equals(multipartFile[0].getOriginalFilename(), "")) {
             for (MultipartFile file : multipartFile) {
                 String urlImg = cloudinaryService.uploadFile(file);
@@ -219,5 +231,4 @@ public class ProductController {
         }
         return "redirect:/admin/product-details/" + productId;
     }
-
 }

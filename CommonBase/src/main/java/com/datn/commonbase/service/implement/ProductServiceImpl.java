@@ -27,14 +27,10 @@ public class ProductServiceImpl implements ProductService {
     public Product saveProduct(Product product) {
         try {
             if (product.getProductDetailsList() != null && !product.getProductDetailsList().isEmpty())
-                product.getProductDetailsList().stream().forEach(productDetails -> {
+                product.getProductDetailsList().forEach(productDetails -> {
                     productDetails.setProduct(product);
                 });
-            Product savedProduct = productRepository.save(product);
-            if (savedProduct == null) {
-                return null;
-            }
-            return savedProduct;
+            return productRepository.save(product);
         } catch (Exception e) {
             _log.error(e);
             return null;
