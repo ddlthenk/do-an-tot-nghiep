@@ -123,6 +123,19 @@ public class EmployeeController {
         return "employee/employee-info";
     }
 
+    @GetMapping("/delete/{id}")
+    public String deleteEmployee(@PathVariable("id") long id, Model model) {
+        try {
+            userService.deleteUser(id);
+            accountService.deleteAccount(id);
+            return "redirect:/admin/employee";
+        } catch (Exception e) {
+            _log.error(e.getMessage());
+            model.addAttribute("error", "Failed to delete employee");
+            return "employee/list-employee";
+        }
+    }
+
     @GetMapping("/test")
     public String testUI(Authentication authentication, Model model) {
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {

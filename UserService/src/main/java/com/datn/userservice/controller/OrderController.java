@@ -169,7 +169,7 @@ public class OrderController {
                 orderService.saveOrder(order);
             }
         }
-//        order.setOrderStatus(PaymentStatus.DONE.getValue());
+        order.setOrderStatus(PaymentStatus.DONE.getValue());
         model.addAttribute("order", order);
         model.addAttribute("productMap", productMap);
         model.addAttribute("cartList", cartList);

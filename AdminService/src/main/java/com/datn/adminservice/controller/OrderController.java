@@ -89,7 +89,6 @@ public class OrderController {
                 orderService.saveOrder(order);
             }
         }
-
         model.addAttribute("order", order);
         model.addAttribute("productMap", productMap);
         model.addAttribute("cartList", cartList);

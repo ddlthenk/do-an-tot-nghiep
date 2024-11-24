@@ -48,11 +48,19 @@ public class HomeController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String userId = userDetails.getUsername(); // Lấy userId từ UserDetails
             User user = userService.getUserById(Long.valueOf(userId));
+            if (user == null) {
+                return "redirect:/admin/login?login-error=1";
+            }
             if (user.getName() == null) {
                 user.setName("");
             }
             session.setAttribute("user", user);
-
+            String imageUrl = "/img/profile-pic.png";
+            List<Image> imageDtos = imageService.getListImage(Long.parseLong(userId), ImageTypes.USER_IMG.getValue());
+            if (imageDtos != null && !imageDtos.isEmpty()) {
+                imageUrl = imageDtos.get(0).getUrl();
+            }
+            session.setAttribute("imageUrl", imageUrl);
             Page<Order> orderPage = orderService.getOrderPage(0, 10);
             model.addAttribute("orderPage", orderPage);
 
@@ -88,6 +96,4 @@ public class HomeController {
         model.addAttribute("error", error);
         return "login";
     }
-
-
 }
