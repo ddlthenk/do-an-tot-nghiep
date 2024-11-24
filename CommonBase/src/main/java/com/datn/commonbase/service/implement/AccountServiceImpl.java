@@ -149,4 +149,15 @@ public class AccountServiceImpl implements AccountService {
         Long count = accountRepository.countAccountsByEnable(true);
         return count;
     }
+
+    @Override
+    public boolean deleteAccount(long accountId) {
+        try {
+            accountRepository.deleteById(accountId);
+            return true;
+        } catch (Exception e) {
+            _log.error(e.getMessage());
+        }
+        return false;
+    }
 }
