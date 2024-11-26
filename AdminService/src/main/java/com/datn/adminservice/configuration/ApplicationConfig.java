@@ -91,7 +91,6 @@ public class ApplicationConfig implements WebMvcConfigurer {
                     .name("test")
                     .language("en")
                     .build();
-
             saveUser(new1);
             saveUser(new2);
             saveUser(new3);
@@ -101,12 +100,13 @@ public class ApplicationConfig implements WebMvcConfigurer {
 
 
     private boolean saveUser(User user) {
-        if (userRepository.save(user) != null) {
-            System.err.println("saved user");
-            return true;
-        } else {
-            System.err.println("couldn't save user");
-            return false;
+        try {
+            if (userRepository.existsById(user.getUserId())) {
+                userRepository.save(user);
+                return true;
+            }
+        } catch (Exception ignored) {
         }
+        return false;
     }
 }

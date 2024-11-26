@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=http://www.thymeleaf.org
-      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
-      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+>
 
 <head>
     <meta charset="utf-8">
@@ -339,7 +338,7 @@
             const subTotal = parseInt($('#sub-total').val());
             const shipping = parseInt($('#shipping').val())
             const discountUpdated = parseInt($('#discount').val());
-            const totalPrice = subTotal + shipping + discountUpdated;
+            const totalPrice = subTotal + shipping - discountUpdated;
             $('#total').val(totalPrice);
             $('#total-view').text(totalPrice);
         }

@@ -33,6 +33,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/com.cloudinary/cloudinary-http44 -->
         <dependency>
             <groupId>com.cloudinary</groupId>
@@ -78,6 +83,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>co.elastic.clients</groupId>
+            <artifactId>elasticsearch-java</artifactId>
+            <version>8.13.4</version>
         </dependency>
     </dependencies>
     <build>

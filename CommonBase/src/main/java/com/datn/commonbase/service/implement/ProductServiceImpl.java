@@ -2,6 +2,7 @@ package com.datn.commonbase.service.implement;
 
 import com.datn.commonbase.entity.Category;
 import com.datn.commonbase.entity.Product;
+import com.datn.commonbase.repository.DocumentRepositoryImpl;
 import com.datn.commonbase.repository.ProductRepository;
 import com.datn.commonbase.service.CategoryService;
 import com.datn.commonbase.service.ProductService;
@@ -22,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     CategoryService categoryService;
     private Logger _log = LogManager.getLogger(ProductServiceImpl.class);
+    DocumentRepositoryImpl documentRepository = DocumentRepositoryImpl.getInstance();
 
     @Override
     public Product saveProduct(Product product) {
@@ -30,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
                 product.getProductDetailsList().forEach(productDetails -> {
                     productDetails.setProduct(product);
                 });
+            documentRepository.index(product);
             return productRepository.save(product);
         } catch (Exception e) {
             _log.error(e);
@@ -42,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = new ArrayList<>();
         if (categoryId < 0) {
             Page<Product> productPage = productRepository.findAll(PageRequest.of(0, limit));
-            if (productPage != null && productPage.getSize() > 0) {
+            if (productPage.getSize() > 0) {
                 productList = productPage.getContent();
             }
         } else {
@@ -54,8 +57,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getTopSelling(boolean status, int page, int limit) {
         try {
-            Page<Product> productPage = productRepository.findPageSortedBySoldRatioAndCreated(status, PageRequest.of(page, limit));
-            return productPage;
+            return productRepository.findPageSortedBySoldRatioAndCreated(status, PageRequest.of(page, limit));
         } catch (Exception e) {
             _log.error(e);
             return Page.empty();
@@ -66,8 +68,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> searchProducts(boolean status, int page, int limit, String searchValue) {
         try {
-            Page<Product> productPage = productRepository.findAllByProductStatusAndProductTitleContaining(status, searchValue, PageRequest.of(page, limit));
-            return productPage;
+            return productRepository.findAllByProductStatusAndProductTitleContaining(status, searchValue, PageRequest.of(page, limit));
         } catch (Exception e) {
             _log.error(e);
             return Page.empty();
