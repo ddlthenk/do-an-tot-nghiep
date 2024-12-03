@@ -114,6 +114,9 @@ public class Product implements Serializable {
 
     public void cancelSoldChange(int sold) {
         this.productSold -= sold;
+        if (this.productSold < 0) {
+            this.productSold = this.productTotal;
+        }
     }
 
     public void calculateRating(double rating) {

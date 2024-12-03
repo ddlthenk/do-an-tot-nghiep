@@ -195,9 +195,10 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6 col-md-6 col-12">
+                                                    <div class="col-lg-6 col-md-6 col-12" id="discountInput1">
                                                         <div class="form-group">
-                                                            <label class="sherah-wc__form-label">Giá tối thiểu</label>
+                                                            <label class="sherah-wc__form-label">Giá trị đơn hàng tối
+                                                                thiểu</label>
                                                             <div class="form-group__input">
                                                                 <input class="sherah-wc__form-input"
                                                                        placeholder="Type here" type="number"
@@ -209,18 +210,17 @@
                                                     </div>
                                                     <div class="col-lg-4 col-md-4 col-12" id="discountInput">
                                                         <div class="form-group">
-                                                            <label class="sherah-wc__form-label">Giảm giá</label>
+                                                            <label class="sherah-wc__form-label">Giảm giá (%)</label>
                                                             <div class="form-group__input">
                                                                 <input class="sherah-wc__form-input"
                                                                        placeholder="Type here" type="number"
-                                                                       th:field="*{discount}"
-                                                                       name="p_title">
+                                                                       th:field="*{discount}" name="p_title">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4 col-md-4 col-12" id="discountPercentInput">
                                                         <div class="form-group">
-                                                            <label class="sherah-wc__form-label">Giảm giá</label>
+                                                            <label class="sherah-wc__form-label">Giảm giá (%)</label>
                                                             <div class="form-group__input">
                                                                 <input
                                                                         class="sherah-wc__form-input"
@@ -232,7 +232,8 @@
                                                     </div>
                                                     <div class="col-lg-4 col-md-4 col-12" id="discountPercentInput1">
                                                         <div class="form-group">
-                                                            <label class="sherah-wc__form-label">Giảm thấp nhất</label>
+                                                            <label class="sherah-wc__form-label">Giá trị đơn hàng tối
+                                                                thiểu</label>
                                                             <div class="form-group__input">
                                                                 <input
                                                                         class="sherah-wc__form-input"
@@ -244,7 +245,7 @@
                                                     </div>
                                                     <div class="col-lg-4 col-md-4 col-12" id="discountPercentInput2">
                                                         <div class="form-group">
-                                                            <label class="sherah-wc__form-label">Giảm nhiều nhất</label>
+                                                            <label class="sherah-wc__form-label">Giảm tối đa</label>
                                                             <div class="form-group__input">
                                                                 <input
                                                                         class="sherah-wc__form-input"
@@ -441,11 +442,13 @@
     document.addEventListener('DOMContentLoaded', function () {
         var categorySelect = document.getElementById('categorySelect');
         var discountInput = document.getElementById('discountInput');
+        var discountInput1 = document.getElementById('discountInput1');
         var discountPercentInput = document.getElementById('discountPercentInput');
         var discountPercentInput1 = document.getElementById('discountPercentInput1');
         var discountPercentInput2 = document.getElementById('discountPercentInput2');
 
         discountInput.style.display = 'none';
+        // discountInput1.style.display = 'none';
         discountPercentInput.style.display = 'block';
         discountPercentInput1.style.display = 'none';
         discountPercentInput2.style.display = 'none';
@@ -455,16 +458,19 @@
 
             if (selectedValue === '0') {  // Free ship
                 discountInput.style.display = 'block';
+                discountInput1.style.display = 'block';
                 discountPercentInput.style.display = 'none';
                 discountPercentInput1.style.display = 'none';
                 discountPercentInput2.style.display = 'none';
             } else if (selectedValue === '1') {  // Discount
                 discountInput.style.display = 'none';
+                discountInput1.style.display = 'none';
                 discountPercentInput.style.display = 'block';
                 discountPercentInput1.style.display = 'block';
                 discountPercentInput2.style.display = 'block';
             } else {
                 discountInput.style.display = 'none';
+                discountInput1.style.display = 'none';
                 discountPercentInput.style.display = 'none';
                 discountPercentInput1.style.display = 'none';
                 discountPercentInput2.style.display = 'none';

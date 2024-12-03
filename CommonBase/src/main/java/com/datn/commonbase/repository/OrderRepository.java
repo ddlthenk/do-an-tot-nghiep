@@ -33,12 +33,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "SELECT COUNT(*) FROM tbl_order WHERE YEAR(order_date) = YEAR(?1) AND MONTH(order_date) = MONTH(?1)", nativeQuery = true)
     Long countByMonthAndYear(Date orderDate);
 
-    @Query(value = "SELECT SUM(tbl_order.total) FROM tbl_order WHERE YEAR(order_date) = YEAR(?1) AND MONTH(order_date) = MONTH(?1)", nativeQuery = true)
+    @Query(value = "SELECT SUM(tbl_order.total) FROM tbl_order WHERE YEAR(order_date) = YEAR(?1) AND MONTH(order_date) = MONTH(?1) AND order_status = 6", nativeQuery = true)
     Long sumByMonthAndYear(Date orderDate);
 
-    @Query(value = "SELECT SUM(tbl_order.total) FROM tbl_order", nativeQuery = true)
+    @Query(value = "SELECT SUM(tbl_order.total) FROM tbl_order where tbl_order.order_status = 6", nativeQuery = true)
     Long sumAll();
 
-    @Query(value = "SELECT COUNT(*) FROM tbl_order WHERE order_date BETWEEN ?1 AND ?2", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM tbl_order WHERE order_date BETWEEN ?1 AND ?2 and order_status = 6", nativeQuery = true)
     Long countBetweenDate(Date orderDate1, Date orderDate2);
 }

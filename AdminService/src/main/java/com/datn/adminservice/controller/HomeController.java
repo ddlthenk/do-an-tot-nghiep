@@ -84,6 +84,7 @@ public class HomeController {
             model.addAttribute("totalDoneOrder", totalDoneOrder);
 
             Long totalPrice = orderService.getTotalPriceOrder();
+            totalPrice = totalPrice == null ? 0 : totalPrice;
             List<Long> listTotalPrice = orderService.getListPriceOrder();
             model.addAttribute("totalPrice", totalPrice);
             model.addAttribute("listTotalPrice", listTotalPrice);

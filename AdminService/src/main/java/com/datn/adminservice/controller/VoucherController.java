@@ -34,9 +34,9 @@ public class VoucherController {
     public String addVoucher(Model model, @RequestParam(required = false, value = "userid", defaultValue = "-1") int userId) {
         Voucher voucher = Voucher.builder()
                 .build();
-        if (userId != -1) {
-            voucher.setUserId(userId);
-        }
+//        if (userId != -1) {
+//            voucher.setUserId(userId);
+//        }
 //        voucherService.saveVoucher(voucher);
         model.addAttribute("voucher", voucher);
         return "voucher/add-voucher";

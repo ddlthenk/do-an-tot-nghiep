@@ -155,21 +155,6 @@ public class OrderController {
         List<Cart> cartList = cartService.getCartListByOrder(orderId);
         List<Long> productIds = cartList.stream().map(Cart::getProductId).collect(Collectors.toList());
         Map<Long, Product> productMap = productService.getMapProducts(productIds);
-
-        Map<String, Object> infoResult = ghnService.getOrderInfo(order.getOrderCode());
-        if (infoResult.get("status") != null && infoResult.get("status").equals("delivered")) {
-            if (order.getOrderStatus() != PaymentStatus.SHIPPED.getValue()) {
-                order.setOrderStatus(PaymentStatus.SHIPPED.getValue());
-                orderService.saveOrder(order);
-            }
-        }
-        if (infoResult.get("status") != null && (infoResult.get("status").equals("cancel") || infoResult.get("status").equals("null"))) {
-            if (order.getOrderStatus() != PaymentStatus.CANCELED.getValue()) {
-                order.setOrderStatus(PaymentStatus.CANCELED.getValue());
-                orderService.saveOrder(order);
-            }
-        }
-        order.setOrderStatus(PaymentStatus.DONE.getValue());
         model.addAttribute("order", order);
         model.addAttribute("productMap", productMap);
         model.addAttribute("cartList", cartList);
@@ -205,6 +190,10 @@ public class OrderController {
         List<Long> detailIds = cartList.stream().map(Cart::getDetailsId).collect(Collectors.toList());
         Map<Long, ProductDetails> detailsMap = productDetailsService.getMapProducts(detailIds);
         List<Voucher> voucherList = voucherService.getListVoucherByUserIdAndAllowed(Long.valueOf(userId), true, 0, 10);
+        List<Voucher> voucherList2 = voucherService.getListVoucherByUserIdAndAllowed(Long.valueOf(-1), true, 0, 10);
+        List<Voucher> voucherList3 = voucherService.getListVoucherByUserIdAndAllowed(Long.valueOf(0), true, 0, 10);
+        voucherList.addAll(voucherList2);
+        voucherList.addAll(voucherList3);
         CartForm cartForm = new CartForm(cartList);
         long totalWeight = ShippingUtils.calculateTotalWeight(cartList, productMap);
 
@@ -296,9 +285,11 @@ public class OrderController {
                     return "redirect:" + redirectHref;
                 default:
                     newOrder.setPaymentMethod(PaymentMethod.COD.getValue());
-                    newOrder.setOrderStatus(PaymentStatus.APPROVED.getValue());
-                    orderService.saveOrder(savedOrder);
                     boolean shipResult = ghnService.sendPostRequest2(2, newOrder);
+                    if (shipResult) {
+                        newOrder.setOrderStatus(PaymentStatus.APPROVED.getValue());
+                    }
+                    orderService.saveOrder(savedOrder);
                     return "redirect:/order-success/" + savedOrder.getOrderId() + "?cod=true";
             }
         } catch (Exception e) {

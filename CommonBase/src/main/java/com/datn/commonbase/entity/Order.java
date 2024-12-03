@@ -24,6 +24,8 @@ public class Order implements Serializable {
 
     @Column(name = "order_status")
     private int orderStatus;
+    @Column(name = "is_fixed")
+    private int isFixed;
     @Column(name = "commented")
     private boolean commented;
     @Column(name = "sub_total")
@@ -69,6 +71,7 @@ public class Order implements Serializable {
     @PrePersist
     private void prePersist() {
         orderDate = new Date(System.currentTimeMillis());
+        isFixed = 0;
         commented = false;
     }
 }
