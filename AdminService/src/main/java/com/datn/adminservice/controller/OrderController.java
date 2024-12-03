@@ -76,35 +76,6 @@ public class OrderController {
         List<Long> productIds = cartList.stream().map(Cart::getProductId).collect(Collectors.toList());
         Map<Long, Product> productMap = productService.getMapProducts(productIds);
 
-        Map<String, Object> infoResult = ghnService.getOrderInfo(order.getOrderCode());
-        if (order.getIsFixed() == 0) {
-            if (infoResult.get("status") != null && infoResult.get("status").equals("delivered")) {
-                if (order.getOrderStatus() != PaymentStatus.SHIPPED.getValue()) {
-                    order.setOrderStatus(PaymentStatus.SHIPPED.getValue());
-                }
-            }
-            if (infoResult.get("status") != null && (infoResult.get("status").equals("cancel") || infoResult.get("status").equals("null"))) {
-                if (order.getOrderStatus() != PaymentStatus.CANCELED.getValue()) {
-                    order.setOrderStatus(PaymentStatus.CANCELED.getValue());
-                }
-            }
-            if (order.getOrderStatus() == PaymentStatus.CANCELED.getValue()) {
-                for (Cart cart : cartList) {
-                    /* update product quantity */
-                    Product updateProduct = productService.getProduct(cart.getProductId());
-                    updateProduct.cancelSoldChange(cart.getQuantity());
-                    productService.saveProduct(updateProduct);
-
-                    /* update ProductDetails quantity */
-                    ProductDetails updateProductDetails = productDetailsService.getProductDetails(cart.getDetailsId());
-                    updateProductDetails.cancelSoldChange(cart.getQuantity());
-                    productDetailsService.saveDetails(updateProductDetails);
-                }
-            }
-            order.setIsFixed(1);
-            orderService.saveOrder(order);
-        }
-
         model.addAttribute("order", order);
         model.addAttribute("productMap", productMap);
         model.addAttribute("cartList", cartList);
