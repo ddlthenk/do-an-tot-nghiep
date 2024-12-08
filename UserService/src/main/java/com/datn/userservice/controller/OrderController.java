@@ -65,19 +65,7 @@ public class OrderController {
             orderPage.getContent().stream().forEach(order -> {
                 if (order.getOrderStatus() != PaymentStatus.DONE.getValue() && order.getOrderStatus() != PaymentStatus.CANCELED.getValue()
                         && order.getOrderStatus() != PaymentStatus.SHIPPED.getValue()) {
-                    Map<String, Object> infoResult = ghnService.getOrderInfo(order.getOrderCode());
-                    if (infoResult.get("status") != null && infoResult.get("status").equals("delivered")) {
-                        if (order.getOrderStatus() != PaymentStatus.SHIPPED.getValue()) {
-                            order.setOrderStatus(PaymentStatus.SHIPPED.getValue());
-                            orderService.saveOrder(order);
-                        }
-                    }
-                    if (infoResult.get("status") != null && (infoResult.get("status").equals("cancel") || infoResult.get("status").equals("null"))) {
-                        if (order.getOrderStatus() != PaymentStatus.CANCELED.getValue()) {
-                            order.setOrderStatus(PaymentStatus.CANCELED.getValue());
-                            orderService.saveOrder(order);
-                        }
-                    }
+                    
                 }
             });
         }

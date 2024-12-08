@@ -138,13 +138,13 @@
                                 <div class="col-12 sherah-flex-between">
                                     <!-- Sherah Breadcrumb -->
                                     <div class="sherah-breadcrumb">
-                                        <h2 class="sherah-breadcrumb__title">Order list</h2>
+                                        <h2 class="sherah-breadcrumb__title">Danh sách đơn hàng</h2>
                                         <ul class="sherah-breadcrumb__list">
                                             <li>
-                                                <a href="#">Home</a>
+                                                <a href="#">Trang chủ</a>
                                             </li>
                                             <li class="active">
-                                                <a href='/admin/order-list'>Order List</a>
+                                                <a href='/admin/order-list'>Danh sách đơn hàng</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -171,13 +171,13 @@
                                     <!-- sherah Table Head -->
                                     <thead class="sherah-table__head">
                                     <tr>
-                                        <th class="sherah-table__column-1 sherah-table__h1">Order ID</th>
-                                        <th class="sherah-table__column-2 sherah-table__h2">Customer Name</th>
-                                        <th class="sherah-table__column-3 sherah-table__h3">Date</th>
-                                        <th class="sherah-table__column-5 sherah-table__h5">Total</th>
-                                        <th class="sherah-table__column-6 sherah-table__h6">Payment Method</th>
-                                        <th class="sherah-table__column-7 sherah-table__h7">Order Status</th>
-                                        <th class="sherah-table__column-8 sherah-table__h8">Action</th>
+                                        <th class="sherah-table__column-1 sherah-table__h1">Mã đơn hàng</th>
+                                        <th class="sherah-table__column-2 sherah-table__h2">Tên khách hàng</th>
+                                        <th class="sherah-table__column-3 sherah-table__h3">Ngày mua hàng</th>
+                                        <th class="sherah-table__column-5 sherah-table__h5">Tổng giá trị</th>
+                                        <th class="sherah-table__column-6 sherah-table__h6">Phương thức thanh toán</th>
+                                        <th class="sherah-table__column-7 sherah-table__h7">Trạng thái đơn hàng</th>
+                                        <th class="sherah-table__column-8 sherah-table__h8">Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody class="sherah-table__body">
@@ -224,18 +224,19 @@
                                             </div>
                                         </td>
                                         <td class="sherah-table__column-7 sherah-table__data-7">
-                                            <span th:if="${order.orderStatus == 1}" class="status-paid">Paid</span>
+                                            <span th:if="${order.orderStatus == 1}"
+                                                  class="status-paid">Đã thanh toán</span>
                                             <span th:if="${order.orderStatus == 2}"
-                                                  class="status-canceled">Canceled</span>
+                                                  class="status-canceled">Đã hủy</span>
                                             <span th:if="${order.orderStatus == 3}"
-                                                  class="status-approved">Approved</span>
+                                                  class="status-approved">Đã xác nhận đơn hàng</span>
                                             <span th:if="${order.orderStatus == 4}"
-                                                  class="status-waiting">Waiting</span>
+                                                  class="status-waiting">Đang chờ thanh toán</span>
                                             <span th:if="${order.orderStatus == 5}"
-                                                  class="status-shipped">Shipped</span>
-                                            <span th:if="${order.orderStatus == 6}" class="status-done">Done</span>
+                                                  class="status-shipped">Đã giao hàng</span>
+                                            <span th:if="${order.orderStatus == 6}" class="status-done">Đã giao hàng thành công</span>
                                             <span th:if="${order.orderStatus == 7}"
-                                                  class="status-refund">Waiting Refund</span>
+                                                  class="status-refund">Chờ hoàn tiền</span>
                                         </td>
                                         <td class="sherah-table__column-8 sherah-table__data-8">
                                             <div class="sherah-table__status__group">

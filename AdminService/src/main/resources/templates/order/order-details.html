@@ -197,6 +197,7 @@
                             <td th:unless="${productMap.get(cart.productId).getProductTitle().length() > 60}"
                                 th:text="${productMap.get(cart.productId).getProductTitle()}"></td>
                             <td th:text="${cart.quantity}"></td>
+                            <td th:text="${#numbers.formatDecimal(productMap.get(cart.productId).getProductPrice(), 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
                             <td th:text="${#numbers.formatDecimal(cart.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></td>
                         </tr>
                         </tbody>
@@ -219,10 +220,34 @@
                         </tr>
                         </tfoot>
                     </table>
-                    <div class="row d-flex justify-content-end">
-                        <a th:if="${order.orderStatus == 3 || order.orderStatus == 4}"
-                           class="btn btn-cancel p-1 mr-5 mt-3" th:order-id="${order.orderId}"
-                           style="border-radius: 5px"><i class="fas fa-times"> Hủy đơn hàng</i></a>
+                    <!--                    <div class="row d-flex justify-content-end">-->
+                    <!--                        <a th:if="${order.orderStatus == 3 || order.orderStatus == 4}"-->
+                    <!--                           class="btn btn-cancel p-1 mr-5 mt-3" th:order-id="${order.orderId}"-->
+                    <!--                           style="border-radius: 5px"><i class="fas fa-times"> Hủy đơn hàng</i></a>-->
+                    <!--                    </div>-->
+                    <hr>
+                    <div class="row d-flex justify-content-start mt-2 w-75">
+                        <div class="border">
+                            <h2 style="margin-bottom: 20px">Cập nhật trạng thái đơn hàng</h2>
+                            <select class="form-select w-75" aria-label="Default select example"
+                                    style="margin-bottom: 10px">
+                                <option th:selected="${order.orderStatus == 1}" value="1">Đã thanh toán</option>
+                                <option th:selected="${order.orderStatus == 2}" value="2">Đã hủy</option>
+                                <option th:selected="${order.orderStatus == 3}" value="3">Đã xác nhận đơn hàng</option>
+                                <option th:selected="${order.orderStatus == 4}" value="4">Đang chờ thanh toán</option>
+                                <option th:selected="${order.orderStatus == 5}" value="5">Đã giao hàng</option>
+                                <option th:selected="${order.orderStatus == 6}" value="6">Đã giao hàng thành công
+                                </option>
+                                <option th:selected="${order.orderStatus == 7}" value="7">Chờ hoàn tiền</option>
+                            </select>
+                            <label for="orderCode">Mã đơn hàng</label>
+                            <input type="text" id="orderCode"
+                                   th:value="${order.orderCode != null ? order.orderCode : ''}">
+                            <button type="button" class="btn-change-status btn btn-primary mb-3"
+                                    th:order-id="${order.orderId}">
+                                Cập nhật
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -244,19 +269,20 @@
 <script src="/js/slickslider.min.js"></script>
 <script src="/js/main.js"></script>
 <script>
-    $('.btn-cancel').on('click', function () {
+    $('.btn-change-status').on('click', function () {
         swal({
-            title: "Xác nhận hủy đơn hàng!!!",
+            title: "Xác nhận thay đổi trạng thái đơn hàng!!!",
             icon: "info",
             buttons: true,
             dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
+                    const status = $('select').val();
+                    const orderCode = $('#orderCode').val();
+                    console.log(orderCode);
                     const toStatus = $(this).attr("order-id");
-                    console.log(toStatus);
-                    var url = '/admin/handle-status/' + toStatus + '?to=2';
-                    console.log(url);
+                    var url = '/admin/handle-status/' + toStatus + '?to=' + status + '&orderCode=' + orderCode;
                     window.location.replace(url);
                 }
             });

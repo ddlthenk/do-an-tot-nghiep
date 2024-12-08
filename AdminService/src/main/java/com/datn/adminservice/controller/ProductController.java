@@ -1,5 +1,6 @@
 package com.datn.adminservice.controller;
 
+import com.datn.commonbase.common.HtmlTagRemover;
 import com.datn.commonbase.constant.ImageTypes;
 import com.datn.commonbase.entity.*;
 import com.datn.commonbase.service.*;
@@ -212,6 +213,22 @@ public class ProductController {
         Map<Long, User> userMap = userService.getMapUsers(userIds);
         model.addAttribute("userMap", userMap);
         model.addAttribute("commentList", commentList);
+        // recommend product
+        _log.error(HtmlTagRemover.removeHtmlTags(product.getProductDescription()));
+        _log.error(HtmlTagRemover.removeHtmlTags("<ul class=\"sherah-progress-list sherah-progress-list__bg sherah-progress-list__inline sherah-gap-50\">\n" +
+                "                                                    <li>\n" +
+                "                                                        <span class=\"sherah-progress-list__color sherah-color4__bg\"></span>\n" +
+                "                                                        <p>Doanh thu<span\n" +
+                "                                                                th:text=\"${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'\"></span>\n" +
+                "                                                        </p>\n" +
+                "                                                        <span class=\"sherah-progress-list__color sherah-color3__bg\"></span>\n" +
+                "                                                        <p>Lợi nhuận<span\n" +
+                "                                                                th:text=\"${#numbers.formatDecimal(totalProfit, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'\"></span>\n" +
+                "                                                        </p>\n" +
+                "                                                    </li>\n" +
+                "                                                </ul>"));
+        List<Product> recommendProducts = productService.getRecommendProducts(product, 5);
+        model.addAttribute("recommendProducts", recommendProducts);
         return "product/product-details";
     }
 

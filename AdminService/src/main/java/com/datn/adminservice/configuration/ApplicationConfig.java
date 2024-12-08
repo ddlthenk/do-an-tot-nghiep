@@ -83,12 +83,14 @@ public class ApplicationConfig implements WebMvcConfigurer {
                     .build();
             User new2 = User.builder()
                     .userId(account2.getAccountId())
+                    .dateOfBirth(Date.valueOf("2023-12-23"))
                     .name("Hoang Duc Nam")
                     .language("en")
                     .build();
             User new3 = User.builder()
                     .userId(account3.getAccountId())
                     .name("test")
+                    .dateOfBirth(Date.valueOf("2023-12-23"))
                     .language("en")
                     .build();
             saveUser(new1);

@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+
 @Table(name = "tbl_product")
 public class Product implements Serializable {
     private static final long serialVersionUID = 8L;
@@ -128,5 +129,32 @@ public class Product implements Serializable {
     @PreUpdate
     private void preUpdate() {
         productUpdated = System.currentTimeMillis();
+    }
+
+    public Product clone() {
+        return Product.builder()
+                .productId(this.productId)
+                .skuCode(this.skuCode)
+                .productTitle(this.productTitle)
+                .productPrice(this.productPrice)
+                .productDescription(this.productDescription)
+                .width(this.width)
+                .length(this.length)
+                .height(this.height)
+                .weight(this.weight)
+                .categoryParentId(this.categoryParentId)
+                .categoryId(this.categoryId)
+                .productRating(this.productRating)
+                .productRatingCount(this.productRatingCount)
+                .productStatus(this.productStatus)
+                .productDiscountPrice(this.productDiscountPrice)
+                .productCreated(this.productCreated)
+                .productUpdated(this.productUpdated)
+                .productDeleted(this.productDeleted)
+                .productSold(this.productSold)
+                .productTotal(this.productTotal)
+                .countOption(this.countOption)
+                .productDetailsList(this.productDetailsList)
+                .build();
     }
 }

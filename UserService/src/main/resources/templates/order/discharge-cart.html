@@ -485,6 +485,9 @@
                 $('#shipping').val(shippingFee);
             },
             error: function (xhr, status, error) {
+                var shippingFee = 30000;
+                $('#shippingFee').text(shippingFee);
+                $('#shipping').val(shippingFee);
                 console.error(error);
             }
         });

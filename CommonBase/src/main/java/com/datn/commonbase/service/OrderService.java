@@ -22,7 +22,11 @@ public interface OrderService {
 
     Long getTotalPriceOrder();
 
+    Long getTotalProfits();
+
     List<Long> getListPriceOrder();
+
+    List<Long> getListProfits();
 
     Long getTotalDoneOrder();
 

@@ -1,10 +1,8 @@
 package com.datn.adminservice.controller;
 
-import com.datn.commonbase.constant.PaymentStatus;
 import com.datn.commonbase.entity.Cart;
 import com.datn.commonbase.entity.Order;
 import com.datn.commonbase.entity.Product;
-import com.datn.commonbase.entity.ProductDetails;
 import com.datn.commonbase.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -83,44 +81,49 @@ public class OrderController {
     }
 
     @GetMapping("/handle-status/{orderId}")
-    public String handleOrderStatus(Model model, Authentication authentication, @PathVariable("orderId") long orderId
-            , @RequestParam(value = "to", defaultValue = "-1") int to
+    public String handleOrderStatus(Model model, Authentication authentication, @PathVariable("orderId") long orderId,
+                                    @RequestParam(value = "to", defaultValue = "-1") int to,
+                                    @RequestParam(value = "orderCode", defaultValue = "") String orderCode
     ) {
         Order order = orderService.getOrderById(orderId);
         if (order == null) {
             return "redirect:/error";
         }
-        if (to == PaymentStatus.DONE.getValue()) {
-            if (order.getOrderStatus() == PaymentStatus.SHIPPED.getValue()) {
-                order.setOrderStatus(PaymentStatus.DONE.getValue());
-                orderService.saveOrder(order);
-            }
-        }
-        if (to == PaymentStatus.CANCELED.getValue()) {
-            Map<String, Object> orderDetails = ghnService.getOrderInfo(order.getOrderCode());
-            if ((orderDetails != null && !orderDetails.isEmpty() && orderDetails.get("status") != null)
-                    && (orderDetails.get("status").equals("picking") || orderDetails.get("status").equals("ready_to_pick"))) {
-                if (order.getOrderStatus() == PaymentStatus.APPROVED.getValue() || order.getOrderStatus() == PaymentStatus.WAITING.getValue()) {
-                    String cancelResponse = ghnService.cancelOrder(order.getOrderCode());
-                    if (cancelResponse.equals("200")) {
-                        order.setOrderStatus(PaymentStatus.CANCELED.getValue());
-                        orderService.saveOrder(order);
-                        List<Cart> cartList = cartService.getCartListByOrder(order.getOrderId());
-                        for (Cart cart : cartList) {
-                            /* update product quantity */
-                            Product updateProduct = productService.getProduct(cart.getProductId());
-                            updateProduct.cancelSoldChange(cart.getQuantity());
-                            productService.saveProduct(updateProduct);
+        order.setOrderStatus(to);
+        order.setOrderCode(orderCode);
+        orderService.saveOrder(order);
 
-                            /* update ProductDetails quantity */
-                            ProductDetails updateProductDetails = productDetailsService.getProductDetails(cart.getDetailsId());
-                            updateProductDetails.cancelSoldChange(cart.getQuantity());
-                            productDetailsService.saveDetails(updateProductDetails);
-                        }
-                    }
-                }
-            }
-        }
+//        if (to == PaymentStatus.DONE.getValue()) {
+//            if (order.getOrderStatus() == PaymentStatus.SHIPPED.getValue()) {
+//                order.setOrderStatus(PaymentStatus.DONE.getValue());
+//                orderService.saveOrder(order);
+//            }
+//        }
+//        if (to == PaymentStatus.CANCELED.getValue()) {
+//            Map<String, Object> orderDetails = ghnService.getOrderInfo(order.getOrderCode());
+//            if ((orderDetails != null && !orderDetails.isEmpty() && orderDetails.get("status") != null)
+//                    && (orderDetails.get("status").equals("picking") || orderDetails.get("status").equals("ready_to_pick"))) {
+//                if (order.getOrderStatus() == PaymentStatus.APPROVED.getValue() || order.getOrderStatus() == PaymentStatus.WAITING.getValue()) {
+//                    String cancelResponse = ghnService.cancelOrder(order.getOrderCode());
+//                    if (cancelResponse.equals("200")) {
+//                        order.setOrderStatus(PaymentStatus.CANCELED.getValue());
+//                        orderService.saveOrder(order);
+//                        List<Cart> cartList = cartService.getCartListByOrder(order.getOrderId());
+//                        for (Cart cart : cartList) {
+//                            /* update product quantity */
+//                            Product updateProduct = productService.getProduct(cart.getProductId());
+//                            updateProduct.cancelSoldChange(cart.getQuantity());
+//                            productService.saveProduct(updateProduct);
+//
+//                            /* update ProductDetails quantity */
+//                            ProductDetails updateProductDetails = productDetailsService.getProductDetails(cart.getDetailsId());
+//                            updateProductDetails.cancelSoldChange(cart.getQuantity());
+//                            productDetailsService.saveDetails(updateProductDetails);
+//                        }
+//                    }
+//                }
+//            }
+//        }
         return "redirect:/admin/order-details/" + orderId;
     }
 }

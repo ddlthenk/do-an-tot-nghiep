@@ -44,7 +44,13 @@ public class CartController {
         CartForm cartForm = new CartForm(cartList);
         List<Long> productsIds = cartList.stream().map(Cart::getProductId).collect(Collectors.toList());
         Map<Long, Product> productMap = productService.getMapProducts(productsIds);
-
+        for (Cart cart : cartList) {
+            Product product = productMap.get(cart.getProductId());
+            if (cart.getQuantity() > (product.getProductTotal() - product.getProductSold())) {
+                cart.setQuantity(0);
+                cartService.saveCart(cart);
+            }
+        }
         List<Long> detailIds = cartList.stream().map(Cart::getDetailsId).collect(Collectors.toList());
         Map<Long, ProductDetails> detailsMap = productDetailsService.getMapProducts(detailIds);
         Map<Long, Image> imageMap = imageService.getMapOneImage(productsIds, ImageTypes.PRODUCT_IMG.getValue());

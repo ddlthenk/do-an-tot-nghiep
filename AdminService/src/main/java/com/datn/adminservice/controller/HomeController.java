@@ -88,6 +88,12 @@ public class HomeController {
             List<Long> listTotalPrice = orderService.getListPriceOrder();
             model.addAttribute("totalPrice", totalPrice);
             model.addAttribute("listTotalPrice", listTotalPrice);
+
+            Long totalProfit = orderService.getTotalProfits();
+            totalProfit = totalProfit == null ? 0 : totalProfit;
+            List<Long> listTotalProfit = orderService.getListProfits();
+            model.addAttribute("totalProfit", totalProfit);
+            model.addAttribute("listTotalProfits", listTotalProfit);
         }
         return "index";
     }

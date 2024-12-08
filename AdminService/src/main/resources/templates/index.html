@@ -209,6 +209,10 @@
                                                         <p>Doanh thu<span
                                                                 th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
                                                         </p>
+                                                        <span class="sherah-progress-list__color sherah-color3__bg"></span>
+                                                        <p>Lợi nhuận<span
+                                                                th:text="${#numbers.formatDecimal(totalProfit, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+                                                        </p>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -557,6 +561,7 @@
     monthsStartingToday.reverse();
     // Chart One
     const listTotalPrice = /*[[${listTotalPrice}]]*/ [];
+    const listTotalProfit = /*[[${listTotalProfits}]]*/ [];
     const ctx = document.getElementById('myChart_one_monthly').getContext('2d');
     const myChart_one_monthly = new Chart(ctx, {
         type: 'bar',
@@ -591,6 +596,35 @@
                 barPercentage: 0.7,
                 categoryPercentage: 0.5,
             },
+                {
+                    label: 'Lợi nhuận',
+                    data: listTotalProfit,
+                    backgroundColor: [
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                        '#09AD95',
+                    ],
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 0,
+                    borderSkipped: false,
+                    borderRadius: 4,
+                    barPercentage: 0.7,
+                    categoryPercentage: 0.5,
+                }
             ]
         },
         options: {

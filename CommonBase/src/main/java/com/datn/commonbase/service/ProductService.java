@@ -15,6 +15,10 @@ public interface ProductService {
 
     public Page<Product> getTopSelling(boolean status, int page, int limit);
 
+    public List<Product> getRecommendProducts(long productId, String productName, int limit);
+
+    public List<Product> getRecommendProducts(Product product, int limit);
+
     public Page<Product> searchProducts(boolean status, int page, int limit, String searchValue);
 
     public Page<Product> getTopSellingByCategory(long categoryId, boolean status, int page, int limit);

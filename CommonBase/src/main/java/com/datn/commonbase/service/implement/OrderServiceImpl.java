@@ -116,6 +116,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Long getTotalProfits() {
+        return getTotalPriceOrder() * 10 / 100;
+    }
+
+    @Override
     public List<Long> getListPriceOrder() {
         List<Long> result = new ArrayList<>();
         LocalDate today = LocalDate.now();
@@ -126,6 +131,54 @@ public class OrderServiceImpl implements OrderService {
                 Long count = orderRepository.sumByMonthAndYear(sqlDate);
                 if (count != null) {
                     result.add(count);
+                } else {
+                    result.add(0L);
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            _log.error(e);
+            return Collections.emptyList();
+        }
+    }
+
+//    public Map<String, Object> getTotalPriceOrderMap() {
+//        Map<String, Object> result = new HashMap<>();
+//        LocalDate today = LocalDate.now();
+//        List<Long> totalPrices = new ArrayList<>();
+//        try {
+//            for (int i = 11; i >= 0; i--) {
+//                LocalDate dateCount = today.minusMonths(i);
+//                Date sqlDate = Date.valueOf(dateCount);
+//                List<Order> orderList = orderRepository.getListOrderByMonthAndYear(sqlDate);
+//                int count = 0;
+//                for (Order order : orderList) {
+//                    order.getSubTotal();
+//                    count += order.getTotal();
+//                }
+//                if (orderList != null) {
+//                    totalPrices.add(count);
+//                } else {
+//                    totalPrices.add(0L);
+//                }
+//            }
+//            return result;
+//        } catch (Exception e) {
+//            _log.error(e);
+//            return Collections.emptyList();
+//        }
+//    }
+
+    public List<Long> getListProfits() {
+        List<Long> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        try {
+            for (int i = 11; i >= 0; i--) {
+                LocalDate dateCount = today.minusMonths(i);
+                Date sqlDate = Date.valueOf(dateCount);
+                Long count = orderRepository.sumByMonthAndYear(sqlDate);
+                if (count != null) {
+                    result.add(count * 10 / 100);
                 } else {
                     result.add(0L);
                 }
