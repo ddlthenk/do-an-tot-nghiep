@@ -4,7 +4,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
-import com.datn.commonbase.common.HtmlTagRemover;
+import com.datn.commonbase.dto.SearchProductDto;
 import com.datn.commonbase.entity.Category;
 import com.datn.commonbase.entity.Product;
 import com.datn.commonbase.repository.DocumentRepositoryImpl;
@@ -34,15 +34,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product saveProduct(Product product) {
         try {
-            if (product.getProductDetailsList() != null && !product.getProductDetailsList().isEmpty())
+            if (product.getProductDetailsList() != null && !product.getProductDetailsList().isEmpty()) {
                 product.getProductDetailsList().forEach(productDetails -> {
                     productDetails.setProduct(product);
                 });
-            productRepository.save(product);
-            Product cloneProduct = product.clone();
-            cloneProduct.setProductDescription(HtmlTagRemover.removeHtmlTags(product.getProductDescription()));
-            documentRepository.index(cloneProduct);
-            return product;
+            }
+            return productRepository.save(product);
         } catch (Exception e) {
             _log.error(e);
             return null;
@@ -74,9 +71,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getRecommendProducts(long productId, String productName, int limit) {
+    public List<SearchProductDto> getRecommendProducts(long productId, String productName, int limit) {
 
-        List<Product> productList = new ArrayList<>();
+        List<SearchProductDto> productList = new ArrayList<>();
         try {
             Query moreLikeThisQuery = Query.of(q -> q
                     .moreLikeThis(mlt -> mlt
@@ -115,7 +112,7 @@ public class ProductServiceImpl implements ProductService {
                     .query(q -> q.bool(boolQuery))
                     .size(limit)
             );
-            SearchResponse<Product> searchResponse = (SearchResponse<Product>) documentRepository.search(Product.class, searchRequest);
+            SearchResponse<SearchProductDto> searchResponse = (SearchResponse<SearchProductDto>) documentRepository.search(SearchProductDto.class, searchRequest);
             if (searchResponse != null && searchResponse.hits() != null && !searchResponse.hits().hits().isEmpty()) {
                 productList = searchResponse.hits().hits().stream().map(hit -> hit.source()).collect(Collectors.toList());
             }
@@ -127,8 +124,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getRecommendProducts(Product product, int limit) {
-        List<Product> productList = new ArrayList<>();
+    public List<SearchProductDto> getRecommendProducts(Product product, int limit) {
+        List<SearchProductDto> productList = new ArrayList<>();
         try {
             Query moreLikeThisQuery = Query.of(q -> q
                     .moreLikeThis(mlt -> mlt
@@ -161,17 +158,8 @@ public class ProductServiceImpl implements ProductService {
                     .query(q -> q.bool(boolQuery))
                     .size(limit)
             );
-            BoolQuery boolQuery2 = BoolQuery.of(b -> b
-                    .must(statusQuery)
-                    .should(moreLikeThisQuery)
-                    .minimumShouldMatch("1")
-            );
-            SearchRequest searchRequest2 = SearchRequest.of(builder -> builder
-                    .index("products")
-                    .query(q -> q.bool(boolQuery2))
-                    .size(limit)
-            );
-            SearchResponse<Product> searchResponse = (SearchResponse<Product>) documentRepository.search(Product.class, searchRequest);
+            SearchResponse<SearchProductDto> searchResponse = (SearchResponse<SearchProductDto>) documentRepository
+                    .search(SearchProductDto.class, searchRequest);
             if (searchResponse != null && searchResponse.hits() != null && !searchResponse.hits().hits().isEmpty()) {
                 productList = searchResponse.hits().hits().stream().map(hit -> hit.source()).collect(Collectors.toList());
             }

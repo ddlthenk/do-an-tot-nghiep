@@ -39,59 +39,62 @@ public class ApplicationConfig implements WebMvcConfigurer {
         return args -> {
             Account account = Account.builder()
                     .accountId(1L)
-                    .email("nguyentrongtam2x2@gmail.com")
+                    .email("nguyenvanthanh@gmail.com")
                     .role(RoleConstant.ROOT.getValue())
-                    .phoneNumber("0328419491")
+                    .phoneNumber("0393002963")
                     .userName("root")
                     .password(PasswordHandler.hashPassword("123456"))
                     .build();
             Account account2 = Account.builder()
                     .accountId(2L)
-                    .email("nam@com.vn")
-                    .userName("admin2")
+                    .email("thanhAdmin@gmail.com")
+                    .userName("admin")
                     .role(RoleConstant.ADMIN.getValue())
                     .password(PasswordHandler.hashPassword("123456"))
                     .build();
             Account account3 = Account.builder()
                     .accountId(3L)
-                    .userName("admin")
-                    .email("testAdmin@cas.vn")
-                    .role(RoleConstant.ADMIN.getValue())
+                    .userName("user")
+                    .email("thanhUser@gmail.com")
+                    .role(RoleConstant.USER.getValue())
                     .password(PasswordHandler.hashPassword("123456"))
                     .build();
             if (!accountRepository.existsAccountByEmail((account.getEmail()))) {
                 account = accountRepository.save(account);
             } else {
+                account = accountRepository.getAccountByUserName(account.getUserName());
                 System.out.println("Account with email " + account.getEmail() + " exist");
             }
             if (!accountRepository.existsAccountByEmail((account2.getEmail()))) {
                 account2 = accountRepository.save(account2);
             } else {
+                account2 = accountRepository.getAccountByUserName(account2.getUserName());
                 System.out.println("Account with email " + account2.getEmail() + " exist");
             }
             if (!accountRepository.existsAccountByEmail((account3.getEmail()))) {
                 account3 = accountRepository.save(account3);
             } else {
+                account3 = accountRepository.getAccountByUserName(account3.getUserName());
                 System.out.println("Account with email " + account3.getEmail() + " exist");
             }
 
             User new1 = User.builder()
                     .userId(account.getAccountId())
-                    .name("Nguyen Trong Tu Tam")
+                    .name("Nguyen Van Thanh")
                     .dateOfBirth(Date.valueOf("2023-12-23"))
                     .language("vi")
                     .build();
             User new2 = User.builder()
                     .userId(account2.getAccountId())
                     .dateOfBirth(Date.valueOf("2023-12-23"))
-                    .name("Hoang Duc Nam")
+                    .name("Thanh Nguyen Van")
                     .language("en")
                     .build();
             User new3 = User.builder()
                     .userId(account3.getAccountId())
-                    .name("test")
+                    .name("User Thanh")
                     .dateOfBirth(Date.valueOf("2023-12-23"))
-                    .language("en")
+                    .language("vi")
                     .build();
             saveUser(new1);
             saveUser(new2);
@@ -103,7 +106,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
 
     private boolean saveUser(User user) {
         try {
-            if (userRepository.existsById(user.getUserId())) {
+            if (!userRepository.existsById(user.getUserId())) {
                 userRepository.save(user);
                 return true;
             }

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=http://www.thymeleaf.org
-      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
-      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+>
 
 <head>
     <meta charset="utf-8">
@@ -79,7 +78,7 @@
                 <div class="carousel-inner">
                     <div th:if="${imageList != null && !imageList.isEmpty()}" th:each="image, iterStat : ${imageList}"
                          th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
-                        <img class="d-block w-100" th:src="${image.url}" alt="">
+                        <img class="d-block w-100" th:src="${image.getUrl()}" alt="">
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -276,13 +275,14 @@
             </div>
         </div>
     </div>
-    <div class="container row">
+    <div th:if="${commentList != null && !commentList.isEmpty()}" class="container row">
         <div class="col">
             <div class="bg-light p-30">
                 <div class="tab-content">
                     <div class="col-md-12">
                         <h4 class="mb-3">ĐÁNH GIÁ SẢN PHẨM</h4>
-                        <div th:if="${commentList != null && !commentList.isEmpty()}" th:each="comment : ${commentList}"
+                        <div th:each="comment : ${commentList}"
+                             th:if="${userMap.get(comment.userId) != null}"
                              class="media mb-4">
                             <img src="/img/icon_avtar_comments.png" alt="Image" class="mr-3 mt-1"
                                  style="width: 45px;">
@@ -510,10 +510,68 @@
 </div>
 <!-- Shop Detail End -->
 
+<!-- Related Product Start -->
+<div class="container pt-5 pb-3">
+    <div class="row">
+        <div class="col-lg-6 header-dm-res mb-5" style="position:initial;">
+            <h2 class="section-title text-uppercase mx-xl-5 mb-4"><span class="pr-3 header-dm-res-sp1"
+                                                                        style="border-bottom: 2px solid #F27927;color: #F27927;">Sản phẩm liên quan</span>
+            </h2>
+        </div>
+    </div>
+    <div class="row px-xl-5 tc-pd-res">
+        <div th:if="${recommendProducts != null && !recommendProducts.isEmpty()}"
+             th:each="searchProduct : ${recommendProducts}"
+             class="col-lg-3 col-md-3 col-sm-4 pb-1 ">
+            <div class="product-item bg-light mb-4">
+                <div class="product-img position-relative overflow-hidden d-flex justify-content-center">
+                    <a th:href="'/product-details/' + ${searchProduct.productId}">
+                        <img th:if="${searchProduct.imageUrl != null && !searchProduct.imageUrl.isEmpty()}"
+                             class="img-fluid d-block"
+                             th:src="${searchProduct.imageUrl}" alt="">
+                        <img th:unless="${searchProduct.imageUrl != null && !searchProduct.imageUrl.isEmpty()}"
+                             class="img-fluid d-block" src="/img/KM_1.png"
+                             alt="">
+                    </a>
+                </div>
+                <div class="text-center py-4">
+                    <a class="h6 text-decoration-none text-truncate link-pd-res"
+                       th:if="${searchProduct.productTitle.length() > 50}"
+                       th:href="'/product-details/' + ${searchProduct.productId}"
+                       th:text="${#strings.substring(searchProduct.productTitle, 0, 50)} + (${searchProduct.productTitle.length() > 50 ? '...' : ''})"></a>
+                    <a class="h6 text-decoration-none text-truncate link-pd-res"
+                       th:unless="${searchProduct.productTitle.length() > 50}"
+                       th:href="'/product-details/' + ${searchProduct.productId}"
+                       th:text="${searchProduct.productTitle}"></a>
+                    <div class="d-flex align-items-center justify-content-center mt-2 text-res">
+                        <h6 class="text-muted">
+                            <del th:text="${#numbers.formatDecimal(searchProduct.productDiscountPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></del>
+                        </h6>
+                        <h5 class="ml-2" style="color:#F27927"
+                            th:text="${#numbers.formatDecimal(searchProduct.productPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></h5>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-center mb-1">
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                        <small class="fa fa-star text-primary mr-1"></small>
+                    </div>
+                    <div class="mb-1 mt-2">
+                        <a class="btn btn-buy p-1"
+                           style="color: white; background-color: #F27927; border-radius: 132px"
+                           th:href="'/product-details/' + ${searchProduct.productId}">Xem sản phẩm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Related Product End -->
+
 <!-- footer start -->
 <div th:replace="~{base-form/footer :: #footer}"></div>
 <!-- footer end -->
-
 
 <!-- Back to Top -->
 <a href="#" class="btn back-to-top" style="background-color: #63ea81; width: 20px; color: white"><i

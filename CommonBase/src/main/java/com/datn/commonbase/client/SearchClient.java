@@ -32,7 +32,8 @@ public class SearchClient {
     }
 
     private static ElasticsearchClient getElasticsearchClient() {
-        RestClient restClient = RestClient.builder(new HttpHost("search.tieuhocdong.online", 80))
+//        RestClient restClient = RestClient.builder(new HttpHost("search.tieuhocdong.online", 80))
+        RestClient restClient = RestClient.builder(new HttpHost("127.0.0.1", 9200))
                 .setRequestConfigCallback(
                         requestConfigBuilder -> requestConfigBuilder
                                 .setConnectTimeout(5000)

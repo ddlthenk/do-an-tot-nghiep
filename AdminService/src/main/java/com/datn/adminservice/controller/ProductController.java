@@ -2,7 +2,9 @@ package com.datn.adminservice.controller;
 
 import com.datn.commonbase.common.HtmlTagRemover;
 import com.datn.commonbase.constant.ImageTypes;
+import com.datn.commonbase.dto.SearchProductDto;
 import com.datn.commonbase.entity.*;
+import com.datn.commonbase.repository.DocumentRepositoryImpl;
 import com.datn.commonbase.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +40,7 @@ public class ProductController {
     ProductDetailsService productDetailsService;
     CloudinaryService cloudinaryService = new CloudinaryService();
     private final Logger _log = LogManager.getLogger(ProductController.class);
+    DocumentRepositoryImpl documentRepository = DocumentRepositoryImpl.getInstance();
 
     @GetMapping({"/products", "/products/"})
     public String getListProducts(Model model, @RequestParam(required = false, value = "page", defaultValue = "0") int page) {
@@ -117,8 +120,6 @@ public class ProductController {
 
         model.addAttribute("product", product);
         model.addAttribute("productDetailsList2", productDetailsList);
-
-        _log.error("log");
         return "product/add-product";
     }
 
@@ -126,19 +127,32 @@ public class ProductController {
     public String postProduct(@ModelAttribute Product product, BindingResult result, @ModelAttribute("categoryChildSelect") long categoryChildSelect
             , @RequestParam("image_upload") MultipartFile[] files
     ) {
-        product.setCategoryId(categoryChildSelect);
-        Category category = categoryService.getCategoryById(categoryChildSelect);
-        product.setCategoryParentId(category.getParentId());
-        Product saved = productService.saveProduct(product);
-        if (files != null) {
-            for (MultipartFile file : files) {
-                String urlImg = cloudinaryService.uploadFile(file);
-                Image image = Image.builder().imageType(ImageTypes.PRODUCT_IMG.getValue()).url(urlImg)
-                        .referenceId(product.getProductId()).build();
-                Image savedImage = imageService.saveImage(image);
+        try {
+            product.setCategoryId(categoryChildSelect);
+            Category category = categoryService.getCategoryById(categoryChildSelect);
+            product.setCategoryParentId(category.getParentId());
+            Product saved = productService.saveProduct(product);
+            String imgUrl = null;
+            if (files != null) {
+                for (MultipartFile file : files) {
+                    String urlImg = cloudinaryService.uploadFile(file);
+                    if (imgUrl == null) {
+                        imgUrl = urlImg;
+                    }
+                    Image image = Image.builder().imageType(ImageTypes.PRODUCT_IMG.getValue()).url(urlImg)
+                            .referenceId(product.getProductId()).build();
+                    Image savedImage = imageService.saveImage(image);
+                }
             }
+            Product cloneProduct = saved.clone();
+            cloneProduct.setProductDescription(HtmlTagRemover.removeHtmlTags(product.getProductDescription()));
+            SearchProductDto searchProductDto = SearchProductDto.build(cloneProduct, imgUrl);
+            documentRepository.index(searchProductDto);
+            return "redirect:/admin/upload-product?uploaded=true";
+        } catch (Exception e) {
+            _log.error(e.getMessage());
         }
-        return "redirect:/admin/upload-product?uploaded=true";
+        return "redirect:/admin/upload-product?uploaded=false";
     }
 
     @GetMapping("/update-product/{id}")
@@ -158,7 +172,6 @@ public class ProductController {
         model.addAttribute("productDetailsList2", productDetailsList);
         model.addAttribute("categoryChilds", categoryChilds);
         model.addAttribute("category", category);
-        _log.error("log");
         return "product/update-product";
     }
 
@@ -166,36 +179,49 @@ public class ProductController {
     public String updateProduct(@ModelAttribute Product product, BindingResult result
             , @RequestParam("image_upload") MultipartFile[] multipartFile, @ModelAttribute("delete-image") String deleteImages
     ) {
-        String[] idTrans = deleteImages.split(",");
-        if (idTrans.length > 0 && !Objects.equals(idTrans[0], "")) {
-            long[] imageDeletedIds = new long[idTrans.length];
-            for (int i = 0; i < imageDeletedIds.length; i++) {
-                imageDeletedIds[i] = Long.parseLong(idTrans[i]);
-                Image imageDele = imageService.getImage(imageDeletedIds[i]);
-                cloudinaryService.deleteFile(imageDele.getUrl());
-                imageService.deleteImage(imageDele);
+        try {
+            String[] idTrans = deleteImages.split(",");
+            if (idTrans.length > 0 && !Objects.equals(idTrans[0], "")) {
+                long[] imageDeletedIds = new long[idTrans.length];
+                for (int i = 0; i < imageDeletedIds.length; i++) {
+                    imageDeletedIds[i] = Long.parseLong(idTrans[i]);
+                    Image imageDele = imageService.getImage(imageDeletedIds[i]);
+                    cloudinaryService.deleteFile(imageDele.getUrl());
+                    imageService.deleteImage(imageDele);
+                }
             }
-        }
-        product.setProductUpdated(System.currentTimeMillis());
-        for (ProductDetails productDetails : product.getProductDetailsList()) {
-            ProductDetails oldPd = productDetailsService.getProductDetails(productDetails.getDetailId());
-            if (productDetails.getTotal() != oldPd.getTotal()) {
-                int sold = oldPd.getTotal() - oldPd.getLeftQuantity();
-                productDetails.setLeftQuantity(productDetails.getTotal() - sold);
+            product.setProductUpdated(System.currentTimeMillis());
+            for (ProductDetails productDetails : product.getProductDetailsList()) {
+                ProductDetails oldPd = productDetailsService.getProductDetails(productDetails.getDetailId());
+                if (productDetails.getTotal() != oldPd.getTotal()) {
+                    int sold = oldPd.getTotal() - oldPd.getLeftQuantity();
+                    productDetails.setLeftQuantity(productDetails.getTotal() - sold);
+                }
             }
-        }
-        product.countProductTotal();
-        Product saved = productService.saveProduct(product);
+            product.countProductTotal();
+            Product saved = productService.saveProduct(product);
+            String imgUrl = null;
+            if (multipartFile != null && multipartFile.length > 0 && !Objects.equals(multipartFile[0].getOriginalFilename(), "")) {
+                for (MultipartFile file : multipartFile) {
+                    String urlImg = cloudinaryService.uploadFile(file);
+                    if (imgUrl == null) {
+                        imgUrl = urlImg;
+                    }
+                    Image image = Image.builder().imageType(ImageTypes.PRODUCT_IMG.getValue()).url(urlImg)
+                            .referenceId(product.getProductId()).build();
+                    Image savedImage = imageService.saveImage(image);
+                }
+            }
 
-        if (multipartFile != null && multipartFile.length > 0 && !Objects.equals(multipartFile[0].getOriginalFilename(), "")) {
-            for (MultipartFile file : multipartFile) {
-                String urlImg = cloudinaryService.uploadFile(file);
-                Image image = Image.builder().imageType(ImageTypes.PRODUCT_IMG.getValue()).url(urlImg)
-                        .referenceId(product.getProductId()).build();
-                Image savedImage = imageService.saveImage(image);
-            }
+            Product cloneProduct = product.clone();
+            cloneProduct.setProductDescription(HtmlTagRemover.removeHtmlTags(product.getProductDescription()));
+            SearchProductDto searchProductDto = SearchProductDto.build(cloneProduct, imgUrl);
+            documentRepository.index(searchProductDto);
+            return "redirect:/admin/update-product/" + product.getProductId() + "?uploaded=true";
+        } catch (Exception e) {
+            _log.error(e);
         }
-        return "redirect:/admin/update-product/" + product.getProductId() + "?uploaded=true";
+        return "redirect:/admin/update-product/" + product.getProductId() + "?uploaded=false";
     }
 
     @GetMapping("/product-details/{productId}")
@@ -213,38 +239,33 @@ public class ProductController {
         Map<Long, User> userMap = userService.getMapUsers(userIds);
         model.addAttribute("userMap", userMap);
         model.addAttribute("commentList", commentList);
-        // recommend product
-        _log.error(HtmlTagRemover.removeHtmlTags(product.getProductDescription()));
-        _log.error(HtmlTagRemover.removeHtmlTags("<ul class=\"sherah-progress-list sherah-progress-list__bg sherah-progress-list__inline sherah-gap-50\">\n" +
-                "                                                    <li>\n" +
-                "                                                        <span class=\"sherah-progress-list__color sherah-color4__bg\"></span>\n" +
-                "                                                        <p>Doanh thu<span\n" +
-                "                                                                th:text=\"${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'\"></span>\n" +
-                "                                                        </p>\n" +
-                "                                                        <span class=\"sherah-progress-list__color sherah-color3__bg\"></span>\n" +
-                "                                                        <p>Lợi nhuận<span\n" +
-                "                                                                th:text=\"${#numbers.formatDecimal(totalProfit, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'\"></span>\n" +
-                "                                                        </p>\n" +
-                "                                                    </li>\n" +
-                "                                                </ul>"));
-        List<Product> recommendProducts = productService.getRecommendProducts(product, 5);
-        model.addAttribute("recommendProducts", recommendProducts);
         return "product/product-details";
     }
 
     @GetMapping("/deactive/{productId}")
     public String deactive(@PathVariable("productId") long productId, HttpServletRequest httpServletRequest) {
-        Product product = productService.getProduct(productId);
-        if (product.isProductStatus()) {
-            product.setProductStatus(false);
-        } else {
-            product.setProductStatus(true);
-        }
-        productService.saveProduct(product);
-
-        String returnUrl = httpServletRequest.getHeader("Referer");
-        if (returnUrl != null) {
-            return "redirect:" + returnUrl;
+        try {
+            Product product = productService.getProduct(productId);
+            if (product.isProductStatus()) {
+                product.setProductStatus(false);
+            } else {
+                product.setProductStatus(true);
+            }
+            productService.saveProduct(product);
+            Product cloneProduct = product.clone();
+            cloneProduct.setProductDescription(HtmlTagRemover.removeHtmlTags(product.getProductDescription()));
+            SearchProductDto searchProductDto = documentRepository.getById("products", String.valueOf(productId), SearchProductDto.class).source();
+            if (searchProductDto != null) {
+                searchProductDto.setProduct(cloneProduct);
+                documentRepository.index(searchProductDto);
+            }
+            String returnUrl = httpServletRequest.getHeader("Referer");
+            if (returnUrl != null) {
+                return "redirect:" + returnUrl;
+            }
+        } catch (Exception e) {
+            _log.error(e.getMessage());
+            return "redirect:/admin/error";
         }
         return "redirect:/admin/product-details/" + productId;
     }

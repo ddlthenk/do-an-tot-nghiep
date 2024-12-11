@@ -5,6 +5,8 @@ public class HtmlTagRemover {
         if (input == null || input.isEmpty()) {
             return input;
         }
-        return input.replaceAll("<[^>]+>", " ").replaceAll("\\s+", " ").trim();
+        return input.replaceAll("<[^>]+>", " ")
+                .replaceAll("\\s+", " ")
+                .replace("&nbsp;", " ").trim();
     }
 }

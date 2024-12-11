@@ -65,7 +65,7 @@ public class OrderController {
             orderPage.getContent().stream().forEach(order -> {
                 if (order.getOrderStatus() != PaymentStatus.DONE.getValue() && order.getOrderStatus() != PaymentStatus.CANCELED.getValue()
                         && order.getOrderStatus() != PaymentStatus.SHIPPED.getValue()) {
-                    
+
                 }
             });
         }
@@ -288,24 +288,41 @@ public class OrderController {
     }
 
     @GetMapping("/order-success/{orderId}")
-    public String orderSuccess(@RequestParam(value = "cod", defaultValue = "") String cod
-            , @PathVariable("orderId") long orderId, HttpServletRequest request, Model model) {
+    public String orderSuccess(@PathVariable("orderId") long orderId, HttpServletRequest request, Model model) {
         model.addAttribute("orderId", orderId);
-        if (request.getParameter("vnp_SecureHash") != null && !request.getParameter("vnp_SecureHash").equals("")) {
-            int orderResult = payService.orderReturn(request);
-            if (orderResult == 1) {
-                Order order = orderService.getOrderById(orderId);
-                if (payService.queryDr(order.getOrderInfor()).equals("00")) {
-                    if (order.getOrderStatus() != PaymentStatus.PAID.getValue()) {
-                        order.setOrderStatus(PaymentStatus.PAID.getValue());
-                    }
-                    orderService.saveOrder(order);
-                    ghnService.sendPostRequest2(1, order);
-                } else {
-                    model.addAttribute("paid", "false");
-                }
-
+//        if (request.getParameter("vnp_SecureHash") != null && !request.getParameter("vnp_SecureHash").equals("")) {
+//            int orderResult = payService.orderReturn(request);
+//            if (orderResult == 1) {
+//                Order order = orderService.getOrderById(orderId);
+//                if (payService.queryDr(order.getOrderInfor()).equals("00")) {
+//                    if (order.getOrderStatus() != PaymentStatus.PAID.getValue()) {
+//                        order.setOrderStatus(PaymentStatus.PAID.getValue());
+//                    }
+//                    orderService.saveOrder(order);
+//                    ghnService.sendPostRequest2(1, order);
+//                } else {
+//                    model.addAttribute("paid", "false");
+//                }
+//
+//            }
+//        }
+        Order order = orderService.getOrderById(orderId);
+        if (order == null) {
+            return "redirect:/error";
+        }
+        if (order.getPaymentMethod() == PaymentMethod.COD.getValue()) {
+            model.addAttribute("cod", "true");
+            model.addAttribute("paid", "true");
+        } else {
+            String responseCode = request.getParameter("vnp_ResponseCode");
+            if (responseCode != null && responseCode.equals("00")) {
+                order.setOrderStatus(PaymentStatus.PAID.getValue());
+                model.addAttribute("paid", "true");
+            } else {
+                order.setOrderStatus(PaymentStatus.CANCELED.getValue());
+                model.addAttribute("paid", "false");
             }
+            orderService.saveOrder(order);
         }
         return "order/order-success";
     }

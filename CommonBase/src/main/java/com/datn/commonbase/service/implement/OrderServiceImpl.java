@@ -117,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Long getTotalProfits() {
-        return getTotalPriceOrder() * 10 / 100;
+        return getTotalPriceOrder() * 40 / 100;
     }
 
     @Override
@@ -178,7 +178,7 @@ public class OrderServiceImpl implements OrderService {
                 Date sqlDate = Date.valueOf(dateCount);
                 Long count = orderRepository.sumByMonthAndYear(sqlDate);
                 if (count != null) {
-                    result.add(count * 10 / 100);
+                    result.add(count * 40 / 100);
                 } else {
                     result.add(0L);
                 }

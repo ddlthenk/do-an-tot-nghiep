@@ -1,5 +1,6 @@
 package com.datn.commonbase.service;
 
+import com.datn.commonbase.dto.SearchProductDto;
 import com.datn.commonbase.entity.Product;
 import org.springframework.data.domain.Page;
 
@@ -15,9 +16,9 @@ public interface ProductService {
 
     public Page<Product> getTopSelling(boolean status, int page, int limit);
 
-    public List<Product> getRecommendProducts(long productId, String productName, int limit);
+    public List<SearchProductDto> getRecommendProducts(long productId, String productName, int limit);
 
-    public List<Product> getRecommendProducts(Product product, int limit);
+    public List<SearchProductDto> getRecommendProducts(Product product, int limit);
 
     public Page<Product> searchProducts(boolean status, int page, int limit, String searchValue);
 

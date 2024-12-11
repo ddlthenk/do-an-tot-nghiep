@@ -3,7 +3,7 @@ package com.datn.commonbase.repository;
 import co.elastic.clients.elasticsearch._types.Refresh;
 import co.elastic.clients.elasticsearch.core.*;
 import com.datn.commonbase.client.SearchClient;
-import com.datn.commonbase.entity.Product;
+import com.datn.commonbase.dto.SearchProductDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -26,20 +26,20 @@ public class DocumentRepositoryImpl {
 
     private static final Logger _log = LogManager.getLogger(DocumentRepositoryImpl.class);
 
-    public IndexResponse index(Product product) throws IOException {
+    public IndexResponse index(SearchProductDto searchProductDto) throws IOException {
         return searchClient.executeWithClient(client ->
                 client.index(i ->
-                        i.index("products").id(String.valueOf(product.getProductId())).document(product).refresh(REFRESH)));
+                        i.index("products").id(String.valueOf(searchProductDto.getProductId())).document(searchProductDto).refresh(REFRESH)));
     }
 
 
-    public BulkResponse indexBulk(List<Product> productList) throws IOException {
+    public BulkResponse indexBulk(List<SearchProductDto> productList) throws IOException {
         return searchClient.executeWithClient(client -> {
             BulkRequest.Builder br = new BulkRequest.Builder();
             try {
-                for (Product product : productList) {
-                    br.operations(op -> op.index(idx -> idx.index("products").id(String.valueOf(product.getProductId()))
-                            .document(product))).refresh(REFRESH);
+                for (SearchProductDto searchProductDto : productList) {
+                    br.operations(op -> op.index(idx -> idx.index("products").id(String.valueOf(searchProductDto.getProductId()))
+                            .document(searchProductDto))).refresh(REFRESH);
                 }
             } catch (Exception e) {
                 _log.error(productList.toString());
@@ -48,11 +48,11 @@ public class DocumentRepositoryImpl {
         });
     }
 
-    public GetResponse<? extends Product> getById(String index, String id, Class<? extends Product> clazz) throws IOException {
+    public GetResponse<? extends SearchProductDto> getById(String index, String id, Class<? extends SearchProductDto> clazz) throws IOException {
         return searchClient.executeWithClient(client -> client.get(g -> g.index(index).id(id), clazz));
     }
 
-    public SearchResponse<? extends Product> search(Class<? extends Product> clazz, SearchRequest searchRequest) throws IOException {
+    public SearchResponse<? extends SearchProductDto> search(Class<? extends SearchProductDto> clazz, SearchRequest searchRequest) throws IOException {
         return searchClient.executeWithClient(client -> client.search(searchRequest, clazz));
     }
 
@@ -71,7 +71,7 @@ public class DocumentRepositoryImpl {
         });
     }
 
-    public MgetResponse<? extends Product> getByIds(String index, List<String> ids, Class<? extends Product> clazz) throws IOException {
+    public MgetResponse<? extends SearchProductDto> getByIds(String index, List<String> ids, Class<? extends SearchProductDto> clazz) throws IOException {
         return searchClient.executeWithClient(client -> client.mget(builder -> builder.index(index).ids(ids), clazz));
     }
 

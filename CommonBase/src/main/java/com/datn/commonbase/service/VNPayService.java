@@ -21,6 +21,14 @@ import java.util.*;
 @Service
 public class VNPayService {
     private static Logger _log = LogManager.getLogger(VNPayService.class);
+    private static VNPayService instance;
+
+    public static VNPayService getInstance() {
+        if (instance == null) {
+            instance = new VNPayService();
+        }
+        return instance;
+    }
 
     public String createOrder(int total, String returnUrl) {
         String vnp_Version = "2.1.0";
@@ -36,6 +44,7 @@ public class VNPayService {
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(total * 100));
         vnp_Params.put("vnp_CurrCode", "VND");
+        vnp_Params.put("vnp_BankCode", "VNBANK");
 
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
@@ -88,7 +97,7 @@ public class VNPayService {
         String vnp_SecureHash = VnpayConfig.hmacSHA512(VnpayConfig.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
         String paymentUrl = VnpayConfig.vnp_PayUrl + "?" + queryUrl;
-        System.err.println(paymentUrl);
+//        System.err.println(paymentUrl);
         return paymentUrl;
     }
 

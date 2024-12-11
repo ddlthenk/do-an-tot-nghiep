@@ -1,6 +1,7 @@
 package com.datn.userservice.controller;
 
 import com.datn.commonbase.constant.ImageTypes;
+import com.datn.commonbase.dto.SearchProductDto;
 import com.datn.commonbase.entity.*;
 import com.datn.commonbase.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -149,6 +150,10 @@ public class ProductController {
         model.addAttribute("product", product);
         List<Image> imageList = imageService.getListImage(productId, ImageTypes.PRODUCT_IMG.getValue());
         model.addAttribute("imageList", imageList);
+
+        // recommend product
+        List<SearchProductDto> recommendProducts = productService.getRecommendProducts(product, 4);
+        model.addAttribute("recommendProducts", recommendProducts);
         return "product/product-details";
     }
 

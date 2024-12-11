@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th=http://www.thymeleaf.org
-      xmlns:sec=http://www.thymeleaf.org/extras/spring-security
-      xmlns:shiro=http://www.pollix.at/thymeleaf/shiro>
+>
 
 <head>
     <meta charset="utf-8">
@@ -43,10 +42,19 @@
 <!-- Cart Start -->
 <div class="container-fluid">
     <div class="row px-xl-5">
-        <div class="col-lg-12">
-            <p class="text-center" style="color:#F27927;font-weight: 400;font-size: 35px;">Bạn đã đặt hàng thành
+        <div class="col-lg-12" th:if="${paid != null && paid.equals('true')}">
+            <p class="text-center" style="color:#F27927;font-weight: 400;font-size: 35px;">Đặt hàng thành
                 công!!!</p>
             <p class="text-center" style="color: #000;">Đơn hàng sẽ được gửi tới bạn sớm nhất</p>
+            <p class="text-center" style="color: #000;">Xem <a th:href="'/order-details/' + ${orderId}"
+                                                               style="color: #F27927 ;border-bottom: #000;">chi
+                tiết đơn hàng</a> hoặc tiếp tục mua sắm</p>
+
+        </div>
+        <div class="col-lg-12" th:if="${paid != null && paid.equals('false')}">
+            <p class="text-center" style="color:#F27927;font-weight: 400;font-size: 35px;">Đặt hàng không thành
+                công!!!</p>
+            <p class="text-center" style="color: #000;">Thanh toán đơn hàng không thành công</p>
             <p class="text-center" style="color: #000;">Xem <a th:href="'/order-details/' + ${orderId}"
                                                                style="color: #F27927 ;border-bottom: #000;">chi
                 tiết đơn hàng</a> hoặc tiếp tục mua sắm</p>
